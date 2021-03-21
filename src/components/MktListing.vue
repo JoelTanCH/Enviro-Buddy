@@ -6,7 +6,7 @@
         <img v-bind:src="item.img" />
         <p>$ {{ item.price }}</p>
         <hr />
-        <b-button pill v-bind:itemid="item.id" v-bind:collectionName="collectionName" v-on:click="route($event)">
+        <b-button v-bind:itemid="item.id" v-bind:collectionName="collectionName" v-on:click="route($event)">
           Details
         </b-button>
       </li>

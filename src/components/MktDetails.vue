@@ -7,11 +7,11 @@
         </b-col>
         <b-col>
           <h2>{{ details.name }}</h2>
-          <h3>{{ details.price }}</h3>
-          <!-- add description here (add new field in firebase first) -->
+          <h3>$ {{ details.price }}</h3>
+          <p>{{ details.description }}</p>
           <br /><br />
-          <b-button pill>Add to Cart</b-button>
-          <b-button pill>View Cart</b-button>
+          <b-button>Add to Cart</b-button>
+          <b-button>View Cart</b-button>
         </b-col>
       </b-row>
     </b-container>

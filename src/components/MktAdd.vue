@@ -1,64 +1,119 @@
 <template>
-<div id=app>
-    <h1>{{msg}}</h1>
-    <form id="fm1">
-        <label>Item Name</label>
-        <input type="text" v-model.lazy="item.name" required/>
-        <label>Item Category</label>
-        <input type="text" v-model="item.category" required/>
-        <button v-on:click.prevent="addItem">Add Item</button>
-        
-    </form>
-  </div>
+  <div>
+    <b-container>
+      <b-row>
+        <b-col>Ask user to upload picture here</b-col>
 
+        <b-col>
+          <h1>Add Listing</h1>
+
+          <b-form>
+            <b-form-group
+              id="item-name"
+              label="Item Name"
+              label-for="item-name-input"
+            >
+              <b-form-input
+                id="item-name"
+                v-model="item.name"
+                type="text"
+                placeholder="Enter item name"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="item-category"
+              label="Category"
+              label-for="item-category-input"
+            >
+              <b-form-select
+                id="item-category"
+                v-model="item.category"
+                v-bind:options="marketplaceCategories"
+                required
+              ></b-form-select>
+            </b-form-group>
+
+            <b-form-group
+              id="item-price"
+              label="Item Price"
+              label-for="item-price-input"
+            >
+              <b-form-input
+                id="item-price"
+                v-model="item.price"
+                placeholder="0"
+                type="number"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="item-description"
+              label="Item Description"
+              label-for="item-description-input"
+            >
+              <b-form-input
+                id="item-description"
+                v-model="item.description"
+                placeholder="Enter item description"
+                type="text"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-button
+              type="submit"
+              variant="secondary"
+              v-on:click="addItem"
+              >Submit</b-button
+            >
+          </b-form>
+
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
-import database from '../firebase.js'
+import database from "../firebase.js";
+
 export default {
-    data(){
-    return{
-           msg:"Add Item",
-           item:{
-               name:"",
-               category:""
-
-           }
-        }
+  data() {
+    return {
+      item: {
+        name: "",
+        category: "Category",
+        price: 0,
+        description: "",
+      },
+      marketplaceCategories: [
+        // { text: "Select One", value: null },
+        "Fashion",
+        "Decor",
+        "Furniture",
+        "Jewellery",
+      ],
+    };
   },
-  methods:{
-      addItem:function(){
-          database.collection('items').add(this.item)
-          alert(this.item.name + " saved to database");
-          this.item.name="";
-          this.item.category="";
-      }
-  }
+  methods: {
+    addItem: function () {
+      var collectionName = "mkt-listing-" + this.item.category;
+      collectionName = collectionName.toLowerCase();
+      console.log(collectionName);
+      database.collection(collectionName).add(this.item);
 
-}
+      alert(this.item.name + " saved to database");
+
+      //reset to empty string
+      this.item.name = "";
+      this.item.category = "";
+    },
+  },
+};
 </script>
 
 <style scoped>
-#app *{
-    box-sizing: border-box;
-}
-#app{
-    margin: 20px auto;
-    max-width: 500px;
-}
-p{
-    align-content: center;
-    color:ivory;
-}
-label{
-    display: inline-block;
-    margin: 20px 0 10px;
-    width:50%;
-    align-content:left;
-}
-input[type="text"]{
-    display: inline-block;
-    padding: 8px;
-    width:50%;
-}
 </style>

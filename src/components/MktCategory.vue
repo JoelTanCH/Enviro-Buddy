@@ -8,7 +8,7 @@
         <h2>{{ category.name }}</h2>
         <img v-bind:src="category.img" />
         <hr> 
-        <b-button pill v-bind:categoryName="category.name" v-on:click="route($event)">
+        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
           Browse All
         </b-button>
       </li>
