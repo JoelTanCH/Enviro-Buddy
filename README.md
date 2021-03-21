@@ -1,4 +1,4 @@
-# online_bakery
+# enviro_buddy
 
 ## Project setup
 ```
