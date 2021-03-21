@@ -1,9 +1,16 @@
 <template>
   <div id="categoryList">
     <ul>
-      <li v-for="category in categoryList" v-bind:key="category.name">
+      <li
+        v-for="category in categoryList"
+        v-bind:key="category.name"
+      >
         <h2>{{ category.name }}</h2>
         <img v-bind:src="category.img" />
+        <hr> 
+        <b-button pill v-bind:categoryName="category.name" v-on:click="route($event)">
+          Browse All
+        </b-button>
       </li>
     </ul>
   </div>
@@ -31,6 +38,12 @@ export default {
             this.categoryList.push(category);
           });
         });
+    },
+    route: function (event) {
+      this.$router.push({
+        name: "mkt-listing",
+        params: { categoryName: event.target.getAttribute("categoryName") },
+      });
     },
   },
   created() {

@@ -1,11 +1,25 @@
 <template>
   <div>
-    <header>
-      <h1>Enviro Buddy</h1>
-      <router-link to="/mkt-category" exact>Marketplace </router-link>
-      <router-link to="/event-category" exact>Events </router-link>
-      <router-link to="/info-category" exact>Information Hub</router-link>
-    </header>
+    <!-- <h1>Enviro Buddy</h1> -->
+    <b-navbar toggleable="lg" type="dark" class="navbar-custom">
+      <b-navbar-brand href="/mkt-category">Enviro Buddy</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <!-- dropdown for marketplace -->
+          <b-nav-item-dropdown text="Marketplace" right>
+            <b-dropdown-item href="/mkt-category">Categories</b-dropdown-item>
+            <b-dropdown-item href="/mkt-cart">View Cart</b-dropdown-item>
+            <b-dropdown-item href="/mkt-add">Add Listing</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item href="/event-category">Events</b-nav-item>
+          <b-nav-item href="/info-category">Information Hub</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
 </template>
 
@@ -18,26 +32,8 @@ export default {
 </script>
 
 <style scoped>
-header {
+.navbar-custom {
+  /* background color of navbar */
   background: #3a6351;
-  border-style: solid;
-  border-color: #393232;
-  border-width: 2px;
-  height: 95px;
-  text-align: top;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-}
-h1 {
-  color: #f2edd7;
-}
-a {
-  color: #f2edd7;
-  text-decoration: none;
-  padding: 6px 8px;
-  border-radius: 10px;
-}
-.router-link-active {
-  background: #f2edd7;
-  color: #393232;
 }
 </style>
