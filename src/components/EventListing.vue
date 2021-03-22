@@ -1,15 +1,12 @@
 <template>
-  <div id="categoryList">
+  <div id="items">
     <ul>
-      <li
-        v-for="category in categoryList"
-        v-bind:key="category.name"
-      >
-        <h2>{{ category.name }}</h2>
-        <img v-bind:src="category.img" />
-        <hr> 
-        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
-          Browse All
+      <li v-for="item in itemList" v-bind:key="item.name">
+        <h2>{{ item.name }}</h2>
+        <img v-bind:src="item.img" />
+        <hr />
+        <b-button v-bind:itemid="item.id" v-bind:collectionName="collectionName" v-on:click="route($event)">
+          Details
         </b-button>
       </li>
     </ul>
@@ -22,38 +19,41 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      categoryList: [],
+      itemList: [],
+      collectionName: "",
     };
   },
   methods: {
     fetchItems: function () {
+      this.collectionName = "eve-listing-" + this.$route.params.categoryName;
+      this.collectionName = this.collectionName.toLowerCase();
       database
-        .collection("eve-categories")
+        .collection(this.collectionName)
         .get()
         .then((querySnapShot) => {
-          let category = {};
+          let item = {};
           querySnapShot.forEach((doc) => {
-            category = doc.data();
-            category.id = doc.id;
-            this.categoryList.push(category);
+            item = doc.data();
+            item.id = doc.id;
+            this.itemList.push(item);
           });
         });
     },
     route: function (event) {
       this.$router.push({
-        name: "eve-listing",
-        params: { categoryName: event.target.getAttribute("categoryName") },
+        name: "eve-details",
+        params: { itemid: event.target.getAttribute("itemid"), collectionName: event.target.getAttribute("collectionName")},
       });
     },
   },
-  created() {
+  created: function () {
     this.fetchItems();
   },
 };
 </script>
 
 <style scoped>
-#categoryList {
+#items {
   width: 100%;
   margin: 30px auto;
   padding: 0 5px;
