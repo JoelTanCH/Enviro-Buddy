@@ -2,7 +2,9 @@
   <div>
     <b-container>
       <b-row>
-        <b-col>Ask user to upload picture here</b-col>
+        <b-col>
+          <b-img v-bind:src="imgUpload"></b-img>
+        </b-col>
 
         <b-col>
           <h1>Add Listing</h1>
@@ -29,7 +31,7 @@
             >
               <b-form-select
                 id="item-category"
-                v-model="item.category"
+                v-model="category"
                 v-bind:options="marketplaceCategories"
                 required
               ></b-form-select>
@@ -63,14 +65,12 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button
-              type="submit"
-              variant="secondary"
-              v-on:click="addItem"
+            <b-form-file v-model="imgUpload" plain></b-form-file>
+
+            <b-button type="submit" variant="secondary" v-on:click="addItem"
               >Submit</b-button
             >
           </b-form>
-
         </b-col>
       </b-row>
     </b-container>
@@ -85,10 +85,10 @@ export default {
     return {
       item: {
         name: "",
-        category: "Category",
         price: 0,
         description: "",
       },
+      category: "Category",
       marketplaceCategories: [
         // { text: "Select One", value: null },
         "Fashion",
@@ -96,11 +96,12 @@ export default {
         "Furniture",
         "Jewellery",
       ],
+      imgUpload: null,
     };
   },
   methods: {
     addItem: function () {
-      var collectionName = "mkt-listing-" + this.item.category;
+      var collectionName = "mkt-listing-" + this.category;
       collectionName = collectionName.toLowerCase();
       console.log(collectionName);
       database.collection(collectionName).add(this.item);
