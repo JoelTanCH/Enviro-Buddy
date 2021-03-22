@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-container>
       <b-row>
         <b-col>
           <img id="blah" alt="your image" width="500" height="500" />
@@ -102,6 +103,9 @@ export default {
   },
   methods: {
     addItem: function () {
+      if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == 0){
+        alert("please fill in required details")
+      }else{
       this.item.img = document.getElementById('blah').src
       var collectionName = "mkt-listing-" + this.category;
       collectionName = collectionName.toLowerCase();
@@ -114,6 +118,7 @@ export default {
       //reset to empty string
       this.item.name = "";
       this.item.category = "";
+      }
     },
   },
 };
