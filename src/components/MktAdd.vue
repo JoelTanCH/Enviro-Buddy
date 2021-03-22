@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-container>
+<img id="blah" alt="your image" width="100" height="100" />
+<input type="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">   
+ <b-container>
       <b-row>
         <b-col>
           <b-img v-bind:src="imgUpload"></b-img>
@@ -100,6 +102,13 @@ export default {
     };
   },
   methods: {
+    loadFile: function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  },
     addItem: function () {
       var collectionName = "mkt-listing-" + this.category;
       collectionName = collectionName.toLowerCase();
