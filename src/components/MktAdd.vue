@@ -1,11 +1,8 @@
 <template>
   <div>
-<img id="blah" alt="your image" width="100" height="100" />
-<input type="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">    
- <b-container>
       <b-row>
         <b-col>
-          <b-img v-bind:src="imgUpload"></b-img>
+          <img id="blah" alt="your image" width="500" height="500" />
         </b-col>
 
         <b-col>
@@ -66,9 +63,10 @@
                 required
               ></b-form-input>
             </b-form-group>
-
-            <b-form-file v-model="imgUpload" plain></b-form-file>
-
+            <input
+              type="file"
+              onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])"  
+            />
             <b-button type="submit" variant="secondary" v-on:click="addItem"
               >Submit</b-button
             >
@@ -90,8 +88,9 @@ export default {
         name: "",
         price: 0,
         description: "",
+        img: "",
       },
-      category: "Category",
+      category: null,
       marketplaceCategories: [
         // { text: "Select One", value: null },
         "Fashion",
@@ -99,21 +98,15 @@ export default {
         "Furniture",
         "Jewellery",
       ],
-      imgUpload: null,
     };
   },
   methods: {
-    loadFile: function(event) {
-    var output = document.getElementById('output');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function() {
-      URL.revokeObjectURL(output.src) // free memory
-    }
-  },
     addItem: function () {
+      this.item.img = document.getElementById('blah').src
       var collectionName = "mkt-listing-" + this.category;
       collectionName = collectionName.toLowerCase();
       console.log(collectionName);
+      console.log(document.getElementById('blah').src)
       database.collection(collectionName).add(this.item);
 
       alert(this.item.name + " saved to database");
