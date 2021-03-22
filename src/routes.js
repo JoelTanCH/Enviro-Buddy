@@ -5,6 +5,8 @@ import MktAdd from './components/MktAdd.vue'
 import MktCart from './components/MktCart.vue'
 import EventCategory from './components/EventCategory.vue'
 import InfoCategory from './components/InfoCategory.vue'
+import EventListing from './components/EventListing.vue'
+import EventDetails from './components/EventDetails.vue'
 
 export default [
     { path: '/mkt-category', component: MktCategory },
@@ -14,4 +16,6 @@ export default [
     { path: '/mkt-cart', component: MktCart },
     { path: '/event-category', component: EventCategory },
     { path: '/info-category', component: InfoCategory },
+    { path: '/eve-listing', component: EventListing, name: 'eve-listing', props: true },
+    { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true }
 ]

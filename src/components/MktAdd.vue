@@ -1,6 +1,5 @@
 <template>
   <div>
-    <b-container>
       <b-row>
         <b-col>
           <img id="blah" alt="your image" width="500" height="500" />
@@ -77,6 +76,7 @@
     </b-container>
   </div>
 </template>
+
 
 <script>
 import database from "../firebase.js";

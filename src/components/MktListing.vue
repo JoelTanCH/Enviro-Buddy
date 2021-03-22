@@ -1,16 +1,28 @@
 <template>
-  <div id="items">
-    <ul>
-      <li v-for="item in itemList" v-bind:key="item.name">
-        <h2>{{ item.name }}</h2>
-        <img v-bind:src="item.img" />
-        <p>$ {{ item.price }}</p>
-        <hr />
-        <b-button v-bind:itemid="item.id" v-bind:collectionName="collectionName" v-on:click="route($event)">
-          Details
-        </b-button>
-      </li>
-    </ul>
+  <div>
+    <b-form-input
+      v-on:input="search_text()"
+      v-model="search.text"
+      type="text"
+      placeholder="Search by Name"
+    ></b-form-input>
+    <div id="items">
+      <ul>
+        <li v-for="item in itemList" v-bind:key="item.name">
+          <h2>{{ item.name }}</h2>
+          <img v-bind:src="item.img" />
+          <p>$ {{ item.price }}</p>
+          <hr />
+          <b-button
+            v-bind:itemid="item.id"
+            v-bind:collectionName="collectionName"
+            v-on:click="route($event)"
+          >
+            Details
+          </b-button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -22,6 +34,9 @@ export default {
     return {
       itemList: [],
       collectionName: "",
+      search: {
+        text: "",
+      },
     };
   },
   methods: {
@@ -43,8 +58,17 @@ export default {
     route: function (event) {
       this.$router.push({
         name: "mkt-details",
-        params: { itemid: event.target.getAttribute("itemid"), collectionName: event.target.getAttribute("collectionName")},
+        params: {
+          itemid: event.target.getAttribute("itemid"),
+          collectionName: event.target.getAttribute("collectionName"),
+        },
       });
+    },
+    search_text: function () {
+      var searchText = this.search.text.toLowerCase();
+      var categoryRef = database.collection(this.collectionName);
+      var query = categoryRef.where("name", "==", searchText);
+      console.log(query);
     },
   },
   created: function () {
