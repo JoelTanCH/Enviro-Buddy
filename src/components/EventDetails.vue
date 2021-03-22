@@ -7,11 +7,8 @@
         </b-col>
         <b-col>
           <h2>{{ details.name }}</h2>
-          <h3>$ {{ details.price }}</h3>
           <p>{{ details.description }}</p>
           <br /><br />
-          <b-button>Add to Cart</b-button>
-          <b-button>View Cart</b-button>
         </b-col>
       </b-row>
     </b-container>
