@@ -17,6 +17,7 @@
 
           <b-nav-item href="/event-category">Events</b-nav-item>
           <b-nav-item href="/info-category">Information Hub</b-nav-item>
+          <b-nav-item href="/root"> Sign Up / Login </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
