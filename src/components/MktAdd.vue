@@ -1,7 +1,7 @@
 <template>
   <div>
 <img id="blah" alt="your image" width="100" height="100" />
-<input type="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">   
+<input type="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">    
  <b-container>
       <b-row>
         <b-col>
