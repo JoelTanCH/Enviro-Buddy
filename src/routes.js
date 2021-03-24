@@ -7,6 +7,10 @@ import EventCategory from './components/EventCategory.vue'
 import InfoCategory from './components/InfoCategory.vue'
 import EventListing from './components/EventListing.vue'
 import EventDetails from './components/EventDetails.vue'
+import RootPage from './components/RootPage.vue' 
+import SignUpPage from './components/SignUpPage.vue' 
+import LoginPage from './components/LoginPage.vue' 
+
 
 export default [
     { path: '/mkt-category', component: MktCategory },
@@ -17,5 +21,8 @@ export default [
     { path: '/event-category', component: EventCategory },
     { path: '/info-category', component: InfoCategory },
     { path: '/eve-listing', component: EventListing, name: 'eve-listing', props: true },
-    { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true }
+    { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true },
+    { path: '/root', component: RootPage, name: 'root-page'},
+    { path: '/sign-up', component: SignUpPage, name:'sign-up' },
+    { path: '/login', component: LoginPage, name:'login' },
 ]

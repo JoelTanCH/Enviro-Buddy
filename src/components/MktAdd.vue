@@ -3,7 +3,7 @@
     <b-container>
       <b-row>
         <b-col>
-          <img id="blah" alt="your image" width="500" height="500" />
+          <img id="uploadedImg" alt="Your image"/>
         </b-col>
 
         <b-col>
@@ -64,9 +64,11 @@
                 required
               ></b-form-input>
             </b-form-group>
+
+            <!-- ask users to upload image file -->
             <input
               type="file"
-              onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])"  
+              onchange="document.getElementById('uploadedImg').src = window.URL.createObjectURL(this.files[0])"  
             />
             <b-button type="submit" variant="secondary" v-on:click="addItem"
               >Submit</b-button
@@ -89,11 +91,10 @@ export default {
         name: "",
         price: 0,
         description: "",
-        img: "",
+        img: "", //images url 
       },
       category: null,
       marketplaceCategories: [
-        // { text: "Select One", value: null },
         "Fashion",
         "Decor",
         "Furniture",
@@ -103,14 +104,14 @@ export default {
   },
   methods: {
     addItem: function () {
-      if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == 0){
+      if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == null){
         alert("please fill in required details")
-      }else{
-      this.item.img = document.getElementById('blah').src
+      } else{
+      this.item.img = document.getElementById('uploadedImg').src
       var collectionName = "mkt-listing-" + this.category;
       collectionName = collectionName.toLowerCase();
       console.log(collectionName);
-      console.log(document.getElementById('blah').src)
+      console.log(document.getElementById('uploadedImg').src)
       database.collection(collectionName).add(this.item);
 
       alert(this.item.name + " saved to database");
@@ -125,4 +126,7 @@ export default {
 </script>
 
 <style scoped>
+img {
+  width: 70%;
+}
 </style>
