@@ -72,8 +72,10 @@ export default {
     color: black;
 }
 #logInButton {
+    padding-top:2px;
+    padding-left:0px;  
     font-size: 14px;
-    text-align: left;
     color:brown;
+    font-weight: bold;
 }
 </style>

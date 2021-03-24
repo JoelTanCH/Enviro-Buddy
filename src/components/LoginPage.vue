@@ -1,8 +1,43 @@
 <template>
     <!-- need background image??? or anything else to add -->
     <div id = 'container'>
+        <div id = 'logInText'>
+            Log In <br>
+
+            <b-form>
+                <b-form-input id = 'username' type = "text" placeholder = "Username" required> </b-form-input>
+                <b-form-input id = 'email' type = "text" placeholder = "Email" required> </b-form-input>
+                <b-form-input id = 'password' type = "text" placeholder = "Password" required> </b-form-input>
+            </b-form>
+
+            <b-button variant = 'text' id = "forgetpwButton">
+                Forgot Password?
+            </b-button>
+
+            <b-button id = 'logInButton'>
+                Log In
+            </b-button>
+
+            <div id = 'signUpText'>
+                Don't have an account?
+                <b-button variant = 'text' id = "signUpButton" v-on:click="routeSignUp">
+                    Sign Up
+                </b-button>
+            </div>
+
+        </div>
     </div>
 </template>
+
+<script>
+export default {
+    methods: {       
+        routeSignUp: function() {
+            this.$router.push({path: '/sign-up'})
+        },
+    }
+}
+</script>
 
 <style scoped>
 #container {
@@ -10,5 +45,49 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+#logInText {
+    color:  #3a6351; /* confirm font stuff */
+    font-weight: bold;
+    font-size: 55px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* confirm which font */
+}
+#username {
+    width:420px;
+    margin-top: 35px;
+}
+#email {
+    width:420px;
+    margin-top: 20px;
+}
+#password {
+    width:420px;
+    margin-top: 20px;
+}
+#logInButton {
+    width: 420px; /* confirm font stuff */
+    font-size: 25px;
+    margin-top: 40px;
+    color:antiquewhite  
+}
+#signUpText {
+    font-size: 14px;
+    margin-top:5px;
+    color: black;
+}
+#signUpButton {  
+    padding-top:2px;
+    padding-left:0px;  
+    font-size: 14px;
+    color:brown;
+    font-weight: bold;
+}
+#forgetpwButton { /* confirm font stuff */
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    font-size: 13px;
+    color:black; 
+    margin-left:-10px; 
 }
 </style>
