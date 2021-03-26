@@ -36,6 +36,7 @@ export default {
 #logo {
   width: 20%;
   align-items: center;
+}
 h1 {
   color: #3a6351;
   font-size: 32px;
