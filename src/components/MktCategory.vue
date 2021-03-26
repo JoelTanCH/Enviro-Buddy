@@ -8,7 +8,7 @@
         <h2>{{ category.name }}</h2>
         <img v-bind:src="category.img" />
         <hr> 
-        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
+        <b-button v-bind:categoryName="category.name" @click="$router.push('/'+category.name.toLowerCase())">
           Browse All
         </b-button>
       </li>
@@ -39,12 +39,12 @@ export default {
           });
         });
     },
-    route: function (event) {
-      this.$router.push({
-        name: "mkt-listing",
-        params: { categoryName: event.target.getAttribute("categoryName") },
-      });
-    },
+    //route: function (event) {
+      //this.$router.push({
+        //name: "mkt-listing",
+        //params: { categoryName: event.target.getAttribute("categoryName") },
+      //});
+    //},
   },
   created() {
     this.fetchItems();

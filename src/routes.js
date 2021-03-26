@@ -9,8 +9,14 @@ import EventListing from './components/EventListing.vue'
 import EventDetails from './components/EventDetails.vue'
 
 export default [
-    { path: '/mkt-category', component: MktCategory },
-    { path: '/mkt-listing', component: MktListing, name: 'mkt-listing', props: true },
+    { path: '/mkt-category', component: MktCategory},
+    { path:'', component: MktCategory},
+
+    { path: '/decor', component: MktListing, name: 'decor', props: true},
+    { path: '/fashion', component: MktListing, name: 'fashion', props: true},
+    { path: '/furniture', component: MktListing, name: 'furniture', props: true},
+    { path: '/jewellery', component: MktListing, name: 'jewellery', props: true},
+
     { path: '/mkt-details', component: MktDetails, name: 'mkt-details', props: true },
     { path: '/mkt-add', component: MktAdd },
     { path: '/mkt-cart', component: MktCart },

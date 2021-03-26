@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      this.collectionName = "mkt-listing-" + this.$route.params.categoryName;
+      this.collectionName = "mkt-listing-"+this.$route.name;
       this.collectionName = this.collectionName.toLowerCase();
       database
         .collection(this.collectionName)
