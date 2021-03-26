@@ -1,81 +1,88 @@
 <template>
-    <!-- need background image??? or anything else to add -->
-    <div id = 'container'>
-        <div id = 'signUpText'>
-            Sign Up <br>
+  <div>
+    <b-container>
+      <b-row>
+        <b-col>
+          <img id="logo" v-bind:src="logoURL" />
+        </b-col>
+        <b-col>
+          <h1>Sign Up</h1>
 
-            <b-form>
-                <b-form-input id = 'username' type = "text" placeholder = "Username" required> </b-form-input>
-                <b-form-input id = 'email' type = "text" placeholder = "Email" required> </b-form-input>
-                <b-form-input id = 'password' type = "text" placeholder = "Password" required> </b-form-input>
-            </b-form>
+          <b-form>
+            <b-form-input
+              class="inputField"
+              type="text"
+              placeholder="Username"
+              required
+            >
+            </b-form-input>
+            <b-form-input
+              class="inputField"
+              type="text"
+              placeholder="Email"
+              required
+            >
+            </b-form-input>
+            <b-form-input
+              class="inputField"
+              type="text"
+              placeholder="Password"
+              required
+            >
+            </b-form-input>
+            <!-- include check for password here -->
+            <b-form-input
+              class="inputField"
+              type="text"
+              placeholder="Confirm Password"
+              required
+            >
+            </b-form-input>
+          </b-form>
 
-            <b-button id = 'signUpButton'>
-                Sign Up
-            </b-button>
-
-            <div id = 'logInText'>
-                Have an account?
-                <b-button variant = 'text' id = "logInButton" v-on:click="routeLogin">
-                    Log in now
-                </b-button>
-            </div>
-
-        </div>
-    </div>
+          <b-button class="button"> Register </b-button><br /><br />
+          <span>Already have an account?</span>
+          <b-button variant="text" class="textButton" v-on:click="routeLogin"
+            >Log In</b-button
+          >
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
 export default {
-    methods: {       
-        routeLogin: function() {
-            this.$router.push({path: '/login'})
-        },
-    }
-}
+  data() {
+    return {
+      logoURL:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU",
+    };
+  },
+  methods: {
+    routeLogin: function () {
+      this.$router.push({ path: "/login" });
+    },
+  },
+};
 </script>
 
 <style scoped>
-#container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+#logo {
+  width: 70%;
+  align-items: center;
 }
-#signUpText {
-    color:  #3a6351; /* confirm font stuff */
-    font-weight: bold;
-    font-size: 55px;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* confirm which font */
+.inputField {
+  font-size: 16px;
+  margin: 10px;
 }
-#username {
-    width:420px;
-    margin-top: 35px;
+span {
+  font-size: 16px;
+  color: #393232;
 }
-#email {
-    width:420px;
-    margin-top: 20px;
-}
-#password {
-    width:420px;
-    margin-top: 20px;
-}
-#signUpButton {
-    width: 420px; /* confirm font stuff */
-    font-size: 25px;
-    margin-top: 50px;
-    color:antiquewhite  
-}
-#logInText {
-    font-size: 14px;
-    margin-top:5px;
-    color: black;
-}
-#logInButton {
-    padding-top:2px;
-    padding-left:0px;  
-    font-size: 14px;
-    color:brown;
-    font-weight: bold;
+.textButton {
+  font-size: 16px;
+  color: #e48257;
+  font-weight: bold;
 }
 </style>
