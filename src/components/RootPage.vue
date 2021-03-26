@@ -2,8 +2,8 @@
     <!-- need background image??? or anything else to add -->
     <div id = 'container'>
         <div id = 'websiteName'>
-            Enviro Buddy <br>
-
+            <img id = "logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU">
+            <br>Enviro Buddy <br>            
             <b-button id = 'signUp' v-on:click="routeSignUp">
                 Sign Up
             </b-button> <br>
@@ -17,13 +17,22 @@
 </template>
 
 <script>
+import database from "../firebase.js";
 
 export default {
     data() {
-        
-    },
+        return{
+            logo:null
+        }},
 
     methods: {
+        fetchLogo:function(){
+        this.logo = database.collection('Logo').get().then((querySnapShot)=>{
+            querySnapShot.forEach(doc=>{
+                alert(doc)
+                 })      })  
+        alert(this.logo)
+        },    
         routeSignUp: function() {
             this.$router.push({path: '/sign-up'})
         },
@@ -31,11 +40,19 @@ export default {
         routeLogin: function() {
             this.$router.push({path: '/login'})
         },
+    created(){
+        this.fetchLogo()   
+    }
     }
 }
 </script>
 
 <style scoped>
+#logo{
+    height:400px;
+    width:400px;
+    align-items:center;
+}
 #container {
     display: flex;
     align-items: center;
