@@ -19,7 +19,6 @@
 <script>
 export default {
     data() {},
-
     methods: {
         routeSignUp: function() {
             this.$router.push({path: '/sign-up'})
@@ -48,23 +47,23 @@ export default {
     height: 100vh;
 }
 #websiteName {
-    color:  #3a6351; /* confirm which color */
+    color:  #3a6351; /* confirm font stuff */
     font-weight: bold;
     font-size: 50px;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* confirm which font */
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 #signUp {
-    width: 120px;
+    width: 120px; /* confirm font stuff */
     font-size: 25px;
     margin-top: 40px;
-    color:antiquewhite  /* confirm which color */
+    color:antiquewhite  
 }
 
 #login {
-    width: 120px;
+    width: 120px; /* confirm font stuff */
     font-size: 25px;
     margin-top: 10px;
-    color: antiquewhite /* confirm which color */
+    color: antiquewhite 
 }
 </style>
