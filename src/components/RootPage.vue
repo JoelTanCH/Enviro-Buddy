@@ -17,22 +17,10 @@
 </template>
 
 <script>
-import database from "../firebase.js";
-
 export default {
-    data() {
-        return{
-            logo:null
-        }},
+    data() {},
 
     methods: {
-        fetchLogo:function(){
-        this.logo = database.collection('Logo').get().then((querySnapShot)=>{
-            querySnapShot.forEach(doc=>{
-                alert(doc)
-                 })      })  
-        alert(this.logo)
-        },    
         routeSignUp: function() {
             this.$router.push({path: '/sign-up'})
         },
