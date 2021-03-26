@@ -7,8 +7,55 @@
         </b-col>
         <b-col>
           <h2>{{ details.name }}</h2>
-          <p>{{ details.description }}</p>
+          <p>Meet up Location: {{ details.Location }}</p>
+          <p>Date: {{ details.Date }}</p>
+          <p>Time: {{ details.Time }}</p>
           <br /><br />
+        <b-form>
+            <b-form-group
+              id="Full-name"
+              label="Full Name"
+              label-for="full-name-input"
+            >
+              <b-form-input
+                id="Full-name"
+                type="text"
+                placeholder="Enter Full Name"
+                v-model.lazy="item.Name"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="Contact-Details"
+              label="Contact Details"
+              label-for="Contact-Details-input"
+            >
+              <b-form-input
+                id="Contact-Details"
+                type="text"
+                v-model.lazy="item.Contact"
+                placeholder="Enter Phone Number"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="email"
+              label="email"
+              label-for="email"
+            >
+              <b-form-input
+                id="email"
+                placeholder="Enter Email"
+                type="text"
+                v-model.lazy="item.Email"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="secondary" v-on:click="addItem()">Submit</b-button>
+        </b-form>
         </b-col>
       </b-row>
     </b-container>
@@ -21,19 +68,34 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      details: {},
+      details:{},
+      collection:"",
+      document:"",
+      item: {
+        Name: "",
+        Contact: "",
+        Email: "",
+      },
     };
   },
   methods: {
     fetchItems: function () {
       var itemid = this.$route.params.itemid;
       var collectionName = this.$route.params.collectionName;
-
+      this.collection = collectionName;
+      this.document = itemid;
       database
         .collection(collectionName)
         .doc(itemid)
         .get()
-        .then((snapshot) => (this.details = snapshot.data()));
+        .then((snapshot) => (
+          this.details = snapshot.data()
+          ));
+    },
+    addItem: function () {
+
+      database.collection(this.collection).doc(this.document).collection('Signups').add(this.item)
+      alert("saved to database");
     },
   },
   created: function () {
