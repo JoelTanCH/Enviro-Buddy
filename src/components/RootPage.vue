@@ -1,5 +1,4 @@
 <template>
-    <!-- need background image??? or anything else to add -->
     <div id = 'container'>
         <div id = 'websiteName'>
             <img id = "logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU">
@@ -36,8 +35,8 @@ export default {
 
 <style scoped>
 #logo{
-    height:400px;
-    width:400px;
+    height:65%;
+    width:65%;
     align-items:center;
 }
 #container {
