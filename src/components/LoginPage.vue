@@ -1,93 +1,76 @@
 <template>
-    <!-- need background image??? or anything else to add -->
-    <div id = 'container'>
-        <div id = 'logInText'>
-            Log In <br>
+  <div>
+    <b-container>
+      <b-row>
+        <b-col>
+          <img id="logo" v-bind:src="logoURL" />
+        </b-col>
+        <b-col>
+          <h1>Log In</h1>
 
-            <b-form>
-                <b-form-input id = 'username' type = "text" placeholder = "Username" required> </b-form-input>
-                <b-form-input id = 'email' type = "text" placeholder = "Email" required> </b-form-input>
-                <b-form-input id = 'password' type = "text" placeholder = "Password" required> </b-form-input>
-            </b-form>
+          <b-form>
+            <b-form-input
+              class="inputField"
+              type="text"
+              placeholder="Username"
+              required
+            >
+            </b-form-input>
+            <b-form-input
+              class="inputField"
+              type="text"
+              placeholder="Password"
+              required
+            >
+            </b-form-input>
+          </b-form>
 
-            <b-button variant = 'text' id = "forgetpwButton">
-                Forgot Password?
-            </b-button>
-
-            <b-button id = 'logInButton'>
-                Log In
-            </b-button>
-
-            <div id = 'signUpText'>
-                Don't have an account?
-                <b-button variant = 'text' id = "signUpButton" v-on:click="routeSignUp">
-                    Sign Up
-                </b-button>
-            </div>
-
-        </div>
-    </div>
+          <b-button class="button"> Log In </b-button><br /><br />
+          <b-button variant="text" class="textButton">
+            Forgot Password? </b-button
+          ><br />
+          <span>Don't have an account?</span>
+          <b-button variant="text" class="textButton" v-on:click="routeSignUp"
+            >Sign Up</b-button
+          >
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
 export default {
-    methods: {       
-        routeSignUp: function() {
-            this.$router.push({path: '/sign-up'})
-        },
-    }
-}
+  data() {
+    return {
+      logoURL:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU",
+    };
+  },
+  methods: {
+    routeSignUp: function () {
+      this.$router.push({ path: "/sign-up" });
+    },
+  },
+};
 </script>
 
 <style scoped>
-#container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+#logo {
+  width: 70%;
+  align-items: center;
 }
-#logInText {
-    color:  #3a6351; /* confirm font stuff */
-    font-weight: bold;
-    font-size: 55px;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* confirm which font */
+.inputField {
+  font-size: 16px;
+  margin: 10px;
 }
-#username {
-    width:420px;
-    margin-top: 35px;
+span {
+  font-size: 16px;
+  color: #393232;
 }
-#email {
-    width:420px;
-    margin-top: 20px;
-}
-#password {
-    width:420px;
-    margin-top: 20px;
-}
-#logInButton {
-    width: 420px; /* confirm font stuff */
-    font-size: 25px;
-    margin-top: 40px;
-    color:antiquewhite  
-}
-#signUpText {
-    font-size: 14px;
-    margin-top:5px;
-    color: black;
-}
-#signUpButton {  
-    padding-top:2px;
-    padding-left:0px;  
-    font-size: 14px;
-    color:brown;
-    font-weight: bold;
-}
-#forgetpwButton { /* confirm font stuff */
-    display: flex;
-    justify-content: left;
-    align-items: left;
-    font-size: 13px;
-    color:black; 
-    margin-left:-10px; 
+.textButton {
+  font-size: 16px;
+  color: #e48257;
+  font-weight: bold;
 }
 </style>

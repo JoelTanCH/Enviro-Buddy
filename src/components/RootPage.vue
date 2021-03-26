@@ -1,68 +1,53 @@
 <template>
-    <div id = 'container'>
-        <div id = 'websiteName'>
-            <img id = "logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU">
-            <br>Enviro Buddy <br>            
-            <b-button id = 'signUp' v-on:click="routeSignUp">
-                Sign Up
-            </b-button> <br>
-
-            <b-button id = 'login' v-on:click="routeLogin">
-                Login
-            </b-button> 
-
-        </div>
-    </div>
+  <div>
+      <img id="logo" v-bind:src="logoURL" />
+      <h1>Enviro Buddy</h1>
+      <h2>{{ description }}</h2>
+      <b-button class="button" v-on:click="routeSignUp"> Sign Up </b-button>
+      <b-button class="button" v-on:click="routeLogin"> Login </b-button>
+  </div>
 </template>
 
 <script>
 export default {
-    data() {},
-    methods: {
-        routeSignUp: function() {
-            this.$router.push({path: '/sign-up'})
-        },
-        
-        routeLogin: function() {
-            this.$router.push({path: '/login'})
-        },
-    created(){
-        this.fetchLogo()   
-    }
-    }
-}
+  data() {
+    return {
+      logoURL:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU",
+        description: "Inspiring an Eco Lifestyle",
+    };
+  },
+  methods: {
+    routeSignUp: function () {
+      this.$router.push({ path: "/sign-up" });
+    },
+
+    routeLogin: function () {
+      this.$router.push({ path: "/login" });
+    },
+    created() {
+      this.fetchLogo();
+    },
+  },
+};
 </script>
 
-<style scoped>
-#logo{
-    height:65%;
-    width:65%;
-    align-items:center;
+<style>
+#logo {
+  width: 20%;
+  align-items: center;
 }
-#container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+h1 {
+  color: #3a6351;
+  font-size: 32px;
 }
-#websiteName {
-    color:  #3a6351; /* confirm font stuff */
-    font-weight: bold;
-    font-size: 50px;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+h2 {
+  color: #393232;
+  font-size: 20px;
 }
-
-#signUp {
-    width: 120px; /* confirm font stuff */
-    font-size: 25px;
-    margin-top: 40px;
-    color:antiquewhite  
-}
-
-#login {
-    width: 120px; /* confirm font stuff */
-    font-size: 25px;
-    margin-top: 10px;
-    color: antiquewhite 
+.button {
+  font-size: 16px;
+  color: #f2edd7;
+  margin: 5px;
 }
 </style>
