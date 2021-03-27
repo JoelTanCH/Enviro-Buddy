@@ -1,14 +1,33 @@
 <template>
   <div>
     <b-form-input
-      v-on:input="search_text()"
+      v-on:keyup.enter="search_text()"
       v-model="search.text"
       type="text"
       placeholder="Search by Name"
     ></b-form-input>
-    <div id="items">
+
+    <div class="items" v-show="search.text == ''">
       <ul>
         <li v-for="item in itemList" v-bind:key="item.name">
+          <h2>{{ item.name }}</h2>
+          <img v-bind:src="item.img" />
+          <p>$ {{ item.price }}</p>
+          <hr />
+          <b-button
+            v-bind:itemid="item.id"
+            v-bind:collectionName="collectionName"
+            v-on:click="route($event)"
+          >
+            Details
+          </b-button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="items" v-show="search.text != ''">
+      <ul>
+        <li v-for="item in searchList" v-bind:key="item.name">
           <h2>{{ item.name }}</h2>
           <img v-bind:src="item.img" />
           <p>$ {{ item.price }}</p>
@@ -33,6 +52,8 @@ export default {
   data() {
     return {
       itemList: [],
+      searchList: [], //list of matching items based on doc id in searchItemID
+      searchItemID: [], //list of doc ids
       collectionName: "",
       search: {
         text: "",
@@ -41,7 +62,7 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      this.collectionName = "mkt-listing-"+this.$route.name;
+      this.collectionName = "mkt-listing-" + this.$route.name;
       this.collectionName = this.collectionName.toLowerCase();
       database
         .collection(this.collectionName)
@@ -65,10 +86,41 @@ export default {
       });
     },
     search_text: function () {
+      //reset searchlist
+      this.searchList = [];
+
+      // console.log(this.search.text);
+      // console.log(this.collectionName);
+      // var searchText = this.search.text.toLowerCase();
       var searchText = this.search.text.toLowerCase();
-      var categoryRef = database.collection(this.collectionName);
-      var query = categoryRef.where("name", "==", searchText);
-      console.log(query);
+      var collection = database.collection(this.collectionName);
+
+      collection.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          var itemName = doc.data().name.toLowerCase();
+          // console.log(itemName);
+          if (itemName.includes(searchText)) { //need to change includes function 
+            // console.log(doc.id);
+            this.searchItemID.push(doc.id);
+          }
+        });
+      });
+
+      for (var i = 0; i < this.searchItemID.length; i++) {
+        var id = this.searchItemID[i];
+        console.log("id:", id);
+
+        collection
+          .doc(id)
+          .get()
+          .then((item) => {
+            this.searchList.push(item.data());
+            // console.log(item.data());
+          });
+      }
+
+      //reset the searchItemID array
+      this.searchItemID = [];
     },
   },
   created: function () {
@@ -78,7 +130,7 @@ export default {
 </script>
 
 <style scoped>
-#items {
+.items {
   width: 100%;
   margin: 30px auto;
   padding: 0 5px;
