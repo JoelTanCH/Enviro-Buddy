@@ -36,9 +36,10 @@
             <!-- include check for password here -->
             <b-form-input
               class="inputField"
-              type="text"
+              type="password"
               placeholder="Confirm Password"
               required
+              v-model='confirmPassword'
             >
             </b-form-input>
           </b-form>
@@ -64,6 +65,8 @@ export default {
       username:"",
       email: "",
       password: "",
+      confirmPassword: "",
+      usernameTaken: false,
       logoURL:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYToeTlE4lcmsSPc7e18gnrH9xnf3HGCrGOl9qOP4ez8ziM2-ROBNAc-T6cESI7V_btc&usqp=CAU",
     };
@@ -72,27 +75,41 @@ export default {
     routeLogin: function () {
       this.$router.push({ path: "/login" });
     },
-    createUser: function() {
-      if (this.username == "") {
+
+    createUser: function() {   
+      if (this.password != this.confirmPassword) {
+        alert("Passwords do not match");
+      } else if (this.username == "") {
         alert("Invalid username");
       } else {
-        database.collection("users").doc(this.username).get().then(querySnapshot => {
-          if (querySnapshot.exists) {
-            alert("This username has been taken")
+        database.collection("users").get().then(querySnapshot => {
+          querySnapshot.docs.forEach(doc => {
+          var data = doc.data();
+            if (data.username == this.username) {
+              this.usernameTaken = true;
+            }
+          })
+        }).then(() => {
+          if (this.usernameTaken) {
+            alert("This username has been taken");
+            this.usernameTaken = false;
           } else {
-            firebase.default.auth().createUserWithEmailAndPassword(this.email.trim(), this.password.trim())
-            .then(() => firebase.default.auth().currentUser.sendEmailVerification())
-            .then(() => database.collection("users").doc(this.username).set({
-              email: this.email.trim(),
-              password: this.password.trim()}))
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+            .then(() => firebase.auth().currentUser.sendEmailVerification())
+            .then(() => database.collection("users").doc(this.email).set({
+              username: this.username,
+              password: this.password }))
             .then(() => {
               this.username = "";
               this.email = "";
-              this.password = ""; })
+              this.password = "";
+              this.confirmPassword = ""; 
+              this.usernameTaken = false
+              location.reload()})        
             .catch(err => alert(err.message))
           }
         })
-      }
+      }  
     },
   },
 };
