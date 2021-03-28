@@ -29,7 +29,7 @@
           </b-form>
 
           <b-button class="button" v-on:click="userLogin"> Log In </b-button><br /><br />
-          <b-button variant="text" class="textButton">
+          <b-button variant="text" class="textButton" v-on:click="routeForgotPw">
             Forgot Password? </b-button
           ><br />
           <span>Don't have an account?</span>
@@ -58,6 +58,9 @@ export default {
     routeSignUp: function () {
       this.$router.push({ path: "/sign-up" });
     },
+    routeForgotPw: function () {
+      this.$router.push({path: "/forgot-password"})
+    },
     userLogin: function () {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(() => {
@@ -68,7 +71,7 @@ export default {
         } else {
           alert("Email is not verified")
         }
-      }).catch(() => alert("Invalid username/password"))
+      }).catch(() => alert("Invalid email/password"))
     },
   },
 };
