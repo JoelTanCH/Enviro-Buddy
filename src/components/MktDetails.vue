@@ -10,6 +10,7 @@
           <h3>$ {{ details.price }}</h3>
           <p>{{ details.description }}</p>
           <br /><br />
+          <qty-counter></qty-counter>
           <b-button class='button'>Add to Cart</b-button>
           <b-button class='button'>View Cart</b-button>
         </b-col>
@@ -20,12 +21,16 @@
 
 <script>
 import database from "../firebase.js";
+import QtyCounter from "./QtyCounter.vue";
 
 export default {
   data() {
     return {
       details: {},
     };
+  },
+  components: {
+    qtyCounter: QtyCounter,
   },
   methods: {
     fetchItems: function () {
