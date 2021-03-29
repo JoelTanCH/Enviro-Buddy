@@ -10,6 +10,7 @@ import EventDetails from './components/EventDetails.vue'
 import RootPage from './components/RootPage.vue'
 import SignUpPage from './components/SignUpPage.vue'
 import LoginPage from './components/LoginPage.vue'
+import ForgotPassword from './components/ForgotPassword.vue'
 
 
 export default [
@@ -37,4 +38,5 @@ export default [
     // { path: '/root', component: RootPage, name: 'root-page' },
     { path: '/sign-up', component: SignUpPage, name: 'sign-up' },
     { path: '/login', component: LoginPage, name: 'login' },
+    { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'}
 ]
