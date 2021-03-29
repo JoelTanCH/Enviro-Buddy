@@ -7,6 +7,7 @@
       >
         <h2>{{ category.name }}</h2>
         <img v-bind:src="category.img" />
+        <p>insert text here</p>
         <hr> 
         <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
           Browse All
