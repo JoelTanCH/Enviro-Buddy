@@ -7,14 +7,14 @@
       placeholder="Search by Name"
     ></b-form-input>
 
-    <div class="items" v-show="search.text == ''">
+    <div v-show="search.text == ''">
       <ul>
         <li v-for="item in itemList" v-bind:key="item.name">
-          <h2>{{ item.name|truncateName }}</h2>
-          <h7>{{ item.description|truncate }}</h7><br>
+          <div id="itemName">{{ item.name | truncateName }}</div>
           <img v-bind:src="item.img" />
-          <p>$ {{ item.price }}</p>
-          <hr />
+          <div id="price">$ {{ item.price }}</div>
+          <div>{{ item.description | truncate }}</div>
+          <br />
           <b-button
             v-bind:itemid="item.id"
             v-bind:collectionName="collectionName"
@@ -27,9 +27,13 @@
       </ul>
     </div>
 
-    <div class="items" v-show="search.text != ''">
-      <div v-show="this.searchList.length > 0">{{ this.searchList.length }} item(s) found</div>
-      <div v-show="this.searchList.length == 0">No matching results.<br>Try another search?</div>
+    <div v-show="search.text != ''">
+      <div v-show="this.searchList.length > 0">
+        {{ this.searchList.length }} item(s) found
+      </div>
+      <div v-show="this.searchList.length == 0">
+        No matching results.<br />Try another search?
+      </div>
       <ul>
         <li v-for="item in searchList" v-bind:key="item.name">
           <h2>{{ item.name }}</h2>
@@ -56,7 +60,7 @@ export default {
   data() {
     return {
       itemList: [],
-      searchList: [], 
+      searchList: [],
       collectionName: "",
       subCollectionName: "",
       search: {
@@ -65,25 +69,26 @@ export default {
     };
   },
   filters: {
-    truncate: function(value) {
+    truncate: function (value) {
       if (value.length > 75) {
-        value = value.substring(0, 72) + '...';
+        value = value.substring(0, 72) + "...";
       }
       return value;
     },
-    truncateName: function(value) {
+    truncateName: function (value) {
       if (value.length > 30) {
-        value = value.substring(0, 27) + '...';
+        value = value.substring(0, 27) + "...";
       }
       return value;
-    }
+    },
   },
   methods: {
     fetchItems: function () {
       this.collectionName = "mkt-categories";
       this.subCollectionName = this.$route.name.toLowerCase();
-      
-      database.collection(this.collectionName)
+
+      database
+        .collection(this.collectionName)
         .doc(this.subCollectionName)
         .collection("items")
         .get()
@@ -94,7 +99,7 @@ export default {
             item.id = doc.id;
             this.itemList.push(item);
           });
-        })
+        });
     },
 
     route: function (event) {
@@ -126,13 +131,6 @@ export default {
 </script>
 
 <style scoped>
-.items {
-  width: 100%;
-  margin: 30px auto;
-  padding: 0 5px;
-  box-sizing: border-box;
-  color: #393232;
-}
 ul {
   display: flex;
   flex-wrap: wrap;
@@ -140,15 +138,26 @@ ul {
   padding: 0;
 }
 li {
-  flex-grow: 1;
-  flex-basis: 300px;
   text-align: center;
-  padding: 10px;
+  padding: 1%;
   border: 1px solid #e48257;
-  margin: 8px;
+  margin: 1%;
+  width: 31.3%;
 }
 img {
   height: 200px;
+  overflow: hidden;
+}
+#price {
+  color: #3a6351;
+  font-weight: bold;
+  font-size: 20px;
+}
+#itemName {
+  color: #393232;
+  font-weight: bold;
+  font-size: 32px;
+  max-height: 50px;
   overflow: hidden;
 }
 </style>
