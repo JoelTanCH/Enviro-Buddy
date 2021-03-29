@@ -124,6 +124,7 @@ export default {
       if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == null){
         alert("please fill in required details")
       } else{
+
       alert('start')
       //var storageRef = firebase.storage().ref();
       //var marketplaceref = storageRef.child()
@@ -139,6 +140,7 @@ export default {
       //get the unique identifier from the storage -> pass it into this.item.img
       alert(collectionName)
       alert(subCollectionName)
+
       database.collection(collectionName).doc(subCollectionName).collection("items").add(this.item);
 
       alert(this.item.name + " saved to database");
