@@ -83,6 +83,7 @@
 
 <script>
 import database from "../firebase.js";
+import firebase from "firebase/app";
 
 export default {
   data() {
@@ -103,16 +104,42 @@ export default {
     };
   },
   methods: {
+    blob:function(){
+    var storage = firebase.app().storage("gs://enviro-buddy.appspot.com/")
+    alert("blob starting")
+    var blobImg = document.getElementById('uploadedImg').src //blob
+    alert('blobimg done')
+    var storageRef = storage.ref()
+    console.log(storageRef)
+    //var storageRef = database.storage().ref()
+    alert("blob storageRef done")
+    var marketplacestorage = storageRef.child('marketplace')
+    alert("marketplacestorage done")
+    var uploadTask = marketplacestorage.child(this.category).put(blobImg)
+    alert("blob uploadtask done")
+    this.item.img = uploadTask.snapshot.ref.getDownloadURL() 
+    alert(this.item.img)
+      },
     addItem: function () {
       if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == null){
         alert("please fill in required details")
       } else{
-      this.item.img = document.getElementById('uploadedImg').src
-      var collectionName = "mkt-listing-" + this.category;
-      collectionName = collectionName.toLowerCase();
+      alert('start')
+      //var storageRef = firebase.storage().ref();
+      //var marketplaceref = storageRef.child()
+      //store the blob img into storage
+      this.blob()
+      alert("blob done")
+      var collectionName = "mkt-categories"; 
+      var subCollectionName = this.category.toLowerCase()
       console.log(collectionName);
       console.log(document.getElementById('uploadedImg').src)
-      database.collection(collectionName).add(this.item);
+      
+      //this.item.img = document.getElementById('uploadedImg').src
+      //get the unique identifier from the storage -> pass it into this.item.img
+      alert(collectionName)
+      alert(subCollectionName)
+      database.collection(collectionName).doc(subCollectionName).collection("items").add(this.item);
 
       alert(this.item.name + " saved to database");
 
@@ -120,9 +147,8 @@ export default {
       this.item.name = "";
       this.item.category = "";
       }
-    },
-  },
-};
+    }
+  }}
 </script>
 
 <style scoped>

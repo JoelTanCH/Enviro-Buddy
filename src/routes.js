@@ -35,7 +35,7 @@ export default [
     { path: '/info-category', component: InfoCategory },
     { path: '/eve-listing', component: EventListing, name: 'eve-listing', props: true },
     { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true },
-    // { path: '/root', component: RootPage, name: 'root-page' },
+    { path: '/root', component: RootPage, name: 'root-page' },
     { path: '/sign-up', component: SignUpPage, name: 'sign-up' },
     { path: '/login', component: LoginPage, name: 'login' },
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'}
