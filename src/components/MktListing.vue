@@ -53,8 +53,7 @@ export default {
   data() {
     return {
       itemList: [],
-      searchList: [], //list of matching items based on doc id in searchItemID
-      searchItemID: [], //list of doc ids
+      searchList: [], 
       collectionName: "",
       subCollectionName: "",
       search: {
@@ -66,8 +65,6 @@ export default {
     fetchItems: function () {
       this.collectionName = "mkt-categories";
       this.subCollectionName = this.$route.name.toLowerCase();
-      // console.log(this.collectionName);
-      // console.log(this.subCollectionName);
       
       database.collection(this.collectionName)
         .doc(this.subCollectionName)
@@ -81,20 +78,6 @@ export default {
             this.itemList.push(item);
           });
         })
-
-      // database
-      //   .collection(this.collectionName)
-      //   .doc(this.subCollectionName)
-      //   .collection('items')
-      //   .get()
-      //   .then((querySnapShot) => {
-      //     let item = {};
-      //     querySnapShot.forEach((doc) => {
-      //       item = doc.data();
-      //       item.id = doc.id;
-      //       this.itemList.push(item);
-      //     });
-      //   });
     },
     route: function (event) {
       this.$router.push({
@@ -109,40 +92,13 @@ export default {
     search_text: function () {
       //reset searchlist
       this.searchList = [];
-
-      // console.log(this.search.text);
-      // console.log(this.collectionName);
-      // var searchText = this.search.text.toLowerCase();
       var searchText = this.search.text.toLowerCase();
-      var collection = database.collection(this.collectionName);
 
-      collection.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-          var itemName = doc.data().name.toLowerCase();
-          // console.log(itemName);
-          if (itemName.includes(searchText)) {
-            //need to change includes function
-            // console.log(doc.id);
-            this.searchItemID.push(doc.id);
-          }
-        });
-      });
-
-      for (var i = 0; i < this.searchItemID.length; i++) {
-        var id = this.searchItemID[i];
-        console.log("id:", id);
-
-        collection
-          .doc(id)
-          .get()
-          .then((item) => {
-            this.searchList.push(item.data());
-            // console.log(item.data());
-          });
+      for (var item of this.itemList) {
+        if (item.name.toLowerCase().includes(searchText)) {
+          this.searchList.push(item);
+        }
       }
-
-      //reset the searchItemID array
-      this.searchItemID = [];
     },
   },
   created: function () {
