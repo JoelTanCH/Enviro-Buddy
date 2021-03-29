@@ -107,12 +107,9 @@ export default {
       if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == null){
         alert("please fill in required details")
       } else{
-      this.item.img = document.getElementById('uploadedImg').src
-      var collectionName = "mkt-listing-" + this.category;
-      collectionName = collectionName.toLowerCase();
-      console.log(collectionName);
-      console.log(document.getElementById('uploadedImg').src)
-      database.collection(collectionName).add(this.item);
+      var collectionName = "mkt-categories";
+      var subCollectionName = this.category.toLowerCase();
+      database.collection(collectionName).doc(subCollectionName).collection("items").add(this.item);
 
       alert(this.item.name + " saved to database");
 

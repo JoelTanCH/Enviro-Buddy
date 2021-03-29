@@ -17,6 +17,7 @@
           <b-button
             v-bind:itemid="item.id"
             v-bind:collectionName="collectionName"
+            v-bind:subCollectionName="subCollectionName"
             v-on:click="route($event)"
           >
             Details
@@ -55,6 +56,7 @@ export default {
       searchList: [], //list of matching items based on doc id in searchItemID
       searchItemID: [], //list of doc ids
       collectionName: "",
+      subCollectionName: "",
       search: {
         text: "",
       },
@@ -62,10 +64,14 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      this.collectionName = "mkt-listing-" + this.$route.name;
-      this.collectionName = this.collectionName.toLowerCase();
-      database
-        .collection(this.collectionName)
+      this.collectionName = "mkt-categories";
+      this.subCollectionName = this.$route.name.toLowerCase();
+      // console.log(this.collectionName);
+      // console.log(this.subCollectionName);
+      
+      database.collection(this.collectionName)
+        .doc(this.subCollectionName)
+        .collection("items")
         .get()
         .then((querySnapShot) => {
           let item = {};
@@ -74,7 +80,21 @@ export default {
             item.id = doc.id;
             this.itemList.push(item);
           });
-        });
+        })
+
+      // database
+      //   .collection(this.collectionName)
+      //   .doc(this.subCollectionName)
+      //   .collection('items')
+      //   .get()
+      //   .then((querySnapShot) => {
+      //     let item = {};
+      //     querySnapShot.forEach((doc) => {
+      //       item = doc.data();
+      //       item.id = doc.id;
+      //       this.itemList.push(item);
+      //     });
+      //   });
     },
     route: function (event) {
       this.$router.push({
@@ -82,6 +102,7 @@ export default {
         params: {
           itemid: event.target.getAttribute("itemid"),
           collectionName: event.target.getAttribute("collectionName"),
+          subCollectionName: event.target.getAttribute("subCollectionName"),
         },
       });
     },

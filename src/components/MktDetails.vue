@@ -30,10 +30,16 @@ export default {
   methods: {
     fetchItems: function () {
       var itemid = this.$route.params.itemid;
+      // console.log(itemid);
       var collectionName = this.$route.params.collectionName;
+      // console.log(collectionName);
+      var subCollectionName = this.$route.params.subCollectionName;
+      // console.log(subCollectionName);
 
       database
         .collection(collectionName)
+        .doc(subCollectionName)
+        .collection("items")
         .doc(itemid)
         .get()
         .then((snapshot) => (this.details = snapshot.data()));
