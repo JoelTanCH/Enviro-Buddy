@@ -76,6 +76,10 @@ export default {
       this.$router.push({ path: "/login" });
     },
 
+    routeRegister: function() {
+      this.$router.push({path: '/confirm-signup'})
+    },
+
     createUser: function() {   
       if (this.password != this.confirmPassword) {
         alert("Passwords do not match");
@@ -103,8 +107,8 @@ export default {
               this.email = "";
               this.password = "";
               this.confirmPassword = ""; 
-              this.usernameTaken = false
-              location.reload()})        
+              this.usernameTaken = false;
+              this.routeRegister();})        
             .catch(err => alert(err.message))
           }
         })
