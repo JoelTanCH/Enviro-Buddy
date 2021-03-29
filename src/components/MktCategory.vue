@@ -2,9 +2,8 @@
   <div id="categoryList">
     <ul>
       <li v-for="category in categoryList" v-bind:key="category.name">
-        <h2>{{ category.name }}</h2>
-        <img v-bind:src="category.img" />
-        <hr />
+        <div id="categoryName">{{ category.name }}</div>
+        <img v-bind:src="category.img" /><br><br>
         <b-button
           v-bind:categoryName="category.name"
           v-on:click="$router.push('mkt-listing/' + category.name.toLowerCase())"
@@ -61,15 +60,21 @@ ul {
   padding: 0;
 }
 li {
-  flex-grow: 1;
-  flex-basis: 300px;
   text-align: center;
-  padding: 10px;
+  padding: 1%;
   border: 1px solid #e48257;
-  margin: 8px;
+  margin: 1%;
+  width: 23%;
 }
 img {
   height: 200px;
+  overflow: hidden;
+}
+#categoryName {
+  color: #393232;
+  font-weight: bold;
+  font-size: 32px;
+  max-height: 50px;
   overflow: hidden;
 }
 </style>
