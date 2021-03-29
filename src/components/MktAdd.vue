@@ -115,21 +115,21 @@ export default {
       alert(this.item.img);
     },
     addItem: function () {
-      // alert("start");
-      // //var storageRef = firebase.storage().ref();
-      // //var marketplaceref = storageRef.child()
-      // //store the blob img into storage
-      // this.blob();
-      // alert("blob done");
+      alert("start");
+      //var storageRef = firebase.storage().ref();
+      //var marketplaceref = storageRef.child()
+      //store the blob img into storage
+      this.blob();
+      alert("blob done");
       var collectionName = "mkt-categories";
       var subCollectionName = this.category.toLowerCase();
       console.log(subCollectionName);
-      // console.log(document.getElementById("uploadedImg").src);
+      console.log(document.getElementById("uploadedImg").src);
 
-      // //this.item.img = document.getElementById('uploadedImg').src
-      // //get the unique identifier from the storage -> pass it into this.item.img
-      // alert(collectionName);
-      // alert(subCollectionName);
+      //this.item.img = document.getElementById('uploadedImg').src
+      //get the unique identifier from the storage -> pass it into this.item.img
+      alert(collectionName);
+      alert(subCollectionName);
 
       database
         .collection(collectionName)
