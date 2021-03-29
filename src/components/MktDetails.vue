@@ -8,7 +8,7 @@
         <b-col>
           <h2>{{ item.name }}</h2>
           <h3>$ {{ item.price }}</h3>
-          <p>{{ item.description }}</p>
+          <p id="description">{{ item.description }}</p>
           <br /><br />
           <qty-counter v-on:counter="updateCounter"></qty-counter>
           <b-button class="button" v-on:click="sendOrder(item)"
@@ -75,7 +75,7 @@ export default {
         //reset counter
         this.counter = 0;
       } else {
-        alert("Quantity cannot be 0. Please try again.")
+        alert("Quantity cannot be 0. Please try again.");
       }
     },
   },
@@ -93,5 +93,9 @@ img {
 }
 .button {
   margin: 10px;
+}
+#description {
+  text-align: justify;
+  text-justify: inter-word;
 }
 </style>
