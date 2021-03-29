@@ -10,7 +10,8 @@
     <div class="items" v-show="search.text == ''">
       <ul>
         <li v-for="item in itemList" v-bind:key="item.name">
-          <h2>{{ item.name }}</h2>
+          <h2>{{ item.name|truncateName }}</h2>
+          <h7>{{ item.description|truncate }}</h7><br>
           <img v-bind:src="item.img" />
           <p>$ {{ item.price }}</p>
           <hr />
@@ -62,6 +63,20 @@ export default {
       },
     };
   },
+  filters: {
+    truncate: function(value) {
+      if (value.length > 75) {
+        value = value.substring(0, 72) + '...';
+      }
+      return value;
+    },
+    truncateName: function(value) {
+      if (value.length > 30) {
+        value = value.substring(0, 27) + '...';
+      }
+      return value;
+    }
+  },
   methods: {
     fetchItems: function () {
       this.collectionName = "mkt-categories";
@@ -96,6 +111,7 @@ export default {
       //     });
       //   });
     },
+
     route: function (event) {
       this.$router.push({
         name: "mkt-details",
