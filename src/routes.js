@@ -11,6 +11,7 @@ import RootPage from './components/RootPage.vue'
 import SignUpPage from './components/SignUpPage.vue'
 import LoginPage from './components/LoginPage.vue'
 import ForgotPassword from './components/ForgotPassword.vue'
+import ConfirmSignUp from './components/ConfirmSignUp.vue'
 
 
 export default [
@@ -35,8 +36,9 @@ export default [
     { path: '/info-category', component: InfoCategory },
     { path: '/eve-listing', component: EventListing, name: 'eve-listing', props: true },
     { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true },
-    // { path: '/root', component: RootPage, name: 'root-page' },
+    { path: '/root', component: RootPage, name: 'root-page' },
     { path: '/sign-up', component: SignUpPage, name: 'sign-up' },
     { path: '/login', component: LoginPage, name: 'login' },
-    { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'}
+    { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'},
+    { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'}
 ]
