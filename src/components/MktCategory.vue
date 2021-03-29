@@ -1,14 +1,14 @@
 <template>
   <div id="categoryList">
     <ul>
-      <li
-        v-for="category in categoryList"
-        v-bind:key="category.name"
-      >
+      <li v-for="category in categoryList" v-bind:key="category.name">
         <h2>{{ category.name }}</h2>
         <img v-bind:src="category.img" />
-        <hr> 
-        <b-button v-bind:categoryName="category.name" @click="$router.push('/'+category.name.toLowerCase())">
+        <hr />
+        <b-button
+          v-bind:categoryName="category.name"
+          v-on:click="$router.push('mkt-listing/' + category.name.toLowerCase())"
+        >
           Browse All
         </b-button>
       </li>
@@ -39,12 +39,6 @@ export default {
           });
         });
     },
-    //route: function (event) {
-      //this.$router.push({
-        //name: "mkt-listing",
-        //params: { categoryName: event.target.getAttribute("categoryName") },
-      //});
-    //},
   },
   created() {
     this.fetchItems();

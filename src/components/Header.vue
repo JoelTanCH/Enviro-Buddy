@@ -1,8 +1,7 @@
 <template>
   <div>
-    <!-- <h1>Enviro Buddy</h1> -->
     <b-navbar toggleable="lg" type="dark" class="navbar-custom">
-      <b-navbar-brand href="/mkt-category">Enviro Buddy</b-navbar-brand>
+      <b-navbar-brand href="/mkt-category" id="brand">Enviro Buddy</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -33,6 +32,9 @@ export default {
 </script>
 
 <style scoped>
+#brand {
+  margin: 10px;
+}
 .navbar-custom {
   /* background color of navbar */
   background: #3a6351;
