@@ -28,6 +28,8 @@
     </div>
 
     <div class="items" v-show="search.text != ''">
+      <div v-show="this.searchList.length > 0">{{ this.searchList.length }} item(s) found</div>
+      <div v-show="this.searchList.length == 0">No matching results.<br>Try another search?</div>
       <ul>
         <li v-for="item in searchList" v-bind:key="item.name">
           <h2>{{ item.name }}</h2>
