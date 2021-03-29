@@ -10,8 +10,8 @@
           <h3>$ {{ details.price }}</h3>
           <p>{{ details.description }}</p>
           <br /><br />
-          <b-button>Add to Cart</b-button>
-          <b-button>View Cart</b-button>
+          <b-button class='button'>Add to Cart</b-button>
+          <b-button class='button'>View Cart</b-button>
         </b-col>
       </b-row>
     </b-container>
@@ -47,7 +47,11 @@ export default {
 
 <style scoped>
 img {
-  height: 500px;
-  overflow: hidden;
+  width: 300px;
+  height: 90%;  
+  object-fit: contain;
+}
+.button {
+  margin: 10px;
 }
 </style>

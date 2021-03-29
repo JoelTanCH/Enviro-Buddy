@@ -99,7 +99,8 @@ export default {
         snapshot.forEach((doc) => {
           var itemName = doc.data().name.toLowerCase();
           // console.log(itemName);
-          if (itemName.includes(searchText)) { //need to change includes function 
+          if (itemName.includes(searchText)) {
+            //need to change includes function
             // console.log(doc.id);
             this.searchItemID.push(doc.id);
           }
