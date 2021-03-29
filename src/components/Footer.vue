@@ -27,6 +27,10 @@ footer {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   height: 40px;
   vertical-align: middle;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 p {
   align-content: center;
