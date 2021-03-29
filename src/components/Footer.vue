@@ -20,8 +20,6 @@ export default {
 footer {
   background: #3a6351;
   padding: 5px;
-  border-style: solid;
-  border-color: #393232;
   border-width: 2px;
   text-align: center;
   font-family: Avenir, Helvetica, Arial, sans-serif;
