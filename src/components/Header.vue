@@ -38,5 +38,9 @@ export default {
 .navbar-custom {
   /* background color of navbar */
   background: #3a6351;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
 }
 </style>
