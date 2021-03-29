@@ -18,7 +18,7 @@ Vue.config.productionTip = false
 
 const myRouter = new VueRouter({
     routes: Routescomp,
-    mode: 'history'
+    mode: 'history',
 })
 
 new Vue({
