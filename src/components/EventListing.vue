@@ -3,10 +3,11 @@
     <ul>
       <li v-for="item in itemList" v-bind:key="item.name">
         <h2>{{ item.name }}</h2>
-        <img v-bind:src="item.img" />
+        <img v-bind:src="item.img" /> 
+        <p id = "description">{{ item.description }}</p>
         <hr />
         <b-button v-bind:itemid="item.id" v-bind:collectionName="collectionName" v-on:click="route($event)">
-          Details
+          Sign Up
         </b-button>
       </li>
     </ul>
@@ -24,6 +25,7 @@ export default {
     };
   },
   methods: {
+
     fetchItems: function () {
       this.collectionName = "eve-listing-" + this.$route.params.categoryName;
       this.collectionName = this.collectionName.toLowerCase();
@@ -77,5 +79,9 @@ li {
 img {
   height: 200px;
   overflow: hidden;
+  position:center;
+}
+#description{
+text-align: center;
 }
 </style>
