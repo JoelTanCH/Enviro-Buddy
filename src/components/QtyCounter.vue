@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-button class="button" v-on:click=decrement()>-</b-button>
-        <span>{{ qty }}</span>
+        <span>{{ counter }}</span>
         <b-button class="button" v-on:click=increment()>+</b-button>        
     </div>
 </template>
@@ -10,18 +10,20 @@
 export default {
     data() {
         return {
-            qty: 0,
+            counter: 0,
         }
     },
     methods: {
         increment: function() {
-            this.qty += 1;
+            this.counter += 1;
+            this.$emit('counter', this.counter);
         },
         decrement: function() {
             this.qty -= 1;
-            if (this.qty < 0) {
-                this.qty = 0;
+            if (this.counter < 0) {
+                this.counter = 0;
             }
+            this.$emit('counter', this.counter);
         }
     }
 }
