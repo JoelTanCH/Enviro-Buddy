@@ -3,13 +3,13 @@
     <b-container>
       <b-row>
         <b-col>
-          <img id="uploadedImg" alt="Your image"/>
+          <img id="uploadedImg" alt="Your image" />
         </b-col>
 
         <b-col>
           <h1>Add Listing</h1>
 
-          <b-form>
+          <b-form v-on:submit="addItem">
             <b-form-group
               id="item-name"
               label="Item Name"
@@ -68,11 +68,10 @@
             <!-- ask users to upload image file -->
             <input
               type="file"
-              onchange="document.getElementById('uploadedImg').src = window.URL.createObjectURL(this.files[0])"  
+              onchange="document.getElementById('uploadedImg').src = window.URL.createObjectURL(this.files[0])"
+              required
             />
-            <b-button type="submit" variant="secondary" v-on:click="addItem"
-              >Submit</b-button
-            >
+            <b-button type="submit" variant="secondary">Submit</b-button>
           </b-form>
         </b-col>
       </b-row>
@@ -92,70 +91,72 @@ export default {
         name: "",
         price: 0,
         description: "",
-        img: "", //images url 
+        img: "", //images url
       },
       category: null,
-      marketplaceCategories: [
-        "Fashion",
-        "Decor",
-        "Furniture",
-        "Jewellery",
-      ],
+      marketplaceCategories: ["Fashion", "Decor", "Furniture", "Jewellery"],
     };
   },
   methods: {
-    blob:function(){
-    var storage = firebase.app().storage("gs://enviro-buddy.appspot.com/")
-    alert("blob starting")
-    var blobImg = document.getElementById('uploadedImg').src //blob
-    alert('blobimg done')
-    var storageRef = storage.ref()
-    console.log(storageRef)
-    //var storageRef = database.storage().ref()
-    alert("blob storageRef done")
-    var marketplacestorage = storageRef.child('marketplace')
-    alert("marketplacestorage done")
-    var uploadTask = marketplacestorage.child(this.category).put(blobImg)
-    alert("blob uploadtask done")
-    this.item.img = uploadTask.snapshot.ref.getDownloadURL() 
-    alert(this.item.img)
-      },
+    blob: function () {
+      var storage = firebase.app().storage("gs://enviro-buddy.appspot.com/");
+      alert("blob starting");
+      var blobImg = document.getElementById("uploadedImg").src; //blob
+      alert("blobimg done");
+      var storageRef = storage.ref();
+      console.log(storageRef);
+      //var storageRef = database.storage().ref()
+      alert("blob storageRef done");
+      var marketplacestorage = storageRef.child("marketplace");
+      alert("marketplacestorage done");
+      var uploadTask = marketplacestorage.child(this.category).put(blobImg);
+      alert("blob uploadtask done");
+      this.item.img = uploadTask.snapshot.ref.getDownloadURL();
+      alert(this.item.img);
+    },
     addItem: function () {
-      if(this.item.name.length == 0 || this.item.price == 0 || this.item.description == 0 || this.category.length == null){
-        alert("please fill in required details")
-      } else{
+      // alert("start");
+      // //var storageRef = firebase.storage().ref();
+      // //var marketplaceref = storageRef.child()
+      // //store the blob img into storage
+      // this.blob();
+      // alert("blob done");
+      var collectionName = "mkt-categories";
+      var subCollectionName = this.category.toLowerCase();
+      console.log(subCollectionName);
+      // console.log(document.getElementById("uploadedImg").src);
 
-      alert('start')
-      //var storageRef = firebase.storage().ref();
-      //var marketplaceref = storageRef.child()
-      //store the blob img into storage
-      this.blob()
-      alert("blob done")
-      var collectionName = "mkt-categories"; 
-      var subCollectionName = this.category.toLowerCase()
-      console.log(collectionName);
-      console.log(document.getElementById('uploadedImg').src)
-      
-      //this.item.img = document.getElementById('uploadedImg').src
-      //get the unique identifier from the storage -> pass it into this.item.img
-      alert(collectionName)
-      alert(subCollectionName)
+      // //this.item.img = document.getElementById('uploadedImg').src
+      // //get the unique identifier from the storage -> pass it into this.item.img
+      // alert(collectionName);
+      // alert(subCollectionName);
 
-      database.collection(collectionName).doc(subCollectionName).collection("items").add(this.item);
+      database
+        .collection(collectionName)
+        .doc(subCollectionName)
+        .collection("items")
+        .add(this.item);
 
       alert(this.item.name + " saved to database");
 
-      //reset to empty string
+      //store path to redirect users to respective categories to view their new lisitng
+      var newPath = "mkt-listing/" + subCollectionName;
+
+      //reset
       this.item.name = "";
-      this.item.category = "";
-      }
-    }
-  }}
+      this.item.price = 0;
+      this.item.description = "";
+      this.category = "";
+
+      this.$router.push({ path: newPath });
+    },
+  },
+};
 </script>
 
 <style scoped>
 img {
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 </style>
