@@ -11,6 +11,7 @@
           <p>{{ item.description }}</p>
           <br /><br />
           <qty-counter v-on:counter="updateCounter"></qty-counter>
+
           <b-button class="button" v-b-modal.modalItem v-on:click="sendOrder(item)">Add to Cart</b-button>
           <b-modal id="modalItem" @show="onShow" ok-only>
             <template #modal-header={}>
@@ -25,6 +26,7 @@
             </template>
           </b-modal>
           <b-button class="button">View Cart</b-button>
+
         </b-col>
       </b-row>
     </b-container>
