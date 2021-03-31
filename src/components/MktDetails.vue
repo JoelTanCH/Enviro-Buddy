@@ -14,7 +14,7 @@
           <b-button class="button" v-on:click="sendOrder(item)"
             >Add to Cart</b-button
           >
-          <b-button class="button">View Cart</b-button>
+          <b-button class="button" href="../mkt-cart">View Cart</b-button>
         </b-col>
       </b-row>
     </b-container>

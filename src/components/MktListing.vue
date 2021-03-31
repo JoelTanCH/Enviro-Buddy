@@ -101,7 +101,6 @@ export default {
           });
         });
     },
-
     route: function (event) {
       this.$router.push({
         name: "mkt-details",
