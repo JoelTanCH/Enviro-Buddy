@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <router-view></router-view>
+    <router-view id="main"></router-view>
     <app-footer></app-footer>
   </div>
 </template>
@@ -30,5 +30,11 @@ export default {
 }
 body {
   background-color: #f2edd7;
+}
+#main {
+  min-height: 400px;
+  margin-bottom: 100px;
+  margin-top: 100px;
+  clear: both;
 }
 </style>

@@ -3,6 +3,7 @@
     <b-container>
       <b-row>
         <b-col>
+
           <input
            type="file"
            style="display:none" 
@@ -11,6 +12,7 @@
            @change="onFilePicked" 
             > 
           <img id="imageURL" alt="Preview of Selected Image">
+
         </b-col>
         <!--Can delete this entire b-col. just code to view files from the database-->
         <b-col>
@@ -20,7 +22,7 @@
         <b-col>
           <h1>Add Listing</h1>
 
-          <b-form>
+          <b-form v-on:submit="addItem">
             <b-form-group
               id="item-name"
               label="Item Name"
@@ -77,10 +79,12 @@
             </b-form-group>
 
             <!-- ask users to upload image file -->
+
             <b-button @click="onPickFile">Choose Image</b-button>
             <b-button type="submit" variant="secondary" v-on:click="addItem"
               >Submit</b-button
             >
+
           </b-form>
         </b-col>
       </b-row>
@@ -108,6 +112,7 @@ export default {
     };
   },
   methods: {
+
     onPickFile(){
       this.$refs.fileInput.click();
     },
@@ -152,7 +157,19 @@ export default {
 
         alert(this.item.name + " saved to database")
  //       this.$refs.checker.click()
+ 
+      //store path to redirect users to respective categories to view their new lisitng
+      var newPath = "mkt-listing/" + subCollectionName;
+
+      //reset
+      this.item.name = "";
+      this.item.price = 0;
+      this.item.description = "";
+      this.category = "";
+
+      this.$router.push({ path: newPath });
       }
+
     },
   },
 };

@@ -7,13 +7,14 @@
       placeholder="Search by Name"
     ></b-form-input>
 
-    <div class="items" v-show="search.text == ''">
+    <div v-show="search.text == ''">
       <ul>
         <li v-for="item in itemList" v-bind:key="item.name">
-          <h2>{{ item.name }}</h2>
+          <div id="itemName">{{ item.name | truncateName }}</div>
           <img v-bind:src="item.img" />
-          <p>$ {{ item.price }}</p>
-          <hr />
+          <div id="price">$ {{ item.price }}</div>
+          <div>{{ item.description | truncate }}</div>
+          <br />
           <b-button
             v-bind:itemid="item.id"
             v-bind:collectionName="collectionName"
@@ -26,7 +27,13 @@
       </ul>
     </div>
 
-    <div class="items" v-show="search.text != ''">
+    <div v-show="search.text != ''">
+      <div v-show="this.searchList.length > 0">
+        {{ this.searchList.length }} item(s) found
+      </div>
+      <div v-show="this.searchList.length == 0">
+        No matching results.<br />Try another search?
+      </div>
       <ul>
         <li v-for="item in searchList" v-bind:key="item.name">
           <h2>{{ item.name }}</h2>
@@ -53,8 +60,7 @@ export default {
   data() {
     return {
       itemList: [],
-      searchList: [], //list of matching items based on doc id in searchItemID
-      searchItemID: [], //list of doc ids
+      searchList: [],
       collectionName: "",
       subCollectionName: "",
       search: {
@@ -62,14 +68,27 @@ export default {
       },
     };
   },
+  filters: {
+    truncate: function (value) {
+      if (value.length > 75) {
+        value = value.substring(0, 72) + "...";
+      }
+      return value;
+    },
+    truncateName: function (value) {
+      if (value.length > 30) {
+        value = value.substring(0, 27) + "...";
+      }
+      return value;
+    },
+  },
   methods: {
     fetchItems: function () {
       this.collectionName = "mkt-categories";
       this.subCollectionName = this.$route.name.toLowerCase();
-      // console.log(this.collectionName);
-      // console.log(this.subCollectionName);
-      
-      database.collection(this.collectionName)
+
+      database
+        .collection(this.collectionName)
         .doc(this.subCollectionName)
         .collection("items")
         .get()
@@ -80,22 +99,9 @@ export default {
             item.id = doc.id;
             this.itemList.push(item);
           });
-        })
-
-      // database
-      //   .collection(this.collectionName)
-      //   .doc(this.subCollectionName)
-      //   .collection('items')
-      //   .get()
-      //   .then((querySnapShot) => {
-      //     let item = {};
-      //     querySnapShot.forEach((doc) => {
-      //       item = doc.data();
-      //       item.id = doc.id;
-      //       this.itemList.push(item);
-      //     });
-      //   });
+        });
     },
+
     route: function (event) {
       this.$router.push({
         name: "mkt-details",
@@ -109,40 +115,13 @@ export default {
     search_text: function () {
       //reset searchlist
       this.searchList = [];
-
-      // console.log(this.search.text);
-      // console.log(this.collectionName);
-      // var searchText = this.search.text.toLowerCase();
       var searchText = this.search.text.toLowerCase();
-      var collection = database.collection(this.collectionName);
 
-      collection.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-          var itemName = doc.data().name.toLowerCase();
-          // console.log(itemName);
-          if (itemName.includes(searchText)) {
-            //need to change includes function
-            // console.log(doc.id);
-            this.searchItemID.push(doc.id);
-          }
-        });
-      });
-
-      for (var i = 0; i < this.searchItemID.length; i++) {
-        var id = this.searchItemID[i];
-        console.log("id:", id);
-
-        collection
-          .doc(id)
-          .get()
-          .then((item) => {
-            this.searchList.push(item.data());
-            // console.log(item.data());
-          });
+      for (var item of this.itemList) {
+        if (item.name.toLowerCase().includes(searchText)) {
+          this.searchList.push(item);
+        }
       }
-
-      //reset the searchItemID array
-      this.searchItemID = [];
     },
   },
   created: function () {
@@ -152,13 +131,6 @@ export default {
 </script>
 
 <style scoped>
-.items {
-  width: 100%;
-  margin: 30px auto;
-  padding: 0 5px;
-  box-sizing: border-box;
-  color: #393232;
-}
 ul {
   display: flex;
   flex-wrap: wrap;
@@ -166,15 +138,26 @@ ul {
   padding: 0;
 }
 li {
-  flex-grow: 1;
-  flex-basis: 300px;
   text-align: center;
-  padding: 10px;
+  padding: 1%;
   border: 1px solid #e48257;
-  margin: 8px;
+  margin: 1%;
+  width: 31.3%;
 }
 img {
   height: 200px;
+  overflow: hidden;
+}
+#price {
+  color: #3a6351;
+  font-weight: bold;
+  font-size: 20px;
+}
+#itemName {
+  color: #393232;
+  font-weight: bold;
+  font-size: 32px;
+  max-height: 50px;
   overflow: hidden;
 }
 </style>
