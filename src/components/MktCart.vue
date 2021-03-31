@@ -3,23 +3,59 @@
         <b-row>
             <b-col>
                 <b-container id = "leftContainer">
-                    Hello
+                    <table class = 'table table-bordered border border-dark'>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <div class = 'item'>
+                                            Giant Nature Wooden Night Light
+                                        </div>                                  
+                                        <img v-bind:src = "this.img"/>
+                                        <div class = 'item'>                                            
+                                            Quantity: 5   
+                                        </div>
+                                        <div class = 'item'>                                            
+                                            Price: $16  
+                                        </div>                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </b-container>
             </b-col>
 
             <b-col>
                 <b-container id = "rightContainer">
-                    <ul>
-                        <li> 
-                            SUBTOTAL:
-                        </li>
-                        <li> 
-                            SHIPPING:
-                        </li>
-                        <li> 
-                            GRAND TOTAL:
-                        </li>
-                    </ul>
+                    <table class = 'table table-bordered border border-dark'>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    SUBTOTAL
+                                </td>
+                                <td>
+                                    $50
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    SHIPPING
+                                </td>
+                                <td>
+                                    $10
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    GRAND TOTAL
+                                </td>
+                                <td>
+                                    $60
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </b-container>
             </b-col>
         </b-row>
@@ -28,21 +64,25 @@
 
 <script>
 export default {
-    
+    data() {
+        return {
+            img: "https://i.pinimg.com/564x/24/63/58/2463587994b231c4ea48f6d7b04b602a.jpg"
+        }
+    },
 }
 </script>
 
 <style scoped>
 #mainContainer {
-    /*display: flex;
+    display: flex;
     align-items: center;
-    justify-content: center; */
+    justify-content: center; 
     height: 100vh;
 }
 #leftContainer {
     display:flex;
-    background-color: blueviolet;
-    align-items: center;
+    background-color: whitesmoke;
+    align-items: top;
     justify-content: center; 
     height: 100vh;
 }
@@ -51,23 +91,21 @@ export default {
     background-color: whitesmoke;
     align-items: center;
     justify-content: center; 
-    height: 100vh;
+    height: 100vh
 }
-ul {
-    display: flex;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0;
-}
-li {
+img {
+    height: 200px;
+    width: 200px;
+    margin-top: 3px;
+    margin-right: 15px;
     display:flex;
-    align-items: left;
-    flex-grow: 1;
-    flex-basis: 300px;
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #e48257;
-    margin: 8px;
+    justify-content: left; 
+    float:left;
 }
+.item {
+    display:flex;
+    justify-content: left; 
+}
+
 
 </style>
