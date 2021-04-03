@@ -43,6 +43,7 @@
           <b-button
             v-bind:itemid="item.id"
             v-bind:collectionName="collectionName"
+            v-bind:subCollectionName="subCollectionName"
             v-on:click="route($event)"
           >
             Details
