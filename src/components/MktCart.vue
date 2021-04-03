@@ -35,7 +35,7 @@
                                     SUBTOTAL
                                 </td>
                                 <td>
-                                    ${{this.subtotal}}
+                                    ${{this.getSubtotal().toFixed(2)}}
                                 </td>
                             </tr>
                             <tr>
@@ -43,7 +43,7 @@
                                     SHIPPING
                                 </td>
                                 <td>
-                                    $10
+                                    ${{this.getShipping().toFixed(2)}}
                                 </td>
                             </tr>
                             <tr>
@@ -51,7 +51,7 @@
                                     GRAND TOTAL
                                 </td>
                                 <td>
-                                    $60
+                                    ${{grandTotal.toFixed(2)}}
                                 </td>
                             </tr>
                         </tbody>
@@ -70,7 +70,6 @@ export default {
     data() {
         return {
             itemList: [],
-            email:"",
             subtotal: 0,
             shipping: 0,
             grandTotal: 0,
@@ -78,36 +77,49 @@ export default {
     },
     methods : {
         fetchItems: function() {
-            firebase.auth().onAuthStateChanged(function(user) {
+            firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
                     database.collection("users").doc(user.email).collection("orders")
-                    .get().then((querySnapshot) => {
-                    let item = {}
-                    querySnapshot.forEach((doc) => {
-                        item = doc.data();
-                        item.id = doc.id;
-                        this.itemList.push(item);
+                    .get().then((querySnapshot)=>{
+                        let item = {}
+                        querySnapshot.forEach((doc) => {
+                            item = doc.data();
+                            item.id = doc.id;
+                            this.itemList.push(doc.data())
+                        })
                     })
-                }) 
                 } else {
                     console.log("Error")
                 }
             })  
-            /*     
-            database.collection("users").doc(firebase.auth().currentUser.email).collection("orders")
-            .get().then((querySnapshot) => {
-                let item = {}
-                querySnapshot.forEach((doc) => {
-                    item = doc.data();
-                    item.id = doc.id;
-                    this.itemList.push(item);
-                })
-            })  */
         },
+
+        getSubtotal: function() {
+            var total = 0;
+            for (var product of this.itemList) {
+                var amount = product.quantity * product.price
+                total += amount
+            }
+            this.subtotal = total
+            return this.subtotal
+        },
+
+        getShipping: function() {
+            this.shipping = 10;
+            return this.shipping
+        }
     },
-    created: function () {
+
+    created() {
         this.fetchItems();
     },
+
+    watch: {
+        subtotal: function() {
+            this.grandTotal = this.subtotal + this.shipping
+        },
+        
+    }
 }
 </script>
 
