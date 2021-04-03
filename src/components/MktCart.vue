@@ -5,18 +5,18 @@
                 <b-container id = "leftContainer">
                     <table class = 'table table-bordered border border-dark'>
                         <tbody>
-                            <tr>
+                            <tr v-for="product in itemList" v-bind:key="product.name">
                                 <td>
                                     <div>
                                         <div class = 'item'>
-                                            Giant Nature Wooden Night Light
+                                            {{product.name}}
                                         </div>                                  
-                                        <img v-bind:src = "this.img"/>
+                                        <img v-bind:src="product.img"/>
                                         <div class = 'item'>                                            
-                                            Quantity: 5   
+                                            Quantity: {{product.quantity}}   
                                         </div>
                                         <div class = 'item'>                                            
-                                            Price: $16  
+                                            Total Price: ${{(product.price * product.quantity).toFixed(2)}}  
                                         </div>                        
                                     </div>
                                 </td>
@@ -35,7 +35,7 @@
                                     SUBTOTAL
                                 </td>
                                 <td>
-                                    $50
+                                    ${{this.subtotal}}
                                 </td>
                             </tr>
                             <tr>
@@ -63,11 +63,50 @@
 </template>
 
 <script>
+import database from "../firebase.js";
+import firebase from "firebase/app";
+import "firebase/auth";
 export default {
     data() {
         return {
-            img: "https://i.pinimg.com/564x/24/63/58/2463587994b231c4ea48f6d7b04b602a.jpg"
+            itemList: [],
+            email:"",
+            subtotal: 0,
+            shipping: 0,
+            grandTotal: 0,
         }
+    },
+    methods : {
+        fetchItems: function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    database.collection("users").doc(user.email).collection("orders")
+                    .get().then((querySnapshot) => {
+                    let item = {}
+                    querySnapshot.forEach((doc) => {
+                        item = doc.data();
+                        item.id = doc.id;
+                        this.itemList.push(item);
+                    })
+                }) 
+                } else {
+                    console.log("Error")
+                }
+            })  
+            /*     
+            database.collection("users").doc(firebase.auth().currentUser.email).collection("orders")
+            .get().then((querySnapshot) => {
+                let item = {}
+                querySnapshot.forEach((doc) => {
+                    item = doc.data();
+                    item.id = doc.id;
+                    this.itemList.push(item);
+                })
+            })  */
+        },
+    },
+    created: function () {
+        this.fetchItems();
     },
 }
 </script>
@@ -77,21 +116,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center; 
-    height: 100vh;
 }
 #leftContainer {
     display:flex;
     background-color: whitesmoke;
     align-items: top;
     justify-content: center; 
-    height: 100vh;
 }
 #rightContainer {
     display:flex;
     background-color: whitesmoke;
     align-items: center;
     justify-content: center; 
-    height: 100vh
 }
 img {
     height: 200px;
@@ -106,6 +142,5 @@ img {
     display:flex;
     justify-content: left; 
 }
-
 
 </style>
