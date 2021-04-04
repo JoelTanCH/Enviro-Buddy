@@ -5,16 +5,27 @@
                 <b-container id = "leftContainer">
                     <table class = 'table table-bordered border border-dark'>
                         <tbody>
-                            <tr v-for="product in itemList" v-bind:key="product.name">
+                            <tr v-for="product in itemList" v-bind:key="product.id">
                                 <td>
                                     <div>
+
+                                        <b-button class = 'button' 
+                                            v-bind:id="product.id" 
+                                            v-on:click="deleteItem($event)"
+                                            variant="danger">
+                                            Remove 
+                                        </b-button>
+
                                         <div class = 'item'>
                                             {{product.name}}
-                                        </div>                                  
+                                        </div>  
+
                                         <img v-bind:src="product.img"/>
+
                                         <div class = 'item'>                                            
-                                            Quantity: {{product.quantity}}   
+                                            Quantity: {{product.quantity}}  
                                         </div>
+
                                         <div class = 'item'>                                            
                                             Total Price: ${{(product.price * product.quantity).toFixed(2)}}  
                                         </div>                        
@@ -69,6 +80,7 @@ import "firebase/auth";
 export default {
     data() {
         return {
+            email:'',
             itemList: [],
             subtotal: 0,
             shipping: 0,
@@ -85,13 +97,21 @@ export default {
                         querySnapshot.forEach((doc) => {
                             item = doc.data();
                             item.id = doc.id;
-                            this.itemList.push(doc.data())
+                            this.itemList.push(item)
                         })
                     })
                 } else {
                     console.log("Error")
                 }
             })  
+        },
+
+        deleteItem: function(event) {
+            let currentUser = firebase.auth().currentUser
+            let doc_id = event.target.getAttribute("id")
+            console.log(doc_id)
+            database.collection("users").doc(currentUser.email).collection("orders").doc(doc_id)
+            .delete().then(() => location.reload()) 
         },
 
         getSubtotal: function() {
@@ -105,8 +125,12 @@ export default {
         },
 
         getShipping: function() {
-            this.shipping = 10;
-            return this.shipping
+            if (this.subtotal == 0 ) {
+                return this.shipping
+            } else {
+                this.shipping = 10
+                return this.shipping
+            }
         }
     },
 
@@ -118,7 +142,7 @@ export default {
         subtotal: function() {
             this.grandTotal = this.subtotal + this.shipping
         },
-        
+
     }
 }
 </script>
@@ -154,5 +178,7 @@ img {
     display:flex;
     justify-content: left; 
 }
-
+.button {
+    float:right;
+}
 </style>
