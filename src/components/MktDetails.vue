@@ -13,17 +13,13 @@
           <qty-counter v-on:counter="updateCounter"></qty-counter>
 
           <b-button class="button" v-b-modal.modalItem v-on:click="sendOrder(item)">Add to Cart</b-button>
-          <b-modal id="modalItem" @show="onShow" ok-only>
-            <template #modal-header={}>
-              <p>Note:</p>
-            </template>
-            <template #default={}> 
+          <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
+
               <p>Your order has been placed!</p>
-            </template>
-            <template #modal-footer={}>
+
               <b-button variant="outline-secondary" block v-on:click="$router.push('mkt-category')">Continue Shopping</b-button>
               <b-button variant="success" block v-on:click="$router.push('mkt-cart')">View Cart</b-button>
-            </template>
+
           </b-modal>
           <b-button class="button">View Cart</b-button>
 
