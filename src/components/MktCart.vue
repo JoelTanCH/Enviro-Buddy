@@ -9,9 +9,8 @@
                                 <td>
                                     <div>
 
-                                        <b-button class = 'button' 
-                                            v-bind:id="product.id" 
-                                            v-on:click="deleteItem($event)"
+                                        <b-button class = 'button'                                            
+                                            v-on:click="deleteItem(product.id)"
                                             variant="danger">
                                             Remove 
                                         </b-button>
@@ -23,7 +22,17 @@
                                         <img v-bind:src="product.img"/>
 
                                         <div class = 'item'>                                            
-                                            Quantity: {{product.quantity}}  
+                                            Quantity:
+                                            <b-form>
+                                                <b-form-input
+                                                    class = 'input'
+                                                    type = "number"
+                                                    v-model.number='product.quantity'
+                                                    :min='1'
+                                                    v-on:change="updateQuantity(product.id, product.quantity)"
+                                                    >
+                                                </b-form-input> 
+                                            </b-form>
                                         </div>
 
                                         <div class = 'item'>                                            
@@ -66,7 +75,12 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> 
+
+                    <b-button class='checkOut' variant="success">
+                        Check Out 
+                    </b-button>
+
                 </b-container>
             </b-col>
         </b-row>
@@ -106,11 +120,17 @@ export default {
             })  
         },
 
-        deleteItem: function(event) {
+        updateQuantity: function(itemID, newQuantity) {
             let currentUser = firebase.auth().currentUser
-            let doc_id = event.target.getAttribute("id")
-            console.log(doc_id)
-            database.collection("users").doc(currentUser.email).collection("orders").doc(doc_id)
+            database.collection("users").doc(currentUser.email).collection("orders").doc(itemID)
+            .update({
+                quantity: newQuantity 
+            })
+        },
+
+        deleteItem: function(itemID) {
+            let currentUser = firebase.auth().currentUser
+            database.collection("users").doc(currentUser.email).collection("orders").doc(itemID)
             .delete().then(() => location.reload()) 
         },
 
@@ -155,15 +175,11 @@ export default {
 }
 #leftContainer {
     display:flex;
-    background-color: whitesmoke;
     align-items: top;
     justify-content: center; 
 }
 #rightContainer {
-    display:flex;
-    background-color: whitesmoke;
-    align-items: center;
-    justify-content: center; 
+    font-size: 16px;
 }
 img {
     height: 200px;
@@ -177,8 +193,15 @@ img {
 .item {
     display:flex;
     justify-content: left; 
+    align-items: center;
+    font-size: 16px;
 }
 .button {
     float:right;
+}
+.input {
+    width: 70px;
+    height: 30px;
+    
 }
 </style>
