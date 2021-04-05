@@ -12,6 +12,7 @@ import SignUpPage from './components/SignUpPage.vue'
 import LoginPage from './components/LoginPage.vue'
 import ForgotPassword from './components/ForgotPassword.vue'
 import ConfirmSignUp from './components/ConfirmSignUp.vue'
+import Profile from './components/Profile.vue'
 
 
 export default [
@@ -41,5 +42,7 @@ export default [
     { path: '/login', component: LoginPage, name: 'login' },
 
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'},
-    { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'}
+    { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'},
+    { path: '/profile', component: Profile, name: 'profile'}
+
 ]
