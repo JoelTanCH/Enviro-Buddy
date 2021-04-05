@@ -62,7 +62,8 @@ export default {
       this.$router.push({path: "/forgot-password"})
     },
     userLogin: function () {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(() => firebase.auth().signInWithEmailAndPassword(this.email, this.password))
       .then(() => {
         if (firebase.auth().currentUser.emailVerified) {
           this.email = "";

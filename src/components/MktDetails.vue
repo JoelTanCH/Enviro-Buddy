@@ -11,10 +11,22 @@
           <p>{{ item.description }}</p>
           <br /><br />
           <qty-counter v-on:counter="updateCounter"></qty-counter>
-          <b-button class="button" v-on:click="sendOrder(item)"
-            >Add to Cart</b-button
-          >
+
+          <b-button class="button" v-b-modal.modalItem v-on:click="sendOrder(item)">Add to Cart</b-button>
+          <b-modal id="modalItem" @show="onShow" ok-only>
+            <template #modal-header={}>
+              <p>Note:</p>
+            </template>
+            <template #default={}> 
+              <p>Your order has been placed!</p>
+            </template>
+            <template #modal-footer={}>
+              <b-button variant="outline-secondary" block v-on:click="$router.push('mkt-category')">Continue Shopping</b-button>
+              <b-button variant="success" block v-on:click="$router.push('mkt-cart')">View Cart</b-button>
+            </template>
+          </b-modal>
           <b-button class="button">View Cart</b-button>
+
         </b-col>
       </b-row>
     </b-container>
@@ -30,6 +42,7 @@ export default {
     return {
       item: {},
       counter: 0,
+      success: false,
     };
   },
   components: {
@@ -71,13 +84,18 @@ export default {
           .collection("orders")
           .add(orderItem);
 
-        alert("Your order has been placed!");
+        this.success=true
         //reset counter
         this.counter = 0;
       } else {
         alert("Quantity cannot be 0. Please try again.")
       }
     },
+    onShow: function(a) {
+      if (!this.success){
+        a.preventDefault();
+      }
+    }
   },
   created: function () {
     this.fetchItems();
