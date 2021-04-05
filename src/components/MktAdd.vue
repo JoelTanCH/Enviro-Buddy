@@ -11,14 +11,10 @@
            accept="image/*"
            @change="onFilePicked" 
             > 
-          <img id="imageURL" alt="Preview of Selected Image">
+          <img id="imageURL" src ='https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5'>
 
         </b-col>
-        <!--Can delete this entire b-col. just code to view files from the database-->
-        <b-col>
-          <b-button type="submit" ref="checker" variant="secondary" v-on:click="view">url from database</b-button>
-        </b-col>
-        <!-- delete till here-->
+
         <b-col>
           <h1>Add Listing</h1>
 
@@ -81,7 +77,7 @@
             <!-- ask users to upload image file -->
 
             <b-button @click="onPickFile">Choose Image</b-button>
-            <b-button type="submit" variant="secondary" v-on:click="addItem"
+            <b-button type="submit" variant="secondary" v-on:click="storeInStorage"
               >Submit</b-button
             >
 
@@ -107,6 +103,7 @@ export default {
         description: "",
         img: "", //images url
       },
+      placeholder: 'https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=edf3a0ae-f006-46a5-80c3-56ac50a0af8a',
       category: null,
       marketplaceCategories: ["Fashion", "Decor", "Furniture", "Jewellery"],
     };
@@ -123,15 +120,77 @@ export default {
         document.getElementById('imageURL').src = fileReader.result
       })
       fileReader.readAsDataURL(files[0])
-      this.img = files[0]
+      this.img = files[0] //file object 
     },
     view: function(){
       var storageRef = firebase.storage().ref();
-      storageRef.child('marketplace/Decor/cat').getDownloadURL().then((url) =>
+      storageRef.child('marketplace/' + this.category + '/' + this.item.name).getDownloadURL().then((url) =>
         alert(url)
       )
       //storageRef.child('marketplace/' + this.category + '/' + this.item.name).getDownloadURL().then((url) => alert(url))
     },
+    storeInStorage:function(){
+      console.log('store in storage')
+      firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
+      .then(()=> {this.location.reload()})
+      .then(() => {
+        firebase.storage().ref().child('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL()
+      .then( (url) => {
+          this.item.img = url;
+          console.log(url)
+      })
+      })
+      .then(()=>{
+            var collectionName = "mkt-categories";
+            var subCollectionName = this.category.toLowerCase();
+            database
+              .collection(collectionName)
+              .doc(subCollectionName)
+              .collection("items")
+              .add(this.item);
+          console.log('done add to firebase')
+      })
+      }, 
+      storeInStorage2:function(){
+      console.log('store in storage')
+      firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
+      .then(() => {
+        firebase.storage().ref().child('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL()
+      .then( (url) => {
+          this.item.img = url;
+          console.log(url)
+      })
+      .then(()=>{
+            var collectionName = "mkt-categories";
+            var subCollectionName = this.category.toLowerCase();
+            database
+              .collection(collectionName)
+              .doc(subCollectionName)
+              .collection("items")
+              .add(this.item);
+          console.log('done add to firebase')
+      })
+      })
+      }, 
+    addToItem:function(){
+      console.log('add to item')
+      firebase.storage().ref().child('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL().then((url)=>{
+           this.item.img = url;
+           console.log(url)
+         })
+    },
+    addToFirebase:function(){
+      console.log('add to firebase')
+      var collectionName = "mkt-categories";
+      var subCollectionName = this.category.toLowerCase();
+      database
+          .collection(collectionName)
+          .doc(subCollectionName)
+          .collection("items")
+          .add(this.item);
+      console.log('done add to firebase')
+    },
+
     addItem: function () {
       if (
         this.item.name.length == 0 ||
@@ -145,29 +204,41 @@ export default {
         alert("please upload an image");
       } 
       else {
-         firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
-         alert('end storing')
         var collectionName = "mkt-categories";
         var subCollectionName = this.category.toLowerCase();
-        database
+         firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
+         firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL().then((url)=>{
+           this.item.img = url;
+           console.log(url)
+         }).then(()=>{
+          database
           .collection(collectionName)
           .doc(subCollectionName)
           .collection("items")
           .add(this.item);
-
-        alert(this.item.name + " saved to database")
+         })
+        //  alert('end storing')
+        // var collectionName = "mkt-categories";
+        // var subCollectionName = this.category.toLowerCase();
+        // database
+        //   .collection(collectionName)
+        //   .doc(subCollectionName)
+        //   .collection("items")
+        //   .add(this.item);
+        
+ //       alert(this.item.name + " saved to database")
  //       this.$refs.checker.click()
  
       //store path to redirect users to respective categories to view their new lisitng
-      var newPath = "mkt-listing/" + subCollectionName;
+ //     var newPath = "mkt-listing/" + subCollectionName;
 
       //reset
-      this.item.name = "";
-      this.item.price = 0;
-      this.item.description = "";
-      this.category = "";
+ //     this.item.name = "";
+ //     this.item.price = 0;
+ //     this.item.description = "";
+ //     this.category = "";
 
-      this.$router.push({ path: newPath });
+ //     this.$router.push({ path: newPath });
       }
 
     },
