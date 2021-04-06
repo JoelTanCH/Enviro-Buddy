@@ -1,55 +1,69 @@
 <template>
   <div>
-    <b-form-input
-      v-on:keyup.enter="search_text()"
-      v-model="search.text"
-      type="text"
-      placeholder="Search by Name"
-    ></b-form-input>
-
-    <div v-show="search.text == ''">
-      <ul>
-        <li v-for="item in itemList" v-bind:key="item.name">
-          <div id="itemName">{{ item.name | truncateName }}</div>
-          <img v-bind:src="item.img" />
-          <div id="price">$ {{ item.price }}</div>
-          <div>{{ item.description | truncate }}</div>
-          <br />
-          <b-button
-            v-bind:itemid="item.id"
-            v-bind:collectionName="collectionName"
-            v-bind:subCollectionName="subCollectionName"
-            v-on:click="route($event)"
-          >
-            Details
-          </b-button>
-        </li>
-      </ul>
+    <div id="searchbar-container">
+      <b-form-input
+        v-on:keyup.enter="search_text()"
+        v-model="search.text"
+        type="text"
+        placeholder="Looking for something?"
+      ></b-form-input>
     </div>
 
-    <div v-show="search.text != ''">
-      <div v-show="this.searchList.length > 0">
-        {{ this.searchList.length }} item(s) found
+    <div v-if="searchList == null">
+      <div v-if="search.text == ''">
+        <ul>
+          <li v-for="item in itemList" v-bind:key="item.name">
+            <div class="top-box">
+              <div class="username">{{ item.username }}</div>
+              <div class="itemName">{{ item.name }}</div>
+            </div>
+            <img v-bind:src="item.img" />
+            <div class="price">$ {{ item.price }}</div>
+            <div class="description">{{ item.description }}</div>
+            <div>
+              <b-button
+                v-bind:itemid="item.id"
+                v-bind:collectionName="collectionName"
+                v-bind:subCollectionName="subCollectionName"
+                v-on:click="route($event)"
+              >
+                Details
+              </b-button>
+            </div>
+          </li>
+        </ul>
       </div>
-      <div v-show="this.searchList.length == 0">
+      <div v-else>Press Enter to search.</div>
+    </div>
+
+    <div v-else>
+      <div v-if="this.searchList.length == 0">
         No matching results.<br />Try another search?
       </div>
-      <ul>
-        <li v-for="item in searchList" v-bind:key="item.name">
-          <h2>{{ item.name }}</h2>
-          <img v-bind:src="item.img" />
-          <p>$ {{ item.price }}</p>
-          <hr />
-          <b-button
-            v-bind:itemid="item.id"
-            v-bind:collectionName="collectionName"
-            v-bind:subCollectionName="subCollectionName"
-            v-on:click="route($event)"
-          >
-            Details
-          </b-button>
-        </li>
-      </ul>
+      <div v-else-if="this.searchList.length > 0">
+        <div>{{ this.searchList.length }} item(s) found</div>
+        <ul>
+          <li v-for="item in searchList" v-bind:key="item.name">
+            <div class="top-box">
+              <div class="username">{{ item.username }}</div>
+              <div class="itemName">{{ item.name }}</div>
+            </div>
+            <img v-bind:src="item.img" />
+            <div class="price">$ {{ item.price }}</div>
+            <div class="description">{{ item.description }}</div>
+            <div>
+              <b-button
+                v-bind:itemid="item.id"
+                v-bind:collectionName="collectionName"
+                v-bind:subCollectionName="subCollectionName"
+                v-on:click="route($event)"
+              >
+                Details
+              </b-button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -62,27 +76,13 @@ export default {
   data() {
     return {
       itemList: [],
-      searchList: [],
+      searchList: null,
       collectionName: "",
       subCollectionName: "",
       search: {
         text: "",
       },
     };
-  },
-  filters: {
-    truncate: function (value) {
-      if (value.length > 75) {
-        value = value.substring(0, 72) + "...";
-      }
-      return value;
-    },
-    truncateName: function (value) {
-      if (value.length > 30) {
-        value = value.substring(0, 27) + "...";
-      }
-      return value;
-    },
   },
   methods: {
     fetchItems: function () {
@@ -97,12 +97,13 @@ export default {
         .then((querySnapShot) => {
           let item = {};
           querySnapShot.forEach((doc) => {
-            console.log(doc.data())
+            console.log(doc.data());
             item = doc.data();
-            if(item.img == "") {
-              item.img = 'https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5' ;
-            }else{
-              console.log('ok')
+            if (item.img == "") {
+              item.img =
+                "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5";
+            } else {
+              console.log("ok");
             }
             item.id = doc.id;
             this.itemList.push(item);
@@ -155,16 +156,35 @@ img {
   height: 200px;
   overflow: hidden;
 }
-#price {
+#searchbar-container {
+  width: 31.3%;
+  margin-right: 1%;
+  margin-left: auto;
+}
+.price {
   color: #3a6351;
   font-weight: bold;
   font-size: 20px;
 }
-#itemName {
-  color: #393232;
+.top-box {
+  background-color: #f2edd7;
   font-weight: bold;
-  font-size: 32px;
-  max-height: 50px;
+  text-align: left;
+  margin: 5px;
+  padding-left: 10px;
+}
+.itemName {
+  color: #393232;
+  font-size: 24px;
+  max-height: 32px;
+  overflow: hidden;
+}
+.username {
+  color: #e48257;
+}
+.description {
+  justify-content: center;
+  height: 40px;
   overflow: hidden;
 }
 </style>
