@@ -198,6 +198,7 @@ img {
 }
 .button {
     float:right;
+    width: 90px;
 }
 .input {
     width: 70px;
