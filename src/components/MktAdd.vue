@@ -118,6 +118,7 @@ export default {
       const fileReader = new FileReader()
       fileReader.addEventListener('load', () => {
         document.getElementById('imageURL').src = fileReader.result
+        this.img = files[0]
       })
       fileReader.readAsDataURL(files[0])
       this.img = files[0] //file object 
@@ -239,6 +240,18 @@ export default {
  //     this.category = "";
 
  //     this.$router.push({ path: newPath });
+
+/* to get firebase username
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        database.collection("users").doc(user.email).get().then((doc) =>{
+          var username = doc.data().username
+        }) 
+      }
+    })
+*/
+
+ 
       }
 
     },
