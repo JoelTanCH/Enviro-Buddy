@@ -2,7 +2,7 @@
     <div>
         <b-container id = 'container'>
             <div id = 'resetPw'>
-                Reset Password <br> <br>
+                <h4>Reset Password</h4> <br>
 
                 <div id = 'enterEmailAddress'>
                     Please enter the email address of your account:
@@ -19,7 +19,7 @@
                     </b-form-input>
                 </b-form> <br>
 
-                <b-button class="button" id = 'emailButton' v-on:click="resetPassword" > 
+                <b-button class="button" id = 'emailButton' v-on:click="resetPassword" variant = "outline-success"> 
                     Send a password reset link 
                 </b-button>
             </div>
@@ -56,6 +56,10 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+h4 {
+    color: #3a6351;
+    font-family:'helvetica';
 }
 
 </style>
