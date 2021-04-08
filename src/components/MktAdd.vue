@@ -133,15 +133,15 @@ export default {
     storeInStorage:function(){
       console.log('store in storage')
       firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
-      .then(()=> {this.location.reload()})
-      .then(() => {
-        firebase.storage().ref().child('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL()
+      .then((snap) => {
+        snap.ref.getDownloadURL()
+      })
       .then( (url) => {
           this.item.img = url;
           console.log(url)
       })
-      })
-      .then(()=>{
+      console.log(this.item.img)
+
             var collectionName = "mkt-categories";
             var subCollectionName = this.category.toLowerCase();
             database
@@ -150,7 +150,7 @@ export default {
               .collection("items")
               .add(this.item);
           console.log('done add to firebase')
-      })
+      
       }, 
       storeInStorage2:function(){
       console.log('store in storage')
