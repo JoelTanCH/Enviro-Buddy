@@ -130,11 +130,11 @@ export default {
       )
       //storageRef.child('marketplace/' + this.category + '/' + this.item.name).getDownloadURL().then((url) => alert(url))
     },
-    storeInStorage:function(){
+    /*storeInStorage:function(){
       console.log('store in storage')
       firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
       .then((snap) => {
-        snap.ref.getDownloadURL()
+        return snap.ref.getDownloadURL()
       })
       .then( (url) => {
           this.item.img = url;
@@ -150,8 +150,45 @@ export default {
               .collection("items")
               .add(this.item);
           console.log('done add to firebase')
+      },*/
+
+      storeInStorage:function(){
+
+        var collectionName = "mkt-categories";
+            var subCollectionName = this.category.toLowerCase();
+            var hehe ='';
+            database
+              .collection(collectionName)
+              .doc(subCollectionName)
+              .collection("items")
+              .add(this.item)
+              .then(function(docRef) {
+                hehe = docRef.id;
+              });
+          console.log('done add to firebase')
+
+      console.log('store in storage')
+      firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
+      .then((snap) => {
+        return snap.ref.getDownloadURL()
+      })
+      .then( (url) => {
+        database
+              .collection(collectionName)
+              .doc(subCollectionName)
+              .collection("items")
+              .doc(hehe)
+              .update({
+                img : url
+              });
+      })
       
-      }, 
+      console.log(this.item.img)
+      alert("Thank you!")
+
+      },
+      
+      
       storeInStorage2:function(){
       console.log('store in storage')
       firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
