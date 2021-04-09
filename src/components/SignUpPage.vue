@@ -6,7 +6,7 @@
           <img id="logo" v-bind:src="logoURL" />
         </b-col>
         <b-col>
-          <h1>Sign Up</h1>
+          <h1>Sign Up</h1> <br>
 
           <b-form>
             <b-form-input
@@ -44,11 +44,11 @@
             </b-form-input>
           </b-form>
 
-          <b-button class="button" v-on:click="createUser"> Register </b-button><br /><br />
+          <b-button class="button" v-on:click="createUser" variant = "outline-success"> Register </b-button><br>
           <span>Already have an account?</span>
           <b-button variant="text" class="textButton" v-on:click="routeLogin"
-            >Log In</b-button
-          >
+            >Log In</b-button>
+          
         </b-col>
       </b-row>
     </b-container>
@@ -123,6 +123,9 @@ export default {
   width: 70%;
   align-items: center;
 }
+h1 {
+  margin-top: 25px;
+}
 .inputField {
   font-size: 16px;
   margin: 10px;
@@ -132,6 +135,8 @@ span {
   color: #393232;
 }
 .textButton {
+  margin-top:-3px;
+  margin-left:-7px;
   font-size: 16px;
   color: #e48257;
   font-weight: bold;
