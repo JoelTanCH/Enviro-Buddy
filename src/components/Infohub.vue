@@ -1,7 +1,55 @@
 <template>
     <div>
-        <div style="position: absolute; right: 80px;"> Add your ideas </div> <br> <br>
-    
+        <b-button id="addideas" type="submit" variant="secondary" v-on:click="show = !show"
+              >Add your ideas</b-button
+            > <br> <br>
+        <template v-if="show">
+         <b-form v-on:submit="submit"> 
+            <b-form-group
+              id="item-name"
+              label="Item Name"
+              label-for="item-name-input"
+            >
+              <b-form-input
+                id="item-name"
+                v-model="item.name"
+                type="text"
+                placeholder="Enter item name"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="item-category"
+              label="Category"
+              label-for="item-category-input"
+            >
+              <b-form-select
+                id="item-category"
+                v-model="category"
+                v-bind:options="infohubCategories"
+              ></b-form-select>
+            </b-form-group>
+
+            <b-form-group
+              id="item-description"
+              label="Item Description"
+              label-for="item-description-input"
+            >
+              <b-form-input
+                id="item-description"
+                v-model="item.description"
+                placeholder="Enter item description"
+                type="text"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="secondary" on-click="submit"
+              >Submit</b-button
+            > <br> 
+         </b-form>
+        </template>
+
+        <h2 v-else> </h2>
     <b-row>
     <h1> Crafts </h1> <br><br>
 
@@ -62,13 +110,31 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      categoryList: [],
+        item:{
+            name:"",
+            description:"",
+            img:"" //add this when mktadd is done 
+        },
+        category:null,
+        infohubCategories: ["Crafts", "Workshop", "Outside"],
+        show: false,
       craftsList: [],
       workshopList:[],
       outsideList:[]
     };
   },
   methods: {
+    submit: function(){
+        var collectionName = "info-categories";
+        var subCollectionName = this.category.toLowerCase();
+        console.log(this.item)
+        database
+          .collection(collectionName)
+          .doc(subCollectionName)
+          .collection("items")
+          .add(this.item);
+        console.log('done')
+    },
     fetchItems: function () {
       database
         .collection("info-categories")
@@ -178,5 +244,10 @@ h1{
     text-align: center;
     position:absolute; 
     left:30%;
+}
+#addideas{
+    position:absolute; 
+    text-align: center;
+    right:5%;
 }
 </style>
