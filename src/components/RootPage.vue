@@ -2,9 +2,9 @@
   <div>
       <img id="logo" v-bind:src="logoURL" />
       <h1>Enviro Buddy</h1>
-      <h2>{{ description }}</h2>
-      <b-button class="button" v-on:click="routeSignUp"> Sign Up </b-button>
-      <b-button class="button" v-on:click="routeLogin"> Login </b-button>
+      <h2>{{ description }}</h2> <br>
+      <b-button class="button" v-on:click="routeSignUp" variant = "outline-success"> Sign Up </b-button> <br>
+      <b-button class="button" v-on:click="routeLogin" variant = "outline-dark"> Login </b-button>
   </div>
 </template>
 
@@ -33,6 +33,7 @@ export default {
 </script>
 
 <style>
+
 #logo {
   width: 20%;
   align-items: center;
@@ -48,6 +49,8 @@ h2 {
 .button {
   font-size: 16px;
   color: #f2edd7;
-  margin: 5px;
+  margin: 7px;
+  width: 200px;
+  background-color: #3a6351;
 }
 </style>

@@ -2,7 +2,10 @@
   <div id="categoryList">
     <ul>
       <li v-for="category in categoryList" v-bind:key="category.name">
-        <div id="categoryName">{{ category.name }}</div>
+        <div class="top-box">
+          <div class="categoryName">{{ category.name }}</div>
+        </div>
+        
         <img v-bind:src="category.img" /><br><br>
         <b-button
           v-bind:categoryName="category.name"
@@ -70,11 +73,17 @@ img {
   height: 200px;
   overflow: hidden;
 }
-#categoryName {
-  color: #393232;
+.top-box {
+  background-color: #f2edd7;
   font-weight: bold;
-  font-size: 32px;
-  max-height: 50px;
+  text-align: center;
+  margin: 5px;
+  padding-left: 10px;
+}
+.categoryName {
+  color: #393232;
+  font-size: 24px;
+  max-height: 32px;
   overflow: hidden;
 }
 </style>

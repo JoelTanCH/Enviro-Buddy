@@ -28,6 +28,7 @@
           <b-icon-person-fill
             class="icon"
             font-scale="1.5"
+            v-on:click="$router.push('/profile')"
           ></b-icon-person-fill>
         </b-navbar-nav>
       </b-collapse>
