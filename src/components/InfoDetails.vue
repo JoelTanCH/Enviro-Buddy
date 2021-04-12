@@ -6,8 +6,8 @@
           <img v-bind:src="item.img" />
         </b-col>
         <b-col>
-          <h2>{{ item.name }}</h2>
-          <h5>Posted by: {{ item.username }}</h5>
+          <h2 class="itemName">{{ item.name }}</h2><br>
+          <h5>Posted by: <span class="username"> {{item.username}}</span></h5>
           <br>
           <p> {{item.description}} </p>
         </b-col>
@@ -64,5 +64,15 @@ img {
 }
 .button {
   margin: 10px;
+}
+.username {
+  color: #e48257;
+}
+.itemName {
+  color: #393232;
+  font-size: 40px;
+  max-height: 32px;
+
+  text-align: center;
 }
 </style>
