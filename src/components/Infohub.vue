@@ -91,7 +91,8 @@
               <img v-bind:src="category.img" />
               <hr />
               <b-button
-                v-bind:categoryName="category.name"
+                v-bind:categoryid="category.id"
+                v-bind:category="crafts"
                 v-on:click="route($event)"
               >
                 View
@@ -119,7 +120,8 @@
               <img v-bind:src="category.img" />
               <hr />
               <b-button
-                v-bind:categoryName="category.name"
+                v-bind:categoryid="category.id"
+                v-bind:category="crafts"
                 v-on:click="route($event)"
               >
                 View
@@ -153,7 +155,8 @@
               <img v-bind:src="category.img" />
               <hr />
               <b-button
-                v-bind:categoryName="category.name"
+                v-bind:categoryid="category.id"
+                v-bind:category="workshop"
                 v-on:click="route($event)"
               >
                 View
@@ -183,7 +186,8 @@
               <img v-bind:src="category.img" />
               <hr />
               <b-button
-                v-bind:categoryName="category.name"
+                v-bind:categoryid="category.id"
+                v-bind:category="workshop"
                 v-on:click="route($event)"
               >
                 View
@@ -217,7 +221,8 @@
           <img v-bind:src="category.img" />
           <hr />
           <b-button
-            v-bind:categoryName="category.name"
+            v-bind:categoryid="category.id"
+            v-bind:category="outside"
             v-on:click="route($event)"
           >
             View
@@ -247,7 +252,8 @@
               <img v-bind:src="category.img" />
               <hr />
               <b-button
-                v-bind:categoryName="category.name"
+                v-bind:categoryid="category.id"
+                v-bind:category="outside"
                 v-on:click="route($event)"
               >
                 View
@@ -282,6 +288,9 @@ export default {
         text: "",
       },
       category: null,
+      crafts: "crafts",
+      workshop: "workshop",
+      outside: "outside",
       infohubCategories: ["Crafts", "Workshop", "Outside"],
       show: false,
       craftsList: [],
@@ -384,8 +393,11 @@ export default {
     },
     route: function (event) {
       this.$router.push({
-        name: "info-listing",
-        params: { categoryName: event.target.getAttribute("categoryName") },
+        name: "info-details",
+        params: {
+          categoryid: event.target.getAttribute("categoryid"),
+          category: event.target.getAttribute("category")
+        },
       });
     },
   },
