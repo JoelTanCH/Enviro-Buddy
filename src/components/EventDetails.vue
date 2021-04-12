@@ -7,9 +7,9 @@
         </b-col>
         <b-col>
           <h2>{{ details.name }}</h2>
-          <p>Meet up Location: {{ details.Location }}</p>
-          <p>Date: {{ details.Date }}</p>
-          <p>Time: {{ details.Time }}</p>
+          <p v-if="details.Location">Meet up Location: {{ details.Location }}</p>
+          <p v-if="details.Date">Date: {{ details.Date }}</p>
+          <p v-if="details.Time">Time: {{ details.Time }}</p>
           <br /><br />
         <b-form>
             <b-form-group
