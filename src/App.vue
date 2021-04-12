@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <router-view id="main"></router-view>
+    <router-view id="router"></router-view>
     <app-footer></app-footer>
   </div>
 </template>
@@ -28,21 +28,11 @@ export default {
   text-align: center;
   font-size: 14px;
 }
-#main {
+#router {
   min-height: 400px;
-  margin-bottom: 100px;
+  margin-bottom: 40px;
   margin-top: 100px;
   clear: both;
-}
-#main::after {
-  content: "";
-  background: url("https://images.unsplash.com/photo-1536882240095-0379873feb4e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80");
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;   
+  height: 80%;
 }
 </style>
