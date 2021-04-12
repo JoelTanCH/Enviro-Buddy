@@ -1,4 +1,5 @@
 <template>
+  <body>
   <div id="categoryList">
     <ul>
       <li v-for="category in categoryList" v-bind:key="category.name">
@@ -16,6 +17,7 @@
       </li>
     </ul>
   </div>
+  </body>
 </template>
 
 <script>
@@ -49,12 +51,16 @@ export default {
 </script>
 
 <style scoped>
+body {
+  background-color:#f2edd7;
+}
 #categoryList {
   width: 100%;
   margin: 30px auto;
   padding: 0 5px;
   box-sizing: border-box;
-  color: #393232;
+  color:#393232;
+  min-height: 80%;
 }
 ul {
   display: flex;
