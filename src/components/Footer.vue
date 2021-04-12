@@ -23,7 +23,7 @@ footer {
   border-width: 2px;
   text-align: center;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  height: 40px;
+  height: 5%;
   vertical-align: middle;
   position: fixed;
   left: 0;
