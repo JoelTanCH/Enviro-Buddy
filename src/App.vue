@@ -29,10 +29,8 @@ export default {
   font-size: 14px;
 }
 #router {
-  min-height: 400px;
-  margin-bottom: 40px;
-  margin-top: 100px;
+  margin-bottom: 5%;
+  margin-top: 15%;
   clear: both;
-  height: 80%;
 }
 </style>
