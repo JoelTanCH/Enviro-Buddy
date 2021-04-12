@@ -95,6 +95,7 @@ export default {
     addItem: function () {
 
       database.collection(this.collection).doc(this.document).collection('Signups').add(this.item)
+      //might need to add to user profile 
       alert("saved to database");
     },
   },
