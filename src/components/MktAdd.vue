@@ -1,4 +1,5 @@
 <template>
+<body>
   <div>
     <b-container>
       <b-row>
@@ -86,6 +87,7 @@
       </b-row>
     </b-container>
   </div>
+</body>
 </template>
 
 
@@ -297,6 +299,9 @@ export default {
 </script>
 
 <style scoped>
+body {
+  background-color: #f2edd7;
+}
 img {
   width: 100%;
   height: 100%;
