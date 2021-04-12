@@ -1,4 +1,5 @@
 <template>
+<body>
     <div id = 'mainContainer'>
         <b-row>
             <b-col>
@@ -85,6 +86,7 @@
             </b-col>
         </b-row>
     </div>
+</body>
 </template>
 
 <script>
@@ -168,10 +170,8 @@ export default {
 </script>
 
 <style scoped>
-#mainContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center; 
+body {
+    background-color: #f2edd7;
 }
 #leftContainer {
     display:flex;

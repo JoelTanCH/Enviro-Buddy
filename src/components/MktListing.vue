@@ -1,4 +1,5 @@
 <template>
+<body>
   <div>
     <div id="searchbar-container">
       <b-form-input
@@ -66,6 +67,7 @@
       </div>
     </div>
   </div>
+</body>
 </template>
 
 <script>
@@ -139,6 +141,9 @@ export default {
 </script>
 
 <style scoped>
+body {
+  background-color: #f2edd7;
+}
 ul {
   display: flex;
   flex-wrap: wrap;

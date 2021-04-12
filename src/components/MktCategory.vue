@@ -52,7 +52,7 @@ export default {
 
 <style scoped>
 body {
-  background-color:blueviolet;
+  background-color:#f2edd7;
 }
 #categoryList {
   width: 100%;
