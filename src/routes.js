@@ -14,6 +14,7 @@ import LoginPage from './components/LoginPage.vue'
 import ForgotPassword from './components/ForgotPassword.vue'
 import ConfirmSignUp from './components/ConfirmSignUp.vue'
 import Profile from './components/Profile.vue'
+import InfoDetails from './components/InfoDetails.vue'
 
 
 export default [
@@ -44,6 +45,7 @@ export default [
 
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'},
     { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'},
-    { path: '/profile', component: Profile, name: 'profile'}
+    { path: '/profile', component: Profile, name: 'profile'},
+    { path: '/info-details', component: InfoDetails, name: 'info-details', props: true }
 
 ]
