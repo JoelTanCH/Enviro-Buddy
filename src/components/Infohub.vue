@@ -68,7 +68,6 @@
       </b-form>
     </template>
 
-    <h2 v-else></h2>
     <b-row>
       <h1>Crafts</h1>
       <div id="searchbar-container">
@@ -79,8 +78,7 @@
           placeholder="Looking for something?"
         ></b-form-input>
       </div>
-      <br /><br />
-
+    <div class="wrapper">
       <div v-if="craftsSearchList == null">
         <div v-if="craftsSearch.text == ''">
           <div class="wrapper">
@@ -131,7 +129,8 @@
             </ul>
           </div>
         </div>
-      </div> </b-row
+      </div> 
+      </div></b-row
     ><br />
 
     <b-row>
@@ -144,8 +143,7 @@
           placeholder="Looking for something?"
         ></b-form-input>
       </div>
-      <br /><br />
-
+    <div class="wrapper">
       <div v-if="workshopSearchList == null">
         <div v-if="workshopSearch.text == ''">
           <div class="wrapper">
@@ -197,6 +195,7 @@
             </ul>
           </div>
         </div>
+      </div>
       </div> </b-row
     ><br />
 
@@ -210,8 +209,7 @@
           placeholder="Looking for something?"
         ></b-form-input>
       </div>
-      <br /><br />
-
+<div class="wrapper">
     <div v-if="outsideSearchList == null">
       <div v-if="outsideSearch.text == ''">
       <div class="wrapper">
@@ -263,6 +261,7 @@
             </ul>
           </div>
         </div>
+    </div>
     </div></b-row>
   </div>
 </template>
@@ -411,7 +410,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  max-height: 400px;
+  max-height: 350px;
   border: 0px solid #ddd;
   display: flex;
   overflow-x: auto;
@@ -421,9 +420,9 @@ export default {
   height: 2;
 }
 .wrapper .item {
-  min-width: 400px;
-  height: 400px;
-  line-height: 400px;
+  min-width: 250px;
+  height: 350px;
+  line-height: 250px;
   text-align: center;
   background-color: rgb(159, 241, 202);
   margin-right: 4px;
@@ -437,7 +436,7 @@ export default {
 }
 ul {
   flex-grow: 1;
-  flex-basis: 300px;
+  flex-basis: 200px;
   text-align: center;
   padding: 10px;
   border: 1px solid #e48257;
@@ -445,14 +444,14 @@ ul {
 }
 li {
   flex-grow: 1;
-  flex-basis: 300px;
+  flex-basis: 200px;
   text-align: center;
   padding: 10px;
   border: 0px solid #e48257;
   margin: 8px;
 }
 img {
-  height: 200px;
+  height: 150px;
   overflow: hidden;
 }
 
@@ -472,7 +471,7 @@ h1 {
 }
 .itemName {
   color: #393232;
-  font-size: 24px;
+  font-size: 20px;
   max-height: 32px;
   overflow: hidden;
   text-align: center;
