@@ -152,20 +152,20 @@ export default {
           console.log('done add to firebase')
       },*/
 
-      storeInStorage:function(){
+    storeInStorage:function(){
 
-        var collectionName = "mkt-categories";
-            var subCollectionName = this.category.toLowerCase();
-            var hehe ='';
-            database
-              .collection(collectionName)
-              .doc(subCollectionName)
-              .collection("items")
-              .add(this.item)
-              .then(function(docRef) {
-                hehe = docRef.id;
-              });
-          console.log('done add to firebase')
+      var collectionName = "mkt-categories";
+      var subCollectionName = this.category.toLowerCase();
+      var hehe ='';
+      database
+        .collection(collectionName)
+        .doc(subCollectionName)
+        .collection("items")
+        .add(this.item)
+        .then(function(docRef) {
+          hehe = docRef.id;
+        });
+      console.log('done add to firebase')
 
       console.log('store in storage')
       firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
@@ -186,10 +186,10 @@ export default {
       console.log(this.item.img)
       alert("Thank you!")
 
-      },
+    },
       
       
-      storeInStorage2:function(){
+    storeInStorage2:function(){
       console.log('store in storage')
       firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
       .then(() => {
