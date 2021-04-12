@@ -4,8 +4,8 @@ import MktDetails from './components/MktDetails.vue'
 import MktAdd from './components/MktAdd.vue'
 import MktCart from './components/MktCart.vue'
 import EventCategory from './components/EventCategory.vue'
-//import InfoCategory from './components/InfoCategory.vue'
-import InfoCategory from './components/Infohub.vue'
+import InfoCategory from './components/InfoCategory.vue'
+//import InfoCategory from './components/Infohub.vue'
 import EventListing from './components/EventListing.vue'
 import EventDetails from './components/EventDetails.vue'
 import RootPage from './components/RootPage.vue'
@@ -15,6 +15,7 @@ import ForgotPassword from './components/ForgotPassword.vue'
 import ConfirmSignUp from './components/ConfirmSignUp.vue'
 import Profile from './components/Profile.vue'
 import InfoDetails from './components/InfoDetails.vue'
+import InfoListing from './components/InfoListing.vue'
 
 
 export default [
@@ -37,6 +38,15 @@ export default [
     { path: '/mkt-cart', component: MktCart },
     { path: '/event-category', component: EventCategory },
     { path: '/info-category', component: InfoCategory },
+    {
+        path: '/info-listing',
+        component: InfoListing,
+        children: [
+            { path: 'crafts', component: InfoListing, name: 'crafts', props: true },
+            { path: 'outside', component: InfoListing, name: 'outside', props: true },
+            { path: 'workshop', component: InfoListing, name: 'workshop', props: true },
+        ]
+    },
     { path: '/eve-listing', component: EventListing, name: 'eve-listing', props: true },
     { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true },
     { path: '/root', component: RootPage, name: 'root-page' },

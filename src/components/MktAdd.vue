@@ -1,25 +1,25 @@
 <template>
-<body>
   <div>
     <b-container>
       <b-row>
         <b-col>
-
           <input
-           type="file"
-           style="display:none" 
-           ref="fileInput"
-           accept="image/*"
-           @change="onFilePicked" 
-            > 
-          <img id="imageURL" src ='https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5'>
-
+            type="file"
+            style="display: none"
+            ref="fileInput"
+            accept="image/*"
+            @change="onFilePicked"
+          />
+          <img
+            id="imageURL"
+            src="https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5"
+          />
         </b-col>
 
         <b-col>
           <h1>Add Listing</h1>
 
-          <b-form v-on:submit="addItem">
+          <b-form v-on:submit="storeInStorage">
             <b-form-group
               id="item-name"
               label="Item Name"
@@ -78,16 +78,17 @@
             <!-- ask users to upload image file -->
 
             <b-button @click="onPickFile">Choose Image</b-button>
-            <b-button type="submit" variant="secondary" v-on:click="storeInStorage"
+            <b-button
+              type="submit"
+              variant="secondary"
+              v-on:click="storeInStorage"
               >Submit</b-button
             >
-
           </b-form>
         </b-col>
       </b-row>
     </b-container>
   </div>
-</body>
 </template>
 
 
@@ -99,136 +100,134 @@ export default {
   data() {
     return {
       img: null,
+      id:"",
       item: {
         name: "",
         price: 0,
         description: "",
         img: "", //images url
       },
-      placeholder: 'https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=edf3a0ae-f006-46a5-80c3-56ac50a0af8a',
+      placeholder:
+        "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=edf3a0ae-f006-46a5-80c3-56ac50a0af8a",
       category: null,
       marketplaceCategories: ["Fashion", "Decor", "Furniture", "Jewellery"],
     };
   },
   methods: {
-
-    onPickFile(){
+    onPickFile() {
       this.$refs.fileInput.click();
     },
-    onFilePicked: function(event){
-      const files = event.target.files
-      const fileReader = new FileReader()
-      fileReader.addEventListener('load', () => {
-        document.getElementById('imageURL').src = fileReader.result
-        this.img = files[0]
-      })
-      fileReader.readAsDataURL(files[0])
-      this.img = files[0] //file object 
+    onFilePicked: function (event) {
+      const files = event.target.files;
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        document.getElementById("imageURL").src = fileReader.result;
+        this.img = files[0];
+      });
+      fileReader.readAsDataURL(files[0]);
+      this.img = files[0]; //file object
     },
-    view: function(){
+    view: function () {
       var storageRef = firebase.storage().ref();
-      storageRef.child('marketplace/' + this.category + '/' + this.item.name).getDownloadURL().then((url) =>
-        alert(url)
-      )
-      //storageRef.child('marketplace/' + this.category + '/' + this.item.name).getDownloadURL().then((url) => alert(url))
+      storageRef
+        .child("marketplace/" + this.category + "/" + this.item.name)
+        .getDownloadURL()
+        .then((url) => alert(url));
     },
-    /*storeInStorage:function(){
-      console.log('store in storage')
-      firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
-      .then((snap) => {
-        return snap.ref.getDownloadURL()
-      })
-      .then( (url) => {
-          this.item.img = url;
-          console.log(url)
-      })
-      console.log(this.item.img)
 
-            var collectionName = "mkt-categories";
-            var subCollectionName = this.category.toLowerCase();
-            database
-              .collection(collectionName)
-              .doc(subCollectionName)
-              .collection("items")
-              .add(this.item);
-          console.log('done add to firebase')
-      },*/
+    storeInStorage: function () {
+        database
+          .collection("mkt-categories")
+          .doc(this.category.toLowerCase())
+          .collection("items")
+          .add(this.item)
+          .then(function (docRef) {
+            this.id = docRef.id;
+            console.log("step 1 done");
+          })
+        .then(() => 
+          firebase
+            .storage()
+            .ref("marketplace/" + this.category + "/" + this.item.name)
+            .put(this.img))
+        .then((snap) => {
+              console.log("snap currently doing");
+              return snap.ref.getDownloadURL();
+            })
+        .then((url) => {
+          database
+            .collection("mkt-categories")
+            .doc(this.category.toLowerCase())
+            .collection("items")
+            .doc(this.id)
+            .update({
+              img: url,
+            });
+          console.log("database adding done");
+        })
+        .then(() => {
+          this.item.name = "";
+          this.item.price = 0;
+          this.item.description = "";
+          this.item.img = "";
+          this.category = "";
+          this.img = null;
+          console.log("reset everything");
+        });
+    },
 
-    storeInStorage:function(){
-
+    storeInStorage2: function () {
       var collectionName = "mkt-categories";
       var subCollectionName = this.category.toLowerCase();
-      var hehe ='';
+      var step1 = null;
+      var step2 = null;
+      while (step1 == null && step2 == null){
+        if (step1 == null){
+          firebase
+          .storage()
+          .ref("marketplace/" + this.category + "/" + this.item.name)
+          .put(this.img)
+          .then((snap) => {
+            this.item.img = snap.ref.getDownloadURL();
+            step1 = "done";
+          });
+        }
+        if (step2 == null){
+          if(step1 == null){
+            continue;
+          }else{
+            database
+            .collection(collectionName)
+            .doc(subCollectionName)
+            .collection("items")
+            .add(this.item);
+            step2 = "done";
+          }
+        }
+      }},
+ 
+    addToItem: function () {
+      console.log("add to item");
+      firebase
+        .storage()
+        .ref()
+        .child("marketplace/" + this.category + "/" + this.item.name)
+        .getDownloadURL()
+        .then((url) => {
+          this.item.img = url;
+          console.log(url);
+        });
+    },
+    addToFirebase: function () {
+      console.log("add to firebase");
+      var collectionName = "mkt-categories";
+      var subCollectionName = this.category.toLowerCase();
       database
         .collection(collectionName)
         .doc(subCollectionName)
         .collection("items")
-        .add(this.item)
-        .then(function(docRef) {
-          hehe = docRef.id;
-        });
-      console.log('done add to firebase')
-
-      console.log('store in storage')
-      firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
-      .then((snap) => {
-        return snap.ref.getDownloadURL()
-      })
-      .then( (url) => {
-        database
-              .collection(collectionName)
-              .doc(subCollectionName)
-              .collection("items")
-              .doc(hehe)
-              .update({
-                img : url
-              });
-      })
-      
-      console.log(this.item.img)
-      alert("Thank you!")
-
-    },
-      
-      
-    storeInStorage2:function(){
-      console.log('store in storage')
-      firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
-      .then(() => {
-        firebase.storage().ref().child('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL()
-      .then( (url) => {
-          this.item.img = url;
-          console.log(url)
-      })
-      .then(()=>{
-            var collectionName = "mkt-categories";
-            var subCollectionName = this.category.toLowerCase();
-            database
-              .collection(collectionName)
-              .doc(subCollectionName)
-              .collection("items")
-              .add(this.item);
-          console.log('done add to firebase')
-      })
-      })
-      }, 
-    addToItem:function(){
-      console.log('add to item')
-      firebase.storage().ref().child('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL().then((url)=>{
-           this.item.img = url;
-           console.log(url)
-         })
-    },
-    addToFirebase:function(){
-      console.log('add to firebase')
-      var collectionName = "mkt-categories";
-      var subCollectionName = this.category.toLowerCase();
-      database
-          .collection(collectionName)
-          .doc(subCollectionName)
-          .collection("items")
-          .add(this.item);
-      console.log('done add to firebase')
+        .add(this.item);
+      console.log("done add to firebase");
     },
 
     addItem: function () {
@@ -239,24 +238,30 @@ export default {
         this.category.length == null
       ) {
         alert("please fill in required details");
-      } 
-      else if (this.img == null){
+      } else if (this.img == null) {
         alert("please upload an image");
-      } 
-      else {
+      } else {
         var collectionName = "mkt-categories";
         var subCollectionName = this.category.toLowerCase();
-         firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).put(this.img)
-         firebase.storage().ref('marketplace/' + this.category+ '/' + this.item.name).getDownloadURL().then((url)=>{
-           this.item.img = url;
-           console.log(url)
-         }).then(()=>{
-          database
-          .collection(collectionName)
-          .doc(subCollectionName)
-          .collection("items")
-          .add(this.item);
-         })
+        firebase
+          .storage()
+          .ref("marketplace/" + this.category + "/" + this.item.name)
+          .put(this.img);
+        firebase
+          .storage()
+          .ref("marketplace/" + this.category + "/" + this.item.name)
+          .getDownloadURL()
+          .then((url) => {
+            this.item.img = url;
+            console.log(url);
+          })
+          .then(() => {
+            database
+              .collection(collectionName)
+              .doc(subCollectionName)
+              .collection("items")
+              .add(this.item);
+          });
         //  alert('end storing')
         // var collectionName = "mkt-categories";
         // var subCollectionName = this.category.toLowerCase();
@@ -265,22 +270,22 @@ export default {
         //   .doc(subCollectionName)
         //   .collection("items")
         //   .add(this.item);
-        
- //       alert(this.item.name + " saved to database")
- //       this.$refs.checker.click()
- 
-      //store path to redirect users to respective categories to view their new lisitng
- //     var newPath = "mkt-listing/" + subCollectionName;
 
-      //reset
- //     this.item.name = "";
- //     this.item.price = 0;
- //     this.item.description = "";
- //     this.category = "";
+        //       alert(this.item.name + " saved to database")
+        //       this.$refs.checker.click()
 
- //     this.$router.push({ path: newPath });
+        //store path to redirect users to respective categories to view their new lisitng
+        //     var newPath = "mkt-listing/" + subCollectionName;
 
-/* to get firebase username
+        //reset
+        //     this.item.name = "";
+        //     this.item.price = 0;
+        //     this.item.description = "";
+        //     this.category = "";
+
+        //     this.$router.push({ path: newPath });
+
+        /* to get firebase username
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         database.collection("users").doc(user.email).get().then((doc) =>{
@@ -289,19 +294,13 @@ export default {
       }
     })
 */
-
- 
       }
-
     },
   },
 };
 </script>
 
 <style scoped>
-body {
-  background-color: #f2edd7;
-}
 img {
   width: 100%;
   height: 100%;

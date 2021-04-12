@@ -1,22 +1,24 @@
 <template>
   <body>
-  <div id="categoryList">
-    <ul>
-      <li v-for="category in categoryList" v-bind:key="category.name">
-        <div class="top-box">
-          <div class="categoryName">{{ category.name }}</div>
-        </div>
-        
-        <img v-bind:src="category.img" /><br><br>
-        <b-button
-          v-bind:categoryName="category.name"
-          v-on:click="$router.push('mkt-listing/' + category.name.toLowerCase())"
-        >
-          Browse All
-        </b-button>
-      </li>
-    </ul>
-  </div>
+    <div id="categoryList">
+      <ul>
+        <li v-for="category in categoryList" v-bind:key="category.name">
+          <div class="top-box">
+            <div class="categoryName">{{ category.name }}</div>
+          </div>
+
+          <img v-bind:src="category.img" /><br /><br />
+          <b-button
+            v-bind:categoryName="category.name"
+            v-on:click="
+              $router.push('mkt-listing/' + category.name.toLowerCase())
+            "
+          >
+            Browse All
+          </b-button>
+        </li>
+      </ul>
+    </div>
   </body>
 </template>
 
@@ -52,14 +54,14 @@ export default {
 
 <style scoped>
 body {
-  background-color:#f2edd7;
+  background-color: #f2edd7;
 }
 #categoryList {
   width: 100%;
   margin: 30px auto;
   padding: 0 5px;
   box-sizing: border-box;
-  color:#393232;
+  color: #393232;
   min-height: 80%;
 }
 ul {
