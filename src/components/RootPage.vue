@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="content">
+    <div class = "container">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Enviro Buddy</h1>
       <h6>{{ description }}</h6>
@@ -22,8 +22,8 @@
     </div>
     <img
       id="bg-img"
-      src="https://images.unsplash.com/photo-1536882240095-0379873feb4e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80"
-    />
+      src="https://images.unsplash.com/photo-1596751303147-05d69e653ca4?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1074&q=80"
+    >
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
 
 <style>
 #logo {
-  width: 25%;
+  width: 22%;
   align-items: center;
 }
 h1 {
@@ -72,15 +72,16 @@ h6 {
   width: 240px;
   background-color: #3a6351;
 }
-#content {
-  float: left;
-}
 #bg-img {
-  opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  object-fit:cover;
+  opacity: 1;
   top: 0;
   left: 0;
+  bottom:0;
+  right:0;
   position: absolute;
   z-index: -1;
-  width: 100%;
 }
 </style>
