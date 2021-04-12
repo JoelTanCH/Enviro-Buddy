@@ -37,14 +37,14 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      this.categoryid = this.$route.params.categoryid;
-      this.category = this.$route.params.category;
+      this.itemid = this.$route.params.itemid;
+      this.subCollectionName = this.$route.params.subCollectionName;
 
       database
         .collection("info-categories")
-        .doc(this.category)
+        .doc(this.subCollectionName)
         .collection("items")
-        .doc(this.categoryid)
+        .doc(this.itemid)
         .get()
         .then((snapshot) => (this.item = snapshot.data()));
 
