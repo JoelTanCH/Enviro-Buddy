@@ -3,8 +3,8 @@
     <div id="categoryList">
       <ul>
         <li v-for="category in categoryList" v-bind:key="category.name">
-          <div class="top-box">
-            <div class="categoryName">{{ category.name }}</div>
+          <div>
+            <h2 id="categoryName">{{ category.name }}</h2>
           </div>
 
           <img v-bind:src="category.img" /><br /><br />
@@ -13,6 +13,7 @@
             v-on:click="
               $router.push('mkt-listing/' + category.name.toLowerCase())
             "
+            variant="outline-danger"
           >
             Browse All
           </b-button>
@@ -24,6 +25,8 @@
 
 <script>
 import database from "../firebase.js";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
@@ -33,17 +36,26 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      database
-        .collection("mkt-categories")
-        .get()
-        .then((querySnapShot) => {
-          let category = {};
-          querySnapShot.forEach((doc) => {
-            category = doc.data();
-            category.id = doc.id;
-            this.categoryList.push(category);
-          });
-        });
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+
+          database
+            .collection("mkt-categories")
+            .get()
+            .then((querySnapShot) => {
+              let category = {};
+              querySnapShot.forEach((doc) => {
+                category = doc.data();
+                category.id = doc.id;
+                this.categoryList.push(category);
+              });
+            });
+        } else {
+            alert("fail")
+        }
+      })
+      
     },
   },
   created() {
@@ -78,20 +90,15 @@ li {
   width: 23%;
 }
 img {
-  height: 200px;
-  overflow: hidden;
+  height: 300px;
+  width: 90%;
+  object-fit: cover;
 }
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: center;
-  margin: 5px;
-  padding-left: 10px;
-}
-.categoryName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
+#categoryName {
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 3em;
+  width: 90%;
 }
 </style>

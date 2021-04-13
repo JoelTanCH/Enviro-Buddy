@@ -153,9 +153,9 @@ body {
   background-color: #f2edd7;
 }
 img {
-  width: 300px;
-  height: 90%;
-  object-fit: contain;
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
 }
 .button {
   margin: 10px;
