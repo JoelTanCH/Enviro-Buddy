@@ -33,17 +33,17 @@ firebase.getCurrentUser = () => {
 };
 
 
-myRouter.beforeEach(async (to, from, next) => {
+myRouter.beforeEach(async(to, from, next) => {
     const noAuth = to.matched.some(record => record.meta.noAuth);
     if (!noAuth && !await firebase.getCurrentUser()) {
         alert("Please Signup or Login First")
-        next({ path: '/root' });
+        next({ path: '/' });
     } else {
 
         next();
     }
-    
-  })
+
+})
 
 
 new Vue({
