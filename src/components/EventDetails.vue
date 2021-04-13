@@ -126,9 +126,31 @@ export default {
         .collection("users")
         .doc(this.getEmail())
         .collection("events")
-        .add(this.event)
-      
-
+        .get()
+        .then((querySnapShot) => {
+          if (querySnapShot.docs.length>0) {
+            let item = {};
+            querySnapShot.forEach((doc) => {
+              item = doc.data();
+              if (item.name == this.event.name) {
+                alert("You have already registered for this event previously");
+              } else {
+                database
+                  .collection("users")
+                  .doc(this.getEmail())
+                  .collection("events")
+                  .add(this.event)
+              }
+            });
+          } else {
+            database
+                  .collection("users")
+                  .doc(this.getEmail())
+                  .collection("events")
+                  .add(this.event)
+          }
+        });
+                
       alert("saved to database");
     },
     getEmail: function () {
