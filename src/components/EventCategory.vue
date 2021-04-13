@@ -1,24 +1,22 @@
 <template>
-  <body>
-    <div id="categoryList">
-      <ul>
-        <li v-for="category in categoryList" v-bind:key="category.name">
-          <div class="top-box">
-            <div class="categoryName">{{ category.name }}</div>
-          </div>
-          <img v-bind:src="category.img" />
-          <p>{{ category.description }}</p>
-          <hr />
-          <b-button
-            v-bind:categoryName="category.name"
-            v-on:click="route($event)"
-          >
-            Browse All
-          </b-button>
-        </li>
-      </ul>
-    </div>
-  </body>
+<body>
+  <div id="categoryList">
+    <ul>
+      <li
+        v-for="category in categoryList"
+        v-bind:key="category.name"
+      >
+        <h2>{{ category.name }}</h2>
+        <img v-bind:src="category.img" />
+        <p>{{category.description}}</p>
+        <hr> 
+        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
+          Browse All
+        </b-button>
+      </li>
+    </ul>
+  </div>
+</body>
 </template>
 
 <script>
@@ -59,7 +57,7 @@ export default {
 
 <style scoped>
 body {
-  background-color: #f2edd7;
+  background-color: #ffe8e8;
 }
 #categoryList {
   width: 100%;

@@ -1,7 +1,7 @@
 <template>
-  <div id="main">
+  <div>
     <b-navbar toggleable="lg" type="dark" class="navbar-custom">
-      <b-navbar-brand href="/" id="brand"
+      <b-navbar-brand href="/mkt-category" id="brand"
         >Enviro Buddy</b-navbar-brand
       >
 
@@ -63,8 +63,5 @@ export default {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 5px;
-}
-#main {
-  height: 15%;
 }
 </style>
