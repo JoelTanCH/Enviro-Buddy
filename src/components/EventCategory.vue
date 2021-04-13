@@ -1,15 +1,15 @@
 <template>
   <div id="categoryList">
     <ul>
-      <li
-        v-for="category in categoryList"
-        v-bind:key="category.name"
-      >
+      <li v-for="category in categoryList" v-bind:key="category.name">
         <h2>{{ category.name }}</h2>
         <img v-bind:src="category.img" />
-        <p>{{category.description}}</p>
-        <hr> 
-        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
+        <p>{{ category.description }}</p>
+        <hr />
+        <b-button
+          v-bind:categoryName="category.name"
+          v-on:click="route($event)"
+        >
           Browse All
         </b-button>
       </li>

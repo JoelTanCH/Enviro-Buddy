@@ -157,6 +157,7 @@ li {
 }
 img {
   height: 200px;
+  width: 100%;
   overflow: hidden;
 }
 #searchbar-container {

@@ -7,11 +7,13 @@
         </b-col>
         <b-col>
           <h2>{{ details.name }}</h2>
-          <p v-if="details.Location">Meet up Location: {{ details.Location }}</p>
+          <p v-if="details.Location">
+            Meet up Location: {{ details.Location }}
+          </p>
           <p v-if="details.Date">Date: {{ details.Date }}</p>
           <p v-if="details.Time">Time: {{ details.Time }}</p>
           <br /><br />
-        <b-form>
+          <b-form>
             <b-form-group
               id="Full-name"
               label="Full Name"
@@ -40,11 +42,7 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-form-group
-              id="email"
-              label="email"
-              label-for="email"
-            >
+            <b-form-group id="email" label="email" label-for="email">
               <b-form-input
                 id="email"
                 placeholder="Enter Email"
@@ -54,8 +52,10 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="secondary" v-on:click="addItem()">Submit</b-button>
-        </b-form>
+            <b-button type="submit" variant="secondary" v-on:click="addItem()"
+              >Submit</b-button
+            >
+          </b-form>
         </b-col>
       </b-row>
     </b-container>
@@ -68,9 +68,9 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      details:{},
-      collection:"",
-      document:"",
+      details: {},
+      collection: "",
+      document: "",
       item: {
         Name: "",
         Contact: "",
@@ -85,17 +85,26 @@ export default {
       this.collection = collectionName;
       this.document = itemid;
       database
-        .collection(collectionName)
+        .collection("eve-categories")
+        .doc(collectionName)
+        .collection("events")
         .doc(itemid)
         .get()
-        .then((snapshot) => (
-          this.details = snapshot.data()
-          ));
+        .then((snapshot) => (this.details = snapshot.data()));
     },
     addItem: function () {
-
-      database.collection(this.collection).doc(this.document).collection('Signups').add(this.item)
-      //might need to add to user profile 
+      var itemid = this.$route.params.itemid;
+      var collectionName = this.$route.params.collectionName;
+      console.log(itemid) //recycling challenge
+      console.log(collectionName) //recycling
+      database
+        .collection("eve-categories")
+        .doc(collectionName)
+        .collection("events")
+        .doc(itemid)
+        .collection("signups")
+        .add(this.item);
+      //might need to add to user profile
       alert("saved to database");
     },
   },
