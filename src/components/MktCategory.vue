@@ -3,7 +3,7 @@
     <div id="categoryList">
       <ul>
         <li v-for="category in categoryList" v-bind:key="category.name">
-          <div class="top-box">
+          <div>
             <h2 id="categoryName">{{ category.name }}</h2>
           </div>
 
