@@ -10,7 +10,12 @@
         <img v-bind:src="category.img" />
         <p>{{category.description}}</p>
         <hr> 
-        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
+          <b-button
+            v-bind:categoryName="category.name"
+            v-on:click="
+              $router.push('event-listing/' + category.name.toLowerCase())
+            "
+          >
           Browse All
         </b-button>
       </li>
@@ -42,12 +47,6 @@ export default {
           });
         });
     },
-    route: function (event) {
-      this.$router.push({
-        name: "eve-listing",
-        params: { categoryName: event.target.getAttribute("categoryName") },
-      });
-    },
   },
   created() {
     this.fetchItems();
@@ -65,6 +64,7 @@ body {
   padding: 0 5px;
   box-sizing: border-box;
   color: #393232;
+  min-height: 80%;
 }
 ul {
   display: flex;
@@ -73,15 +73,28 @@ ul {
   padding: 0;
 }
 li {
-  flex-grow: 1;
-  flex-basis: 300px;
   text-align: center;
-  padding: 10px;
+  padding: 1%;
   border: 1px solid #e48257;
-  margin: 8px;
+  margin: 1%;
+  width: 23%;
 }
 img {
   height: 200px;
+  width: 100%;
+  overflow: hidden;
+}
+.top-box {
+  background-color: #f2edd7;
+  font-weight: bold;
+  text-align: center;
+  margin: 5px;
+  padding-left: 10px;
+}
+.categoryName {
+  color: #393232;
+  font-size: 24px;
+  max-height: 32px;
   overflow: hidden;
 }
 </style>
