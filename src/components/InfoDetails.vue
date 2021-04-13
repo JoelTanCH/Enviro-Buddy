@@ -8,7 +8,7 @@
         <b-col>
           <h2>{{ item.name }}</h2>
           <h5>Posted by: {{item.username}}</h5>
-          <p> {{item.description}} </p>
+          <p id = "desc"> {{item.description}} </p>
         </b-col>
       </b-row>
     </b-container>
@@ -40,8 +40,14 @@ export default {
         .collection("items")
         .doc(this.itemid)
         .get()
-        .then((snapshot) => (this.item = snapshot.data()));
-
+        .then((snapshot) => {
+          this.item = snapshot.data()
+          console.log(this.item.description)
+          var text = this.item.description
+          text = text.replaceAll("\\n", "\n");
+          this.item.description=text;
+          console.log(text)
+        });
     }
   },
   created: function () {
@@ -58,5 +64,18 @@ img {
 }
 .username {
   color: #e48257;
+}
+#desc{
+  white-space: pre-line;
+  text-align:left;
+}
+p {
+  text-align: center;
+  padding: 1%;
+  border: 1px solid #e48257;
+  margin: 1%;
+  width: 85%;
+  height:85%;
+  background-color:  #e48257; 
 }
 </style>

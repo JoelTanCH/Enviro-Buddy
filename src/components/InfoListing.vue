@@ -32,12 +32,13 @@
           label="Item Description"
           label-for="item-description-input"
         >
-          <b-form-input
+          <b-form-textarea
             id="item-description"
             v-model="item.description"
             placeholder="Enter item description"
-            type="text"
-          ></b-form-input>
+            rows="3"
+            max-rows="8"
+          ></b-form-textarea>
         </b-form-group>
 
         <b-button type="submit" variant="secondary" on-click="submit"
@@ -48,18 +49,15 @@
     </template>
     <div>
       <div>
-      <div id="searchbar-container">
-        <b-form-input
-          v-on:keyup.enter="search_text()"
-          v-model="search.text"
-          type="text"
-          placeholder="Looking for something?"
-        ></b-form-input>
+        <div id="searchbar-container">
+          <b-form-input
+            v-on:keyup.enter="search_text()"
+            v-model="search.text"
+            type="text"
+            placeholder="Looking for something?"
+          ></b-form-input>
         </div>
-        <b-button
-          type="submit"
-          variant="secondary"
-          v-on:click="show = !show"
+        <b-button type="submit" variant="secondary" v-on:click="show = !show"
           >Add your ideas</b-button
         >
       </div>
@@ -261,5 +259,4 @@ img {
   width: 60%;
   margin-left: 20%;
 }
-
 </style>
