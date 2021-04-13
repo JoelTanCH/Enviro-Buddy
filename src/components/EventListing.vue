@@ -21,6 +21,7 @@
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
+                variant="outline-danger"
               >
                 Sign Up
               </b-button>
@@ -48,6 +49,7 @@
                   v-bind:collectionName="collectionName"
                   v-bind:subCollectionName="subCollectionName"
                   v-on:click="route($event)"
+                  variant="outline-danger"
                 >
                   Sign Up
                 </b-button>
@@ -118,7 +120,7 @@ export default {
         params: {
           eventid: event.target.getAttribute("eventid"),
           collectionName: event.target.getAttribute("collectionName"),
-          subCollectionName: event.target.getAttribute("subCollectionName")
+          subCollectionName: event.target.getAttribute("subCollectionName"),
         },
       });
     },
@@ -155,9 +157,6 @@ img {
   width: 31.3%;
   margin-right: 1%;
   margin-left: auto;
-}
-.username {
-  color: #e48257;
 }
 .eventName {
   overflow: hidden;

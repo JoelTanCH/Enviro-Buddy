@@ -16,6 +16,7 @@
               v-on:click="
                 $router.push('event-listing/' + category.name.toLowerCase())
               "
+              variant="outline-danger"
             >
               Browse All
             </b-button>
