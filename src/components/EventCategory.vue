@@ -10,7 +10,12 @@
         <img v-bind:src="category.img" />
         <p>{{category.description}}</p>
         <hr> 
-        <b-button v-bind:categoryName="category.name" v-on:click="route($event)">
+          <b-button
+            v-bind:categoryName="category.name"
+            v-on:click="
+              $router.push('event-listing/' + category.name.toLowerCase())
+            "
+          >
           Browse All
         </b-button>
       </li>
@@ -41,12 +46,6 @@ export default {
             this.categoryList.push(category);
           });
         });
-    },
-    route: function (event) {
-      this.$router.push({
-        name: "eve-listing",
-        params: { categoryName: event.target.getAttribute("categoryName") },
-      });
     },
   },
   created() {

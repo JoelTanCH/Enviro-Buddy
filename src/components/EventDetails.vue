@@ -80,13 +80,13 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      var itemid = this.$route.params.itemid;
+      var eventid = this.$route.params.eventid;
       var collectionName = this.$route.params.collectionName;
       this.collection = collectionName;
-      this.document = itemid;
+      this.document = eventid;
       database
         .collection(collectionName)
-        .doc(itemid)
+        .doc(eventid)
         .get()
         .then((snapshot) => (
           this.details = snapshot.data()

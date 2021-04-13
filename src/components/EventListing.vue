@@ -1,12 +1,16 @@
 <template>
   <div id="items">
     <ul>
-      <li v-for="item in itemList" v-bind:key="item.name">
-        <h2>{{ item.name }}</h2>
-        <img v-bind:src="item.img" /> 
-        <p id = "description">{{ item.description }}</p>
+      <li v-for="event in eventList" v-bind:key="event.name">
+        <h2>{{ event.name }}</h2>
+        <img v-bind:src="event.img" />
+        <p id="description">{{ event.description }}</p>
         <hr />
-        <b-button v-bind:itemid="item.id" v-bind:collectionName="collectionName" v-on:click="route($event)">
+        <b-button
+          v-bind:eventid="event.id"
+          v-bind:collectionName="collectionName"
+          v-on:click="route($event)"
+        >
           Sign Up
         </b-button>
       </li>
@@ -20,31 +24,44 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      itemList: [],
+      eventList: [],
       collectionName: "",
     };
   },
   methods: {
-
     fetchItems: function () {
-      this.collectionName = "eve-listing-" + this.$route.params.categoryName;
-      this.collectionName = this.collectionName.toLowerCase();
+      this.collectionName = "eve-categories";
+      this.subCollectionName = this.$route.name.toLowerCase();
+
       database
         .collection(this.collectionName)
+        .doc(this.subCollectionName)
+        .collection("events")
         .get()
         .then((querySnapShot) => {
-          let item = {};
+          let event = {};
           querySnapShot.forEach((doc) => {
-            item = doc.data();
-            item.id = doc.id;
-            this.itemList.push(item);
+            console.log(doc.data());
+            event = doc.data();
+            if (event.img == "") {
+              event.img =
+                "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5";
+            } else {
+              console.log("ok");
+            }
+            event.id = doc.id;
+            this.eventList.push(event);
           });
         });
     },
     route: function (event) {
       this.$router.push({
-        name: "eve-details",
-        params: { itemid: event.target.getAttribute("itemid"), collectionName: event.target.getAttribute("collectionName")},
+        name: "event-details",
+        params: {
+          itemid: event.target.getAttribute("eventid"),
+          collectionName: event.target.getAttribute("collectionName"),
+          subCollectionName: event.target.getAttribute("subCollectionName"),
+        },
       });
     },
   },
@@ -79,9 +96,9 @@ li {
 img {
   height: 200px;
   overflow: hidden;
-  position:center;
+  position: center;
 }
-#description{
-text-align: center;
+#description {
+  text-align: center;
 }
 </style>
