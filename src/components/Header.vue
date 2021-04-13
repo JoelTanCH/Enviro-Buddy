@@ -18,8 +18,8 @@
 
           <b-nav-item href="/event-category">Events</b-nav-item>
           <b-nav-item href="/info-category">Information Hub</b-nav-item>
-          <b-nav-item href="/root"> Sign Up / Login </b-nav-item>
-          <b-nav-item href="/root" @click="signOut"> Logout </b-nav-item>
+          <b-nav-item href="/"> Sign Up / Login </b-nav-item>
+          <b-nav-item href="/login" @click="signOut"> Logout </b-nav-item>
           
           <b-icon-cart4
             class="icon"
