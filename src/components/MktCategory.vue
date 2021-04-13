@@ -24,6 +24,8 @@
 
 <script>
 import database from "../firebase.js";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
@@ -33,17 +35,26 @@ export default {
   },
   methods: {
     fetchItems: function () {
-      database
-        .collection("mkt-categories")
-        .get()
-        .then((querySnapShot) => {
-          let category = {};
-          querySnapShot.forEach((doc) => {
-            category = doc.data();
-            category.id = doc.id;
-            this.categoryList.push(category);
-          });
-        });
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+
+          database
+            .collection("mkt-categories")
+            .get()
+            .then((querySnapShot) => {
+              let category = {};
+              querySnapShot.forEach((doc) => {
+                category = doc.data();
+                category.id = doc.id;
+                this.categoryList.push(category);
+              });
+            });
+        } else {
+            alert("fail")
+        }
+      })
+      
     },
   },
   created() {

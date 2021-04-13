@@ -19,6 +19,7 @@
           <b-nav-item href="/event-category">Events</b-nav-item>
           <b-nav-item href="/info-category">Information Hub</b-nav-item>
           <b-nav-item href="/root"> Sign Up / Login </b-nav-item>
+          <b-nav-item href="/root" @click="signOut"> Logout </b-nav-item>
           
           <b-icon-cart4
             class="icon"
@@ -37,10 +38,23 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
 export default {
   data() {
     return {};
   },
+  methods: {
+    signOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace({
+            name: "login"
+          });
+        });
+    }
+  }
 };
 </script>
 
