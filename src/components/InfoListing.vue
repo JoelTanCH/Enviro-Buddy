@@ -1,13 +1,65 @@
 <template>
   <body>
+    <template v-if="show">
+      <b-form v-on:submit="submit" id="form">
+        <b-form-group
+          id="username"
+          label="Username"
+          label-for="user-name-input"
+        >
+          <b-form-input
+            id="username"
+            v-model="item.username"
+            type="text"
+            placeholder="Enter username"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          id="item-name"
+          label="Item Name"
+          label-for="item-name-input"
+        >
+          <b-form-input
+            id="item-name"
+            v-model="item.name"
+            type="text"
+            placeholder="Enter item name"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          id="item-description"
+          label="Item Description"
+          label-for="item-description-input"
+        >
+          <b-form-textarea
+            id="item-description"
+            v-model="item.description"
+            placeholder="Enter item description"
+            rows="3"
+            max-rows="8"
+          ></b-form-textarea>
+        </b-form-group>
+
+        <b-button type="submit" variant="secondary" on-click="submit"
+          >Submit</b-button
+        >
+      </b-form>
+      <br />
+    </template>
     <div>
-      <div id="searchbar-container">
-        <b-form-input
-          v-on:keyup.enter="search_text()"
-          v-model="search.text"
-          type="text"
-          placeholder="Looking for something?"
-        ></b-form-input>
+      <div>
+        <div id="searchbar-container">
+          <b-form-input
+            v-on:keyup.enter="search_text()"
+            v-model="search.text"
+            type="text"
+            placeholder="Looking for something?"
+          ></b-form-input>
+        </div>
+        <b-button type="submit" variant="secondary" v-on:click="show = !show"
+          >Add your ideas</b-button
+        >
       </div>
 
       <div v-if="searchList == null">
@@ -71,6 +123,8 @@
 
 <script>
 import database from "../firebase.js";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
@@ -78,13 +132,33 @@ export default {
       itemList: [],
       searchList: null,
       collectionName: "",
-      subCollectionName: "",
+      subCollectionName: "", //  crafts/outside/workshop
+      show: false,
+      item: {
+        username: "",
+        name: "",
+        description: "",
+        img: "",
+      },
       search: {
         text: "",
       },
     };
   },
   methods: {
+    submit: function () {
+      var email = firebase.auth().currentUser.email;
+      console.log(email);
+      database
+        .collection(this.collectionName)
+        .doc(this.subCollectionName)
+        .collection("items")
+        .add(this.item);
+      alert("Post has been submitted");
+
+      database.collection("users").doc(email).collection("info").add(this.item);
+      alert("post saved to firebase");
+    },
     fetchItems: function () {
       this.collectionName = "info-categories";
       this.subCollectionName = this.$route.name.toLowerCase();
@@ -180,5 +254,9 @@ img {
   line-height: 1.5em;
   height: 4.5em;
   width: 90%;
+}
+#form {
+  width: 60%;
+  margin-left: 20%;
 }
 </style>
