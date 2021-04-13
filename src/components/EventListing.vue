@@ -147,7 +147,7 @@ li {
   width: 31.3%;
 }
 img {
-  height: 200px;
+  height: 300px;
   width: 90%;
   object-fit: cover;
 }
