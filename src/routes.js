@@ -23,6 +23,7 @@ import Profile from './components/Profile.vue'
 
 export default [
 
+    { path: '/', component: RootPage },
     { path: '/mkt-category', component: MktCategory },
     { path: '/mkt-details', component: MktDetails, name: 'mkt-details', props: true },
     { path: '/mkt-add', component: MktAdd },
