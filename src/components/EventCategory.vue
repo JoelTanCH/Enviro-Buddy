@@ -1,27 +1,29 @@
 <template>
-<body>
-  <div id="categoryList">
-    <ul>
-      <li
-        v-for="category in categoryList"
-        v-bind:key="category.name"
-      >
-        <h2>{{ category.name }}</h2>
-        <img v-bind:src="category.img" />
-        <p>{{category.description}}</p>
-        <hr> 
-          <b-button
-            v-bind:categoryName="category.name"
-            v-on:click="
-              $router.push('event-listing/' + category.name.toLowerCase())
-            "
-          >
-          Browse All
-        </b-button>
-      </li>
-    </ul>
-  </div>
-</body>
+  <body>
+    <div id="categoryList">
+      <ul>
+        <li v-for="category in categoryList" v-bind:key="category.name">
+          <div>
+            <h2 id="categoryName">{{ category.name }}</h2>
+
+            <img v-bind:src="category.img" />
+
+            <div id="description">{{ category.description }}</div>
+
+            <b-button
+              id="button"
+              v-bind:categoryName="category.name"
+              v-on:click="
+                $router.push('event-listing/' + category.name.toLowerCase())
+              "
+            >
+              Browse All
+            </b-button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </body>
 </template>
 
 <script>
@@ -81,20 +83,21 @@ li {
 }
 img {
   height: 200px;
-  width: 100%;
-  overflow: hidden;
+  width: 90%;
+  object-fit: cover;
 }
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: center;
-  margin: 5px;
-  padding-left: 10px;
-}
-.categoryName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
+#categoryName {
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 3em;
+  width: 90%;
+}
+#description {
+  overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 4.5em;
+  width: 90%;
 }
 </style>

@@ -90,14 +90,8 @@ li {
 }
 img {
   height: 200px;
-  overflow: hidden;
-}
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: center;
-  margin: 5px;
-  padding-left: 10px;
+  width: 90%;
+  object-fit: cover;
 }
 .categoryName {
   color: #393232;
