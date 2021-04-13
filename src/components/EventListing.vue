@@ -1,21 +1,64 @@
 <template>
-  <div id="items">
-    <ul>
-      <li v-for="item in itemList" v-bind:key="item.name">
-        <h2>{{ item.name }}</h2>
-        <img v-bind:src="item.img" />
-        <p id="description">{{ item.description }}</p>
-        <hr />
-        <b-button
-          v-bind:itemid="item.id"
-          v-bind:collectionName="collectionName"
-          v-on:click="route($event)"
-        >
-          Sign Up
-        </b-button>
-      </li>
-    </ul>
-  </div>
+  <body>
+    <div>
+      <div id="searchbar-container">
+        <b-form-input
+          v-on:keyup.enter="search_text()"
+          v-model="search.text"
+          type="text"
+          placeholder="Looking for something?"
+        ></b-form-input>
+      </div>
+      <div v-if="searchList == null">
+        <div v-if="search.text == ''">
+          <ul>
+            <li v-for="item in itemList" v-bind:key="item.name">
+              <h2>{{ item.name }}</h2>
+              <img v-bind:src="item.img" />
+              <p id="description">{{ item.description }}</p>
+              <hr />
+              <b-button
+                v-bind:itemid="item.id"
+                v-bind:collectionName="collectionName"
+                v-on:click="route($event)"
+              >
+                Sign Up
+              </b-button>
+            </li>
+          </ul>
+        </div>
+        <div v-else>Press Enter to search.</div>
+      </div>
+      <div v-else>
+        <div v-if="this.searchList.length == 0">
+          No matching results.<br />Try another search?
+        </div>
+        <div v-else-if="this.searchList.length > 0">
+          <div>{{ this.searchList.length }} item(s) found</div>
+          <ul>
+            <li v-for="item in searchList" v-bind:key="item.name">
+              <div class="top-box">
+                <div class="username">{{ item.username }}</div>
+                <div class="itemName">{{ item.name }}</div>
+              </div>
+              <img v-bind:src="item.img" />
+              <div class="description">{{ item.description }}</div>
+              <div>
+                <b-button
+                  v-bind:itemid="item.id"
+                  v-bind:collectionName="collectionName"
+                  v-bind:subCollectionName="subCollectionName"
+                  v-on:click="route($event)"
+                >
+                  Details
+                </b-button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
 </template>
 
 <script>
@@ -25,19 +68,33 @@ export default {
   data() {
     return {
       itemList: [],
+      searchList: null,
       collectionName: "",
+      search: {
+        text: "",
+      },
     };
   },
   methods: {
+    search_text: function () {
+      //reset searchlist
+      this.searchList = [];
+      var searchText = this.search.text.toLowerCase();
+
+      for (var item of this.itemList) {
+        if (item.name.toLowerCase().includes(searchText)) {
+          this.searchList.push(item);
+        }
+      }
+    },
     fetchItems: function () {
-      this.collectionName =  this.$route.params.categoryName;
+      this.collectionName = this.$route.params.categoryName;
       this.collectionName = this.collectionName.toLowerCase();
-      console.log(this.collectionName)
+      console.log(this.collectionName);
       database
         .collection("eve-categories")
         .doc(this.$route.params.categoryName.toLowerCase())
         .collection("events")
-//        .collection(this.collectionName)
         .get()
         .then((querySnapShot) => {
           let item = {};
@@ -47,7 +104,7 @@ export default {
             this.itemList.push(item);
           });
         });
-      console.log(this.itemList)
+      console.log(this.itemList);
     },
     route: function (event) {
       this.$router.push({
