@@ -3,17 +3,20 @@
     <div id="categoryList">
       <ul>
         <li v-for="category in categoryList" v-bind:key="category.name">
-          <div class="top-box">
-            <div class="categoryName">{{ category.name }}</div>
+          <div>
+            <h2 id="categoryName">{{ category.name }}</h2>
           </div>
 
-          <img v-bind:src="category.img" /><br /><br />
-          <hr />
+          <img v-bind:src="category.img" />
+
+          <div id="description">{{ category.description }}</div>
+
           <b-button
             v-bind:categoryName="category.name"
             v-on:click="
               $router.push('info-listing/' + category.name.toLowerCase())
             "
+            variant="outline-danger"
           >
             Browse All
           </b-button>
@@ -55,9 +58,6 @@ export default {
 
 
 <style scoped>
-body {
-  background-color: #f2edd7;
-}
 #categoryList {
   width: 100%;
   margin: 30px auto;
@@ -77,24 +77,25 @@ li {
   padding: 1%;
   border: 1px solid #e48257;
   margin: 1%;
-  width: 23%;
+  width: 31%;
 }
 img {
-  height: 200px;
-  width: 100%;
-  overflow: hidden;
+  height: 300px;
+  width: 90%;
+  object-fit: cover;
 }
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: center;
-  margin: 5px;
-  padding-left: 10px;
-}
-.categoryName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
+#categoryName {
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 3em;
+  width: 90%;
+}
+#description {
+  overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 4.5em;
+  width: 90%;
 }
 </style>

@@ -1,75 +1,130 @@
 <template>
-<body>
-  <div>
-    <div id="searchbar-container">
-      <b-form-input
-        v-on:keyup.enter="search_text()"
-        v-model="search.text"
-        type="text"
-        placeholder="Looking for something?"
-      ></b-form-input>
-    </div>
+  <body>
+    <template v-if="show">
+      <b-form v-on:submit="submit" id="form">
+        <b-form-group
+          id="username"
+          label="Username"
+          label-for="user-name-input"
+        >
+          <b-form-input
+            id="username"
+            v-model="item.username"
+            type="text"
+            placeholder="Enter username"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          id="item-name"
+          label="Item Name"
+          label-for="item-name-input"
+        >
+          <b-form-input
+            id="item-name"
+            v-model="item.name"
+            type="text"
+            placeholder="Enter item name"
+          ></b-form-input>
+        </b-form-group>
 
-    <div v-if="searchList == null">
-      <div v-if="search.text == ''">
-        <ul>
-          <li v-for="item in itemList" v-bind:key="item.name">
-            <div class="top-box">
-              <div class="username">{{ item.username }}</div>
-              <div class="itemName">{{ item.name }}</div>
-            </div>
-            <img v-bind:src="item.img" />
-            <div class="description">{{ item.description }}</div>
-            <div>
-              <b-button
-                v-bind:itemid="item.id"
-                v-bind:collectionName="collectionName"
-                v-bind:subCollectionName="subCollectionName"
-                v-on:click="route($event)"
-              >
-                Details
-              </b-button>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div v-else>Press Enter to search.</div>
-    </div>
+        <b-form-group
+          id="item-description"
+          label="Item Description"
+          label-for="item-description-input"
+        >
+          <b-form-textarea
+            id="item-description"
+            v-model="item.description"
+            placeholder="Enter item description"
+            rows="3"
+            max-rows="8"
+          ></b-form-textarea>
+        </b-form-group>
 
-    <div v-else>
-      <div v-if="this.searchList.length == 0">
-        No matching results.<br />Try another search?
+        <b-button type="submit" variant="secondary" on-click="submit"
+          >Submit</b-button
+        >
+      </b-form>
+      <br />
+    </template>
+    <div>
+      <div>
+        <div id="searchbar-container">
+          <b-form-input
+            v-on:keyup.enter="search_text()"
+            v-model="search.text"
+            type="text"
+            placeholder="Looking for something?"
+          ></b-form-input>
+        </div>
+        <b-button type="submit" variant="secondary" v-on:click="show = !show"
+          >Add your ideas</b-button
+        >
       </div>
-      <div v-else-if="this.searchList.length > 0">
-        <div>{{ this.searchList.length }} item(s) found</div>
-        <ul>
-          <li v-for="item in searchList" v-bind:key="item.name">
-            <div class="top-box">
-              <div class="username">{{ item.username }}</div>
-              <div class="itemName">{{ item.name }}</div>
-            </div>
-            <img v-bind:src="item.img" />
-            <div class="description">{{ item.description }}</div>
-            <div>
-              <b-button
-                v-bind:itemid="item.id"
-                v-bind:subCollectionName="subCollectionName"
-                v-on:click="route($event)"
-              >
-                Details
-              </b-button>
-            </div>
-          </li>
-        </ul>
+
+      <div v-if="searchList == null">
+        <div v-if="search.text == ''">
+          <ul>
+            <li v-for="item in itemList" v-bind:key="item.name">
+              <div class="top-box">
+                <div class="username">{{ item.username }}</div>
+                <h2 class="itemName">{{ item.name }}</h2>
+              </div>
+              <img v-bind:src="item.img" />
+              <div class="description">{{ item.description }}</div>
+              <div>
+                <b-button
+                  v-bind:itemid="item.id"
+                  v-bind:collectionName="collectionName"
+                  v-bind:subCollectionName="subCollectionName"
+                  v-on:click="route($event)"
+                  variant="outline-danger"
+                >
+                  Read More
+                </b-button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div v-else>Press Enter to search.</div>
+      </div>
+
+      <div v-else>
+        <div v-if="this.searchList.length == 0">
+          No matching results.<br />Try another search?
+        </div>
+        <div v-else-if="this.searchList.length > 0">
+          <div>{{ this.searchList.length }} item(s) found</div>
+          <ul>
+            <li v-for="item in searchList" v-bind:key="item.name">
+              <div class="top-box">
+                <div class="username">{{ item.username }}</div>
+                <h2 class="itemName">{{ item.name }}</h2>
+              </div>
+              <img v-bind:src="item.img" />
+              <div class="description">{{ item.description }}</div>
+              <div>
+                <b-button
+                  v-bind:itemid="item.id"
+                  v-bind:subCollectionName="subCollectionName"
+                  v-on:click="route($event)"
+                  variant="outline-danger"
+                >
+                  Read More
+                </b-button>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </template>
 
 <script>
 import database from "../firebase.js";
-//import firebase from "firebase/app";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
@@ -77,18 +132,38 @@ export default {
       itemList: [],
       searchList: null,
       collectionName: "",
-      subCollectionName: "",
+      subCollectionName: "", //  crafts/outside/workshop
+      show: false,
+      item: {
+        username: "",
+        name: "",
+        description: "",
+        img: "",
+      },
       search: {
         text: "",
       },
     };
   },
   methods: {
+    submit: function () {
+      var email = firebase.auth().currentUser.email;
+      console.log(email);
+      database
+        .collection(this.collectionName)
+        .doc(this.subCollectionName)
+        .collection("items")
+        .add(this.item);
+      alert("Post has been submitted");
+
+      database.collection("users").doc(email).collection("info").add(this.item);
+      alert("post saved to firebase");
+    },
     fetchItems: function () {
       this.collectionName = "info-categories";
       this.subCollectionName = this.$route.name.toLowerCase();
-    console.log(this.subCollectionName)
-    
+      console.log(this.subCollectionName);
+
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
@@ -139,9 +214,6 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background-color: #f2edd7;
-}
 ul {
   display: flex;
   flex-wrap: wrap;
@@ -156,39 +228,35 @@ li {
   width: 31.3%;
 }
 img {
-  height: 200px;
-  width: 100%;
-  overflow: hidden;
+  height: 300px;
+  width: 90%;
+  object-fit: cover;
 }
 #searchbar-container {
   width: 31.3%;
   margin-right: 1%;
   margin-left: auto;
 }
-.price {
-  color: #3a6351;
-  font-weight: bold;
-  font-size: 20px;
-}
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: left;
-  margin: 5px;
-  padding-left: 10px;
-}
-.itemName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
-  overflow: hidden;
-}
 .username {
   color: #e48257;
 }
-.description {
-  justify-content: center;
-  height: 40px;
+.itemName {
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 3em;
+  width: 90%;
+  text-align: center;
+}
+.description {
+  overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 4.5em;
+  width: 90%;
+}
+#form {
+  width: 60%;
+  margin-left: 20%;
 }
 </style>

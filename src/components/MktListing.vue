@@ -16,7 +16,7 @@
           <li v-for="item in itemList" v-bind:key="item.name">
             <div class="top-box">
               <div class="username">{{ item.username }}</div>
-              <div class="itemName">{{ item.name }}</div>
+              <h2 class="itemName">{{ item.name }}</h2>
             </div>
             <img v-bind:src="item.img" />
             <div class="price">$ {{ item.price }}</div>
@@ -48,7 +48,7 @@
           <li v-for="item in searchList" v-bind:key="item.name">
             <div class="top-box">
               <div class="username">{{ item.username }}</div>
-              <div class="itemName">{{ item.name }}</div>
+              <h2 class="itemName">{{ item.name }}</h2>
             </div>
             <img v-bind:src="item.img" />
             <div class="price">$ {{ item.price }}</div>
@@ -175,10 +175,12 @@ img {
   font-size: 20px;
 }
 .itemName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 3em;
+  width: 90%;
+  text-align: center;
 }
 .username {
   color: #e48257;
