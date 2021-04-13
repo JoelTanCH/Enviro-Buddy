@@ -35,6 +35,8 @@
 <script>
 import database from "../firebase.js";
 import QtyCounter from "./QtyCounter.vue";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
@@ -86,6 +88,7 @@ export default {
       this.counter = count;
     },
     sendOrder: function () {
+      let currentUser = firebase.auth().currentUser;
       //create new item arr to store all info except description
       if (this.counter > 0) {
         //check if item already exists in the user's orders
@@ -94,13 +97,16 @@ export default {
           var order = this.existingOrders[i];
           if (this.itemid == order.itemid) { //order for item already exists, update counter
             var newQty = this.counter + order.quantity;
+            database.collection("users").doc(currentUser.email).collection("orders").doc(order.id).update({
+                quantity: newQty 
+            });
 
-            database
-              .collection("users")
-              .doc("jaredtin98@gmail.com")
-              .collection("orders")
-              .doc(order.id)
-              .update({ quantity: newQty });
+            // database
+            //   .collection("users")
+            //   .doc("jaredtin98@gmail.com")
+            //   .collection("orders")
+            //   .doc(order.id)
+            //   .update({ quantity: newQty });
             this.exist = true;
             break;
           }
@@ -118,7 +124,7 @@ export default {
           //need to change code below to match user's id
           database
             .collection("users")
-            .doc("jaredtin98@gmail.com")
+            .doc(currentUser.email)
             .collection("orders")
             .add(orderItem);
         }
