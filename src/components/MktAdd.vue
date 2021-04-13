@@ -12,7 +12,7 @@
           />
           <img
             id="imageURL"
-            src="https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5"
+            v-bind:src="placeholderURL"
           />
         </b-col>
 
@@ -107,8 +107,8 @@ export default {
         description: "",
         img: "", //images url
       },
-      placeholder:
-        "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=edf3a0ae-f006-46a5-80c3-56ac50a0af8a",
+      placeholderURL:
+        "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       category: null,
       marketplaceCategories: ["Fashion", "Decor", "Furniture", "Jewellery"],
     };
@@ -303,6 +303,7 @@ export default {
 <style scoped>
 img {
   width: 100%;
-  height: 100%;
+  height: 80%;
+  object-fit: cover;
 }
 </style>
