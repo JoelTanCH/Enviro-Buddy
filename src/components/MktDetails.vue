@@ -1,35 +1,46 @@
 <template>
-<body>
-  <div>
-    <b-container>
-      <b-row>
-        <b-col>
-          <img v-bind:src="item.img" />
-        </b-col>
-        <b-col>
-          <h2>{{ item.name }}</h2>
-          <h3>$ {{ item.price }}</h3>
-          <p>{{ item.description }}</p>
-          <br /><br />
-          <qty-counter v-on:counter="updateCounter"></qty-counter>
+  <body>
+    <div>
+      <b-container>
+        <b-row>
+          <b-col>
+            <img v-bind:src="item.img" />
+          </b-col>
+          <b-col>
+            <h2>{{ item.name }}</h2>
+            <h3>$ {{ item.price }}</h3>
+            <p>{{ item.description }}</p>
+            <br /><br />
+            <qty-counter v-on:counter="updateCounter"></qty-counter>
 
-
-          <b-button class="button" v-b-modal.modalItem v-on:click="sendOrder(item)">Add to Cart</b-button>
-          <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
-
+            <b-button
+              class="button"
+              v-b-modal.modalItem
+              v-on:click="sendOrder(item)"
+              >Add to Cart</b-button
+            >
+            <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
               <p>Your order has been placed!</p>
 
-              <b-button variant="outline-secondary" block v-on:click="$router.push('mkt-category')">Continue Shopping</b-button>
-              <b-button variant="success" block v-on:click="$router.push('mkt-cart')">View Cart</b-button>
-
-
-          </b-modal>
-          <b-button class="button" href="/mkt-cart">View Cart</b-button>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
-</body>
+              <b-button
+                variant="outline-secondary"
+                block
+                v-on:click="$router.push('mkt-category')"
+                >Continue Shopping</b-button
+              >
+              <b-button
+                variant="success"
+                block
+                v-on:click="$router.push('mkt-cart')"
+                >View Cart</b-button
+              >
+            </b-modal>
+            <b-button class="button" href="/mkt-cart">View Cart</b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
+  </body>
 </template>
 
 <script>
@@ -61,6 +72,8 @@ export default {
       var subCollectionName = this.$route.params.subCollectionName;
       // console.log(subCollectionName);
 
+      let currentUser = firebase.auth().currentUser;
+
       database
         .collection(collectionName)
         .doc(subCollectionName)
@@ -72,7 +85,7 @@ export default {
       //get existing orders belonging to user
       database
         .collection("users")
-        .doc("jaredtin98@gmail.com")
+        .doc(currentUser.email)
         .collection("orders")
         .get()
         .then((snapshot) => {
@@ -95,18 +108,18 @@ export default {
         this.exist = false;
         for (let i = 0; i < this.existingOrders.length; i++) {
           var order = this.existingOrders[i];
-          if (this.itemid == order.itemid) { //order for item already exists, update counter
+          if (this.itemid == order.itemid) {
+            //order for item already exists, update counter
             var newQty = this.counter + order.quantity;
-            database.collection("users").doc(currentUser.email).collection("orders").doc(order.id).update({
-                quantity: newQty 
-            });
+            database
+              .collection("users")
+              .doc(currentUser.email)
+              .collection("orders")
+              .doc(order.id)
+              .update({
+                quantity: newQty,
+              });
 
-            // database
-            //   .collection("users")
-            //   .doc("jaredtin98@gmail.com")
-            //   .collection("orders")
-            //   .doc(order.id)
-            //   .update({ quantity: newQty });
             this.exist = true;
             break;
           }
