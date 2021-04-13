@@ -1,20 +1,24 @@
 <template>
-  <div id="categoryList">
-    <ul>
-      <li v-for="category in categoryList" v-bind:key="category.name">
-        <h2>{{ category.name }}</h2>
-        <img v-bind:src="category.img" />
-        <p>{{ category.description }}</p>
-        <hr />
-        <b-button
-          v-bind:categoryName="category.name"
-          v-on:click="route($event)"
-        >
-          Browse All
-        </b-button>
-      </li>
-    </ul>
-  </div>
+  <body>
+    <div id="categoryList">
+      <ul>
+        <li v-for="category in categoryList" v-bind:key="category.name">
+          <div class="top-box">
+            <div class="categoryName">{{ category.name }}</div>
+          </div>
+          <img v-bind:src="category.img" />
+          <p>{{ category.description }}</p>
+          <hr />
+          <b-button
+            v-bind:categoryName="category.name"
+            v-on:click="route($event)"
+          >
+            Browse All
+          </b-button>
+        </li>
+      </ul>
+    </div>
+  </body>
 </template>
 
 <script>
@@ -54,12 +58,16 @@ export default {
 </script>
 
 <style scoped>
+body {
+  background-color: #f2edd7;
+}
 #categoryList {
   width: 100%;
   margin: 30px auto;
   padding: 0 5px;
   box-sizing: border-box;
   color: #393232;
+  min-height: 80%;
 }
 ul {
   display: flex;
@@ -68,15 +76,28 @@ ul {
   padding: 0;
 }
 li {
-  flex-grow: 1;
-  flex-basis: 300px;
   text-align: center;
-  padding: 10px;
+  padding: 1%;
   border: 1px solid #e48257;
-  margin: 8px;
+  margin: 1%;
+  width: 23%;
 }
 img {
   height: 200px;
+  width: 100%;
+  overflow: hidden;
+}
+.top-box {
+  background-color: #f2edd7;
+  font-weight: bold;
+  text-align: center;
+  margin: 5px;
+  padding-left: 10px;
+}
+.categoryName {
+  color: #393232;
+  font-size: 24px;
+  max-height: 32px;
   overflow: hidden;
 }
 </style>

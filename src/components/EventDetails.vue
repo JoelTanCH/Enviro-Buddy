@@ -1,4 +1,5 @@
 <template>
+<body>
   <div>
     <b-container>
       <b-row>
@@ -42,9 +43,9 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-form-group id="email" label="email" label-for="email">
+            <b-form-group id="Email" label="Email" label-for="Email">
               <b-form-input
-                id="email"
+                id="Email"
                 placeholder="Enter Email"
                 type="text"
                 v-model.lazy="item.Email"
@@ -60,6 +61,7 @@
       </b-row>
     </b-container>
   </div>
+  </body>
 </template>
 
 <script>
@@ -118,5 +120,8 @@ export default {
 img {
   height: 500px;
   overflow: hidden;
+}
+body {
+  background-color: #f2edd7;
 }
 </style>
