@@ -12,14 +12,14 @@
       <div v-if="searchList == null">
         <div v-if="search.text == ''">
           <ul>
-            <li v-for="item in itemList" v-bind:key="item.name">
-              <h2>{{ item.name }}</h2>
-              <img v-bind:src="item.img" />
-              <p id="description">{{ item.description }}</p>
-              <hr />
+            <li v-for="event in eventList" v-bind:key="event.name">
+              <h2 class="eventName">{{ event.name }}</h2>
+              <img v-bind:src="event.img" />
+              <p class="description">{{ event.description }}</p>
               <b-button
-                v-bind:itemid="item.id"
+                v-bind:eventid="event.id"
                 v-bind:collectionName="collectionName"
+                v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
               >
                 Sign Up
@@ -34,23 +34,22 @@
           No matching results.<br />Try another search?
         </div>
         <div v-else-if="this.searchList.length > 0">
-          <div>{{ this.searchList.length }} item(s) found</div>
+          <div>{{ this.searchList.length }} event(s) found</div>
           <ul>
-            <li v-for="item in searchList" v-bind:key="item.name">
+            <li v-for="event in searchList" v-bind:key="event.name">
               <div class="top-box">
-                <div class="username">{{ item.username }}</div>
-                <div class="itemName">{{ item.name }}</div>
+                <h2 class="eventName">{{ event.name }}</h2>
               </div>
-              <img v-bind:src="item.img" />
-              <div class="description">{{ item.description }}</div>
+              <img v-bind:src="event.img" />
+              <div class="description">{{ event.description }}</div>
               <div>
                 <b-button
-                  v-bind:itemid="item.id"
+                  v-bind:eventid="event.id"
                   v-bind:collectionName="collectionName"
                   v-bind:subCollectionName="subCollectionName"
                   v-on:click="route($event)"
                 >
-                  Details
+                  Sign Up
                 </b-button>
               </div>
             </li>
@@ -67,9 +66,10 @@ import database from "../firebase.js";
 export default {
   data() {
     return {
-      itemList: [],
+      eventList: [],
       searchList: null,
       collectionName: "",
+      subCollectionName: "",
       search: {
         text: "",
       },
@@ -81,19 +81,19 @@ export default {
       this.searchList = [];
       var searchText = this.search.text.toLowerCase();
 
-      for (var item of this.itemList) {
-        if (item.name.toLowerCase().includes(searchText)) {
-          this.searchList.push(item);
+      for (var event of this.eventList) {
+        if (event.name.toLowerCase().includes(searchText)) {
+          this.searchList.push(event);
         }
       }
     },
     fetchItems: function () {
-      this.collectionName = this.$route.params.categoryName;
-      this.collectionName = this.collectionName.toLowerCase();
-      console.log(this.collectionName);
+      this.collectionName = "eve-categories";
+      this.subCollectionName = this.$route.name.toLowerCase();
+
       database
-        .collection("eve-categories")
-        .doc(this.$route.params.categoryName.toLowerCase())
+        .collection(this.collectionName)
+        .doc(this.subCollectionName)
         .collection("events")
         .get()
         .then((querySnapShot) => {
@@ -111,14 +111,14 @@ export default {
             this.eventList.push(event);
           });
         });
-      console.log(this.itemList);
     },
     route: function (event) {
       this.$router.push({
-        name: "eve-details",
+        name: "event-details",
         params: {
-          itemid: event.target.getAttribute("itemid"),
+          eventid: event.target.getAttribute("eventid"),
           collectionName: event.target.getAttribute("collectionName"),
+          subCollectionName: event.target.getAttribute("subCollectionName")
         },
       });
     },
@@ -131,7 +131,7 @@ export default {
 
 <style scoped>
 body {
-  background-color: #f2edd7;
+  background-color: #ffe8e8;
 }
 ul {
   display: flex;
@@ -147,39 +147,31 @@ li {
   width: 31.3%;
 }
 img {
-  height: 200px;
+  height: 300px;
   width: 90%;
-  overflow: hidden;
+  object-fit: cover;
 }
 #searchbar-container {
   width: 31.3%;
   margin-right: 1%;
   margin-left: auto;
 }
-.price {
-  color: #3a6351;
-  font-weight: bold;
-  font-size: 20px;
-}
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: left;
-  margin: 5px;
-  padding-left: 10px;
-}
-.itemName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
-  overflow: hidden;
-}
 .username {
   color: #e48257;
 }
-.description {
-  justify-content: center;
-  height: 40px;
+.eventName {
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 3em;
+  width: 90%;
+  text-align: center;
+}
+.description {
+  overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 4.5em;
+  width: 90%;
 }
 </style>

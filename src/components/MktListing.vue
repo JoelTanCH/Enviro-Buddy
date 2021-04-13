@@ -27,6 +27,7 @@
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
+                variant="outline-danger"
               >
                 Details
               </b-button>
@@ -58,6 +59,7 @@
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
+                variant="outline-danger"
               >
                 Details
               </b-button>
@@ -158,9 +160,9 @@ li {
   width: 31.3%;
 }
 img {
-  height: 200px;
+  height: 300px;
   width: 90%;
-  overflow: hidden;
+  object-fit: cover;
 }
 #searchbar-container {
   width: 31.3%;
@@ -172,13 +174,6 @@ img {
   font-weight: bold;
   font-size: 20px;
 }
-.top-box {
-  background-color: #f2edd7;
-  font-weight: bold;
-  text-align: left;
-  margin: 5px;
-  padding-left: 10px;
-}
 .itemName {
   color: #393232;
   font-size: 24px;
@@ -189,8 +184,10 @@ img {
   color: #e48257;
 }
 .description {
-  justify-content: center;
-  height: 40px;
   overflow: hidden;
+  display: flex;
+  line-height: 1.5em;
+  height: 4.5em;
+  width: 90%;
 }
 </style>
