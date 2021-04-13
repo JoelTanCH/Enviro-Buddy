@@ -153,7 +153,7 @@ body {
   background-color: #f2edd7;
 }
 img {
-  width: 300px;
+  width: 100%;
   height: 90%;
   object-fit: contain;
 }
