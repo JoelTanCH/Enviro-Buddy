@@ -6,7 +6,7 @@
                 <h1>{{user.username}}</h1>
                 <h5>{{useremail}}</h5>
                 <b-tabs content-class="mt-3">
-                  <b-tab title="Liked Items" active><p>Items lmao</p></b-tab>
+                  <b-tab title="Items Posted" active><p>Items lmao</p></b-tab>
                   <b-tab title="Events Registered" active>
                       <ul>
                         <li v-for="item in eventslist" v-bind:key="item.name">
@@ -21,6 +21,7 @@
                     </ul>
                   </b-tab>
                   <b-tab title="Purchase History" active><p>Purchase History</p></b-tab>
+                  <b-tab title="Infohub Posts" active><p>Infohub Posts</p></b-tab>
                 </b-tabs>
             </div>
         </section>
