@@ -66,7 +66,8 @@
                   id="button"
                   type="submit"
                   variant="outline-success"
-                  v-on:click="signUp()"
+                  v-on:click="signUp(), $router.push('event-category')"
+                  
                   >Sign Me Up!</b-button
                 >
               </b-form>
@@ -80,7 +81,8 @@
 
 <script>
 import database from "../firebase.js";
-
+import firebase from "firebase/app";
+import "firebase/auth";
 export default {
   data() {
     return {
@@ -92,6 +94,7 @@ export default {
         name: "",
         contact: "",
         email: "",
+        useremail: ""
       },
     };
   },
@@ -110,16 +113,28 @@ export default {
         .then((snapshot) => (this.event = snapshot.data()));
     },
     signUp: function () {
+      this.signupInfo.useremail = this.getEmail()
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
         .collection("events")
         .doc(this.eventid)
         .collection("signups")
-        .add(this.signupInfo);
+        .add(this.signupInfo)
       //might need to add to user profile
+      database
+        .collection("users")
+        .doc(this.getEmail())
+        .collection("events")
+        .add(this.event)
+      
+
       alert("saved to database");
     },
+    getEmail: function () {
+      var email = firebase.auth().currentUser.email;
+      return email
+    }
   },
   created: function () {
     this.fetchItems();

@@ -71,7 +71,7 @@ export default [
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'},
     { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'},
     { path: '/profile', component: Profile, name: 'profile'},
-    { path: '/info-details', component: InfoDetails, name: 'info-details', props: true }
+ 
 
 
 ]
