@@ -131,7 +131,7 @@ export default {
 img {
   width: 100%;
   height: 70vh;
-  object-fit: contain;
+  object-fit: cover;
 }
 body {
   background-color: #ffe8e8;

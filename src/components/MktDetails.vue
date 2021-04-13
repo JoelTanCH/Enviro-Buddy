@@ -154,8 +154,8 @@ body {
 }
 img {
   width: 100%;
-  height: 90%;
-  object-fit: contain;
+  height: 70vh;
+  object-fit: cover;
 }
 .button {
   margin: 10px;

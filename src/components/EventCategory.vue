@@ -79,10 +79,10 @@ li {
   padding: 1%;
   border: 1px solid #e48257;
   margin: 1%;
-  width: 23%;
+  width: 31%;
 }
 img {
-  height: 200px;
+  height: 300px;
   width: 90%;
   object-fit: cover;
 }

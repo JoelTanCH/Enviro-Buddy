@@ -27,6 +27,7 @@
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
+                variant="outline-danger"
               >
                 Details
               </b-button>
@@ -51,13 +52,14 @@
             </div>
             <img v-bind:src="item.img" />
             <div class="price">$ {{ item.price }}</div>
-            <div id="description">{{ item.description }}</div>
+            <div class="description">{{ item.description }}</div>
             <div>
               <b-button
                 v-bind:itemid="item.id"
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
+                variant="outline-danger"
               >
                 Details
               </b-button>
@@ -158,7 +160,7 @@ li {
   width: 31.3%;
 }
 img {
-  height: 200px;
+  height: 300px;
   width: 90%;
   object-fit: cover;
 }
@@ -181,7 +183,7 @@ img {
 .username {
   color: #e48257;
 }
-#description {
+.description {
   overflow: hidden;
   display: flex;
   line-height: 1.5em;
