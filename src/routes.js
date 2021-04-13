@@ -49,9 +49,9 @@ export default [
     },
     { path: '/eve-listing', component: EventListing, name: 'eve-listing', props: true },
     { path: '/eve-details', component: EventDetails, name: 'eve-details', props: true },
-    { path: '/root', component: RootPage, name: 'root-page' },
-    { path: '/sign-up', component: SignUpPage, name: 'sign-up' },
-    { path: '/login', component: LoginPage, name: 'login' },
+    { path: '/root', component: RootPage, name: 'root-page', meta: {noAuth: true}},
+    { path: '/sign-up', component: SignUpPage, name: 'sign-up',meta: {noAuth: true} },
+    { path: '/login', component: LoginPage, name: 'login',meta: {noAuth: true} },
 
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw'},
     { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'},
