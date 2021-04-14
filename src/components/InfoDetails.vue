@@ -12,7 +12,7 @@
           <template v-if="show">
             <b-button v-on:click="like"> like </b-button>
           </template>
-          <h5>{{ item.likes }}  person/people liked this!</h5>
+          <h5>{{ item.likes }} person/people liked this!</h5>
         </b-col>
       </b-row>
     </b-container>
@@ -27,26 +27,44 @@ export default {
   data() {
     return {
       show: true,
+      likedBefore:[],
       item: {},
       itemid: "",
       subCollectionName: "",
     };
   },
   components: {},
-  methods: { // have not restricted to 1 acc 1 like yet 
+  methods: {
     like: function () {
+      var currentUser = firebase.auth().currentUser.email; //current user email
+      console.log(this.likedBefore)
+      
+      if (this.likedBefore.includes(currentUser)) {
+        alert("You have liked this already");
 
-      const increment = firebase.firestore.FieldValue.increment(1);
-      this.show = !this.show;
+      } else {
+        const increment = firebase.firestore.FieldValue.increment(1);
+        this.show = !this.show;
 
-      database
-        .collection("info-categories")
-        .doc(this.subCollectionName)
-        .collection("items")
-        .doc(this.itemid)
-        .update({
-          likes: increment,
-        });
+        database
+          .collection("info-categories")
+          .doc(this.subCollectionName)
+          .collection("items")
+          .doc(this.itemid)
+          .collection("likedBefore")
+          .add({
+            email: currentUser
+            })
+
+        database
+          .collection("info-categories")
+          .doc(this.subCollectionName)
+          .collection("items")
+          .doc(this.itemid)
+          .update({
+            likes: increment,
+          });
+      }
     },
     fetchItems: function () {
       this.itemid = this.$route.params.itemid;
@@ -70,6 +88,20 @@ export default {
   },
   created: function () {
     this.fetchItems();
+    database
+        .collection("info-categories")
+        .doc(this.subCollectionName)
+        .collection("items")
+        .doc(this.itemid)
+        .collection("likedBefore")
+        .get()
+        .then((querySnapShot) => {
+          querySnapShot.forEach((doc) => {
+            console.log("doc email data: " + doc.data().email);
+            this.likedBefore.push(doc.data().email);
+            console.log("likedBefore : " + this.likedBefore);
+          });
+        });    
   },
 };
 </script>
