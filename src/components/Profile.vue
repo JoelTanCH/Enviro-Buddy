@@ -25,13 +25,23 @@
                   <div>{{ event.date.toDate() }}</div>
                   <div>Location: {{ event.location }}</div>
                   <img v-bind:src="event.img" />
-                  <div class="description">{{ event.description }}</div>
                 </div>
               </li>
             </ul>
           </b-tab>
 
-          <b-tab title="My Purchase History" active></b-tab>
+          <b-tab title="My Purchase History" active>
+            <ul>
+              <li v-for="item in mktlist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div>$ {{ item.price }} / item</div>
+                  <div>Quantity: {{ item.quantity }}</div>
+                  <img v-bind:src="item.img" />
+                </div>
+              </li>
+            </ul>
+          </b-tab>
 
           <b-tab title="My Infohub Posts" active>
             <ul>
@@ -101,7 +111,7 @@ export default {
       database
         .collection("users")
         .doc(currentUser.email)
-        .collection("mkt")
+        .collection("mkt-history")
         .get()
         .then((snapshot) => {
           let item = {};
