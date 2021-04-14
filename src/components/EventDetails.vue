@@ -12,10 +12,8 @@
               <p v-if="event.location">
                 Location: {{ event.location }}
               </p>
-              <p v-if="event.date">Date: {{ event.date }}</p>
-              <p v-if="event.time">Time: {{ event.time }}</p>
+              <p v-if="event.date">{{ event.date.toDate() }}</p>
               <p v-if="event.description">
-                What it is about: <br />
                 {{ event.description }}
               </p>
             </b-row>
@@ -52,16 +50,6 @@
                   ></b-form-input>
                 </b-form-group>
 
-                <b-form-group id="Email" label="Email" label-for="Email">
-                  <b-form-input
-                    id="Email"
-                    placeholder="Enter Email"
-                    type="text"
-                    v-model.lazy="signupInfo.email"
-                    required
-                  ></b-form-input>
-                </b-form-group>
-
                 <b-button
                   id="button"
                   type="submit"
@@ -93,8 +81,7 @@ export default {
       signupInfo: {
         name: "",
         contact: "",
-        email: "",
-        useremail: ""
+        email: ""
       },
     };
   },
@@ -113,7 +100,9 @@ export default {
         .then((snapshot) => (this.event = snapshot.data()));
     },
     signUp: function () {
-      this.signupInfo.useremail = this.getEmail()
+      this.signupInfo.email = firebase.auth().currentUser.email;
+
+      //add user sign up info to indiv events
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
@@ -121,11 +110,15 @@ export default {
         .doc(this.eventid)
         .collection("signups")
         .add(this.signupInfo)
-      //might need to add to user profile
+
+      //add to user's registered events for profile page
       database
         .collection("users")
-        .doc(this.getEmail())
+        .doc(this.signupInfo.email)
         .collection("events")
+        .add(this.event)
+      
+/*
         .get()
         .then((querySnapShot) => {
           if (querySnapShot.docs.length>0) {
@@ -150,13 +143,9 @@ export default {
                   .add(this.event)
           }
         });
-                
+*/
       alert("saved to database");
     },
-    getEmail: function () {
-      var email = firebase.auth().currentUser.email;
-      return email
-    }
   },
   created: function () {
     this.fetchItems();

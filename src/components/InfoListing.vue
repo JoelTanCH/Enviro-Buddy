@@ -30,6 +30,8 @@
           ></b-form-textarea>
         </b-form-group>
 
+        <!-- ask users to upload image here -->
+
         <b-button type="submit" variant="secondary" on-click="submit"
           >Submit</b-button
         >
