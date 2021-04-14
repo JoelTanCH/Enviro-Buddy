@@ -109,6 +109,7 @@ export default {
   width: 100%;
   display: flex;
   float: right;
+  z-index:100;
 }
 .icon:hover {
   color: white;
