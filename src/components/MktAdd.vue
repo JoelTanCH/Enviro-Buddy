@@ -10,10 +10,7 @@
             accept="image/*"
             @change="onFilePicked"
           />
-          <img
-            id="imageURL"
-            v-bind:src="placeholderURL"
-          />
+          <img id="imageURL" v-bind:src="placeholderURL" />
         </b-col>
 
         <b-col>
@@ -100,12 +97,14 @@ export default {
   data() {
     return {
       img: null,
-      id:"",
+      id: "",
       item: {
         name: "",
         price: 0,
         description: "",
         img: "", //images url
+        quantitySold: 0,
+        category: "",
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
@@ -136,24 +135,24 @@ export default {
     },
 
     storeInStorage: function () {
-        database
-          .collection("mkt-categories")
-          .doc(this.category.toLowerCase())
-          .collection("items")
-          .add(this.item)
-          .then(function (docRef) {
-            this.id = docRef.id;
-            console.log("step 1 done");
-          })
-        .then(() => 
-          firebase
-            .storage()
-            .ref("marketplace/" + this.category + "/" + this.item.name)
-            .put(this.img))
+      this.item.category = this.category.toLowerCase();
+      database
+        .collection("mkt-categories")
+        .doc(this.category.toLowerCase())
+        .collection("items")
+        .add(this.item)
+        .then(function (docRef) {
+          this.id = docRef.id;
+          console.log("step 1 done");
+        });
+      firebase
+        .storage()
+        .ref("marketplace/" + this.category + "/" + this.item.name)
+        .put(this.img)
         .then((snap) => {
-              console.log("snap currently doing");
-              return snap.ref.getDownloadURL();
-            })
+          console.log("snap currently doing");
+          return snap.ref.getDownloadURL();
+        })
         .then((url) => {
           database
             .collection("mkt-categories")
@@ -164,48 +163,44 @@ export default {
               img: url,
             });
           console.log("database adding done");
-        })
-        .then(() => {
-          this.item.name = "";
-          this.item.price = 0;
-          this.item.description = "";
-          this.item.img = "";
-          this.category = "";
-          this.img = null;
-          console.log("reset everything");
         });
     },
 
     storeInStorage2: function () {
+      this.item.category = this.category.toLowerCase();
       var collectionName = "mkt-categories";
       var subCollectionName = this.category.toLowerCase();
-      var step1 = null;
-      var step2 = null;
-      while (step1 == null && step2 == null){
-        if (step1 == null){
-          firebase
-          .storage()
-          .ref("marketplace/" + this.category + "/" + this.item.name)
-          .put(this.img)
-          .then((snap) => {
-            this.item.img = snap.ref.getDownloadURL();
-            step1 = "done";
-          });
-        }
-        if (step2 == null){
-          if(step1 == null){
-            continue;
-          }else{
-            database
+      var hehe = "";
+      database
+        .collection(collectionName)
+        .doc(subCollectionName)
+        .collection("items")
+        .add(this.item)
+        .then(function (docRef) {
+          hehe = docRef.id;
+          console.log("hehe: " + hehe);
+        });
+      console.log("done add to firebase");
+      console.log("store in storage");
+      firebase
+        .storage()
+        .ref("marketplace/" + this.category + "/" + this.item.name)
+        .put(this.img)
+        .then((snap) => {
+          return snap.ref.getDownloadURL();
+        })
+        .then((url) => {
+          database
             .collection(collectionName)
             .doc(subCollectionName)
             .collection("items")
-            .add(this.item);
-            step2 = "done";
-          }
-        }
-      }},
- 
+            .doc(hehe)
+            .update({
+              img: url,
+            });
+        });
+    },
+
     addToItem: function () {
       console.log("add to item");
       firebase

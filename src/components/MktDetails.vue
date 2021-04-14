@@ -10,6 +10,7 @@
             <h2>{{ item.name }}</h2>
             <h3>$ {{ item.price }}</h3>
             <p>{{ item.description }}</p>
+            <h3>Quantity Sold: {{item.quantitySold}}</h3>
             <br /><br />
             <qty-counter v-on:counter="updateCounter"></qty-counter>
 
@@ -133,6 +134,7 @@ export default {
           orderItem["quantity"] = this.counter;
           orderItem["img"] = this.item.img;
           orderItem["itemid"] = this.itemid; //mkt-details id
+          orderItem["category"] = this.item.category;
 
           //need to change code below to match user's id
           database
