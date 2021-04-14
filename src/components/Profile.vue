@@ -2,7 +2,7 @@
     <div>
         <section class="section">
             <div class="container-fliud">
-                <img alt="Vue logo" class="profpic" contain height="300px" width="300px" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png">
+                <img class="profpic" contain height="300px" width="300px" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png">
                 <h1>{{user.username}}</h1>
                 <h5>{{useremail}}</h5>
                 <b-tabs content-class="mt-3">

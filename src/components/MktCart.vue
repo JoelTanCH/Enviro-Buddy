@@ -93,6 +93,7 @@
 import database from "../firebase.js";
 import firebase from "firebase/app";
 import "firebase/auth";
+
 export default {
     data() {
         return {

@@ -2,18 +2,7 @@
   <body>
     <template v-if="show">
       <b-form v-on:submit="submit" id="form">
-        <b-form-group
-          id="username"
-          label="Username"
-          label-for="user-name-input"
-        >
-          <b-form-input
-            id="username"
-            v-model="item.username"
-            type="text"
-            placeholder="Enter username"
-          ></b-form-input>
-        </b-form-group>
+        
         <b-form-group
           id="item-name"
           label="Item Name"
@@ -46,6 +35,7 @@
         >
       </b-form>
       <br />
+
     </template>
     <div>
       <div>
@@ -134,8 +124,10 @@ export default {
       collectionName: "",
       subCollectionName: "", //  crafts/outside/workshop
       show: false,
+      userInfo: {},
       item: {
-        username: "",
+        email: null,
+        username: null,
         name: "",
         description: "",
         img: "",
@@ -147,8 +139,8 @@ export default {
   },
   methods: {
     submit: function () {
-      var email = firebase.auth().currentUser.email;
-      console.log(email);
+      this.item.username = this.userInfo.username;
+
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
@@ -156,14 +148,32 @@ export default {
         .add(this.item);
       alert("Post has been submitted");
 
-      database.collection("users").doc(email).collection("info").add(this.item);
+      database.collection("users").doc(this.item.email).collection("info").add(this.item);
       alert("post saved to firebase");
+
+      //reset item
+      this.item.email = null;
+      this.item.username = null;
+      this.item.name = null;
+      this.item.description = null;
+      this.item.img = null;
     },
     fetchItems: function () {
       this.collectionName = "info-categories";
       this.subCollectionName = this.$route.name.toLowerCase();
-      console.log(this.subCollectionName);
 
+      //for retrieving username from currentUser email
+      let currentUser = firebase.auth().currentUser;
+      this.item.email = currentUser.email;
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .get()
+        .then(snapshot => {
+          this.userInfo = snapshot.data()
+        });
+
+      //for retrieving infohub listings
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
