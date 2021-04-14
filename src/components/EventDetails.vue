@@ -78,6 +78,7 @@ export default {
       collectionName: "",
       subCollectionName: "",
       eventid: "",
+      repeated: false,
       signupInfo: {
         name: "",
         contact: "",
@@ -102,23 +103,10 @@ export default {
     signUp: function () {
       this.signupInfo.email = firebase.auth().currentUser.email;
 
-      //add user sign up info to indiv events
-      database
-        .collection(this.collectionName)
-        .doc(this.subCollectionName)
-        .collection("events")
-        .doc(this.eventid)
-        .collection("signups")
-        .add(this.signupInfo)
-
-      //add to user's registered events for profile page
       database
         .collection("users")
         .doc(this.signupInfo.email)
         .collection("events")
-        .add(this.event)
-      
-/*
         .get()
         .then((querySnapShot) => {
           if (querySnapShot.docs.length>0) {
@@ -126,24 +114,42 @@ export default {
             querySnapShot.forEach((doc) => {
               item = doc.data();
               if (item.name == this.event.name) {
+                this.repeated = true;
                 alert("You have already registered for this event previously");
-              } else {
-                database
-                  .collection("users")
-                  .doc(this.getEmail())
-                  .collection("events")
-                  .add(this.event)
               }
             });
+            if (!this.repeated) {
+              database
+              .collection("users")
+              .doc(firebase.auth().currentUser.email)
+              .collection("events")
+              .add(this.event)
+            //add user sign up info to indiv events
+            database
+              .collection(this.collectionName)
+              .doc(this.subCollectionName)
+              .collection("events")
+              .doc(this.eventid)
+              .collection("signups")
+              .add(this.signupInfo)
+            }
           } else {
             database
-                  .collection("users")
-                  .doc(this.getEmail())
-                  .collection("events")
-                  .add(this.event)
+              .collection("users")
+              .doc(firebase.auth().currentUser.email)
+              .collection("events")
+              .add(this.event)
+            //add user sign up info to indiv events
+            database
+              .collection(this.collectionName)
+              .doc(this.subCollectionName)
+              .collection("events")
+              .doc(this.eventid)
+              .collection("signups")
+              .add(this.signupInfo)
           }
         });
-*/
+
       alert("saved to database");
     },
   },
