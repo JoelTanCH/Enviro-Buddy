@@ -1,33 +1,64 @@
 <template>
-    <div>
-        <section class="section">
-            <div class="container-fliud">
-                <img class="profpic" contain height="300px" width="300px" src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png">
-                <h1>{{user.username}}</h1>
-                <h5>{{useremail}}</h5>
-                <b-tabs content-class="mt-3">
-                  <b-tab title="Items Posted" active><p>Items lmao</p></b-tab>
-                  <b-tab title="Events Registered" active>
-                      <ul>
-                        <li v-for="item in eventslist" v-bind:key="item.name">
-                            <div class="top-box">
-                                <div class="username">{{ item.name }}</div>
-                                <div class="description">{{ item.description }}</div>
-                            </div>
-                            <img v-bind:src="item.img" />
-                            <div class="price"> Location: {{ item.location }}</div>
-                            <div class="price"> Time: {{ item.time }}</div>
-                        </li>
-                    </ul>
-                  </b-tab>
-                  <b-tab title="Purchase History" active><p>Purchase History</p></b-tab>
-                  <b-tab title="Infohub Posts" active><p>Infohub Posts</p></b-tab>
-                </b-tabs>
-            </div>
-        </section>
+  <div>
+    <section class="section">
+      <div class="container-fliud">
         
+        <img
+          class="profpic"
+          contain
+          height="300px"
+          width="300px"
+          src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+        />
+        <h1>{{ this.user.username }}</h1>
+        <h5>{{ this.email }}</h5>
 
-    </div>
+        <b-tabs content-class="mt-3">
+
+          <b-tab title="My Marketplace Listings" active></b-tab>
+
+          <b-tab title="My Events" active>
+            <ul>
+              <li v-for="event in eventlist" v-bind:key="event.name">
+                <div>
+                  <h2>{{ event.name }}</h2>
+                  <div>{{ event.date.toDate() }}</div>
+                  <div>Location: {{ event.location }}</div>
+                  <img v-bind:src="event.img" />
+                </div>
+              </li>
+            </ul>
+          </b-tab>
+
+          <b-tab title="My Purchase History" active>
+            <ul>
+              <li v-for="item in mktlist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div>$ {{ item.price }} / item</div>
+                  <div>Quantity: {{ item.quantity }}</div>
+                  <img v-bind:src="item.img" />
+                </div>
+              </li>
+            </ul>
+          </b-tab>
+
+          <b-tab title="My Infohub Posts" active>
+            <ul>
+              <li v-for="item in infolist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div class="description">{{ item.description }}</div>
+                </div>
+                <img v-bind:src="item.img" />
+              </li>
+            </ul>
+          </b-tab>
+
+        </b-tabs>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -39,39 +70,72 @@ export default {
   data() {
     return {
       user: {},
-      useremail: "",
+      email: null,
       mktlist: [],
       infolist: [],
-      eventslist: [],
+      eventlist: [],
       collectionName: "",
-      subCollectionName: ""
+      subCollectionName: "",
     };
   },
   methods: {
     fetchItems: function () {
-      database
-        .collection("users")
-        .doc(firebase.auth().currentUser.email)
-        .get()
-        .then((snapshot) => (this.user = snapshot.data()));
-      this.useremail = firebase.auth().currentUser.email;
+      let currentUser = firebase.auth().currentUser;
       this.collectionName = this.$route.params.collectionName;
       this.subCollectionName = this.$route.params.subCollectionName;
 
       database
         .collection("users")
-        .doc(firebase.auth().currentUser.email)
+        .doc(currentUser.email)
+        .get()
+        .then((snapshot) => (this.user = snapshot.data()));
+      
+      this.email = currentUser.email;
+
+      //for eventlist
+      database
+        .collection("users")
+        .doc(currentUser.email)
         .collection("events")
         .get()
         .then((snapshot) => {
-          let event = [];
+          let event = {};
           snapshot.forEach((doc) => {
             event = doc.data();
             event.id = doc.id;
-            this.eventslist.push(event);
+            this.eventlist.push(event);
           });
         });
-        
+
+      //for mktlist
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .collection("mkt-history")
+        .get()
+        .then((snapshot) => {
+          let item = {};
+          snapshot.forEach((doc) => {
+            item = doc.data();
+            item.id = doc.id;
+            this.mktlist.push(item);
+          });
+        });
+
+      //for infolist
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .collection("info")
+        .get()
+        .then((snapshot) => {
+          let item = {};
+          snapshot.forEach((doc) => {
+            item = doc.data();
+            item.id = doc.id;
+            this.infolist.push(item);
+          });
+        });
     },
   },
   created: function () {
@@ -84,8 +148,8 @@ export default {
 
 <style lang="css" scoped>
 .profpic {
-    border-radius: 50%;
-    width: 26%
+  border-radius: 50%;
+  width: 26%;
 }
 body {
   background-color: #f2edd7;
