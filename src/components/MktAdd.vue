@@ -90,12 +90,14 @@
 <script>
 import database from "../firebase.js";
 import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
     return {
-      imageURL: "",
+      userInfo: {},
       item: {
+        username: "",
         name: "",
         price: 0,
         description: "",
@@ -110,6 +112,16 @@ export default {
     };
   },
   methods: {
+    fetchUserInfo: function() {
+      let currentUser = firebase.auth().currentUser;
+
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .get()
+        .then((snapshot) => (this.userInfo = snapshot.data()))
+    },
+
     onPickFile() {
       this.$refs.fileInput.click();
     },
@@ -163,6 +175,7 @@ export default {
         }
         
         this.item.img = preview.src
+        this.item.username = this.userInfo.username
 
         database
           .collection("mkt-categories")
@@ -178,6 +191,9 @@ export default {
       //route back to mkt-categories
     },
   },
+  created: function() {
+    this.fetchUserInfo();
+  }
 };
 </script>
 
