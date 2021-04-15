@@ -38,6 +38,9 @@ myRouter.beforeEach(async(to, from, next) => {
     if (!noAuth && !await firebase.getCurrentUser()) {
         alert("Please Signup or Login First")
         next({ path: '/' });
+    } else if (noAuth && await firebase.getCurrentUser()) {
+        alert("Please Logout First")
+        next({ path: '/mkt-category'});
     } else {
 
         next();
