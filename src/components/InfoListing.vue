@@ -173,7 +173,7 @@ export default {
       //create storage ref
       var storageRef = firebase
         .storage()
-        .ref("marketplace/" + new Date() + "-" + file.name); //can create a storage for infohub
+        .ref("infohub/" + new Date() + "-" + file.name); //can create a storage for infohub
 
       //upload file
       var task = storageRef.put(file);
@@ -215,30 +215,24 @@ export default {
       this.item.img = preview.src;
       this.item.username = this.userInfo.username;
 
-      console.log("this.item: "+this.item);
+      console.log("this.item: " + this.item);
 
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
         .collection("items")
-        .add(this.item);
-      alert("Post has been submitted");
-
-      database
-        .collection("users")
-        .doc(this.item.email)
-        .collection("info")
-        .add(this.item);
-      alert("post saved to firebase");
-
-      //reset item
-      this.item.email = null;
-      this.item.username = null;
-      this.item.name = null;
-      this.item.description = null;
-      this.item.img = null;
-
-      location.reload()
+        .add(this.item)
+        .then(() => {
+          database
+            .collection("users")
+            .doc(this.item.email)
+            .collection("info")
+            .add(this.item)
+            .then(() => {
+              location.reload();
+            });
+        });
+      alert("Post is saved!");
     },
     fetchItems: function () {
       this.collectionName = "info-categories";
