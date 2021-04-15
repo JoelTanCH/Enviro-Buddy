@@ -2,7 +2,6 @@
   <div>
     <section class="section">
       <div class="container-fliud">
-        
         <img
           class="profpic"
           contain
@@ -14,8 +13,18 @@
         <h5>{{ this.email }}</h5>
 
         <b-tabs content-class="mt-3">
-
-          <b-tab title="My Marketplace Listings" active></b-tab>
+          <b-tab title="My Marketplace Listings" active>
+            <ul>
+              <li v-for="item in mymktlist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div>$ {{ item.price }} / item</div>
+                  <div>Quantity Sold: {{ item.quantitySold }}</div>
+                  <img v-bind:src="item.img" />
+                </div>
+              </li>
+            </ul>
+          </b-tab>
 
           <b-tab title="My Events" active>
             <ul>
@@ -32,7 +41,7 @@
 
           <b-tab title="My Purchase History" active>
             <ul>
-              <li v-for="item in mktlist" v-bind:key="item.name">
+              <li v-for="item in purchasedlist" v-bind:key="item.name">
                 <div>
                   <h2>{{ item.name }}</h2>
                   <div>$ {{ item.price }} / item</div>
@@ -54,7 +63,6 @@
               </li>
             </ul>
           </b-tab>
-
         </b-tabs>
       </div>
     </section>
@@ -71,7 +79,8 @@ export default {
     return {
       user: {},
       email: null,
-      mktlist: [],
+      mymktlist: [],
+      purchasedlist: [],
       infolist: [],
       eventlist: [],
       collectionName: "",
@@ -89,7 +98,7 @@ export default {
         .doc(currentUser.email)
         .get()
         .then((snapshot) => (this.user = snapshot.data()));
-      
+
       this.email = currentUser.email;
 
       //for eventlist
@@ -107,7 +116,7 @@ export default {
           });
         });
 
-      //for mktlist
+      //for purchaselist
       database
         .collection("users")
         .doc(currentUser.email)
@@ -118,7 +127,22 @@ export default {
           snapshot.forEach((doc) => {
             item = doc.data();
             item.id = doc.id;
-            this.mktlist.push(item);
+            this.purchasedlist.push(item);
+          });
+        });
+
+      //for mymktlist
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .collection("my-mkt-list")
+        .get()
+        .then((snapshot) => {
+          let item = {};
+          snapshot.forEach((doc) => {
+            item = doc.data();
+            item.id = doc.id;
+            this.mymktlist.push(item);
           });
         });
 
