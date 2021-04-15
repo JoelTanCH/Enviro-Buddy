@@ -3,20 +3,13 @@
     <b-container>
       <b-row>
         <b-col>
-          <input
-            type="file"
-            style="display: none"
-            ref="fileInput"
-            accept="image/*"
-            @change="onFilePicked"
-          />
-          <img id="imageURL" v-bind:src="placeholderURL" />
+          <img v-bind:src="placeholderURL" id="previewImage"/>
         </b-col>
 
         <b-col>
           <h1>Add Listing</h1>
 
-          <b-form v-on:submit="storeInStorage">
+          <b-form id="form" v-on:submit="submitForm">
             <b-form-group
               id="item-name"
               label="Item Name"
@@ -72,15 +65,20 @@
               ></b-form-input>
             </b-form-group>
 
-            <!-- ask users to upload image file -->
+            <b-form-group>
+              <b-button v-on:click="onPickFile">Upload Image</b-button>
+              <input
+                id="fileButton"
+                type="file"
+                style="display: none"
+                ref="fileInput"
+                accept="image/*"
+                v-on:change="onFilePicked"
+              />
+              <progress value="0" max="100" id="uploader"></progress>
+            </b-form-group>
 
-            <b-button @click="onPickFile">Choose Image</b-button>
-            <b-button
-              type="submit"
-              variant="secondary"
-              v-on:click="storeInStorage"
-              >Submit</b-button
-            >
+            <b-button type="submit" variant="outline-success">Submit</b-button>
           </b-form>
         </b-col>
       </b-row>
@@ -96,8 +94,7 @@ import firebase from "firebase/app";
 export default {
   data() {
     return {
-      img: null,
-      id: "",
+      imageURL: "",
       item: {
         name: "",
         price: 0,
@@ -117,179 +114,68 @@ export default {
       this.$refs.fileInput.click();
     },
     onFilePicked: function (event) {
-      const files = event.target.files;
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        document.getElementById("imageURL").src = fileReader.result;
-        this.img = files[0];
-      });
-      fileReader.readAsDataURL(files[0]);
-      this.img = files[0]; //file object
-    },
-    view: function () {
-      var storageRef = firebase.storage().ref();
-      storageRef
-        .child("marketplace/" + this.category + "/" + this.item.name)
-        .getDownloadURL()
-        .then((url) => alert(url));
-    },
+      const file = event.target.files[0];
 
-    storeInStorage: function () {
-      this.item.category = this.category.toLowerCase();
-      database
-        .collection("mkt-categories")
-        .doc(this.category.toLowerCase())
-        .collection("items")
-        .add(this.item)
-        .then(function (docRef) {
-          this.id = docRef.id;
-          console.log("step 1 done");
-        });
-      firebase
+      var uploader = document.getElementById("uploader");
+      var preview = document.getElementById("previewImage");
+
+      //create storage ref
+      var storageRef = firebase
         .storage()
-        .ref("marketplace/" + this.category + "/" + this.item.name)
-        .put(this.img)
-        .then((snap) => {
-          console.log("snap currently doing");
-          return snap.ref.getDownloadURL();
-        })
-        .then((url) => {
-          database
-            .collection("mkt-categories")
-            .doc(this.category.toLowerCase())
-            .collection("items")
-            .doc(this.id)
-            .update({
-              img: url,
-            });
-          console.log("database adding done");
-        });
-    },
+        .ref("marketplace/" + new Date() + "-" + file.name);
 
-    storeInStorage2: function () {
-      this.item.category = this.category.toLowerCase();
-      var collectionName = "mkt-categories";
-      var subCollectionName = this.category.toLowerCase();
-      var hehe = "";
-      database
-        .collection(collectionName)
-        .doc(subCollectionName)
-        .collection("items")
-        .add(this.item)
-        .then(function (docRef) {
-          hehe = docRef.id;
-          console.log("hehe: " + hehe);
-        });
-      console.log("done add to firebase");
-      console.log("store in storage");
-      firebase
-        .storage()
-        .ref("marketplace/" + this.category + "/" + this.item.name)
-        .put(this.img)
-        .then((snap) => {
-          return snap.ref.getDownloadURL();
-        })
-        .then((url) => {
-          database
-            .collection(collectionName)
-            .doc(subCollectionName)
-            .collection("items")
-            .doc(hehe)
-            .update({
-              img: url,
-            });
-        });
-    },
+      //upload file
+      var task = storageRef.put(file);
 
-    addToItem: function () {
-      console.log("add to item");
-      firebase
-        .storage()
-        .ref()
-        .child("marketplace/" + this.category + "/" + this.item.name)
-        .getDownloadURL()
-        .then((url) => {
-          this.item.img = url;
-          console.log(url);
-        });
-    },
-    addToFirebase: function () {
-      console.log("add to firebase");
-      var collectionName = "mkt-categories";
-      var subCollectionName = this.category.toLowerCase();
-      database
-        .collection(collectionName)
-        .doc(subCollectionName)
-        .collection("items")
-        .add(this.item);
-      console.log("done add to firebase");
-    },
+      //update progress bar
+      task.on(
+        "state_changed",
 
-    addItem: function () {
-      if (
-        this.item.name.length == 0 ||
-        this.item.price == 0 ||
-        this.item.description == 0 ||
-        this.category.length == null
-      ) {
-        alert("please fill in required details");
-      } else if (this.img == null) {
-        alert("please upload an image");
-      } else {
-        var collectionName = "mkt-categories";
-        var subCollectionName = this.category.toLowerCase();
-        firebase
-          .storage()
-          .ref("marketplace/" + this.category + "/" + this.item.name)
-          .put(this.img);
-        firebase
-          .storage()
-          .ref("marketplace/" + this.category + "/" + this.item.name)
-          .getDownloadURL()
-          .then((url) => {
-            this.item.img = url;
-            console.log(url);
+        function (snapshot) {
+          var percentage =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          uploader.value = percentage;
+        },
+
+        //handle errors here
+        function(error) {
+          console.log(error.message);
+        },
+
+        //handle successful uploads on complete
+        function() {
+          task.snapshot.ref.getDownloadURL().then(function(storageURL) {
+            preview.src = storageURL
+            console.log(preview.src)
           })
+        }
+      );
+    },
+
+    submitForm: function (event) {
+        event.preventDefault()
+
+        var preview = document.getElementById("previewImage")
+
+        if (preview.src == this.placeholderURL) { //not updated yet
+          alert("Submission failed. Please wait for your image upload to complete.")
+          return
+        }
+        
+        this.item.img = preview.src
+
+        database
+          .collection("mkt-categories")
+          .doc(this.category.toLowerCase())
+          .collection("items")
+          .add(this.item)
           .then(() => {
-            database
-              .collection(collectionName)
-              .doc(subCollectionName)
-              .collection("items")
-              .add(this.item);
-          });
-        //  alert('end storing')
-        // var collectionName = "mkt-categories";
-        // var subCollectionName = this.category.toLowerCase();
-        // database
-        //   .collection(collectionName)
-        //   .doc(subCollectionName)
-        //   .collection("items")
-        //   .add(this.item);
+              alert("Your item has been uploaded!")
+              window.location.href = "/mkt-listing/" + this.category.toLowerCase();
+            })
 
-        //       alert(this.item.name + " saved to database")
-        //       this.$refs.checker.click()
-
-        //store path to redirect users to respective categories to view their new lisitng
-        //     var newPath = "mkt-listing/" + subCollectionName;
-
-        //reset
-        //     this.item.name = "";
-        //     this.item.price = 0;
-        //     this.item.description = "";
-        //     this.category = "";
-
-        //     this.$router.push({ path: newPath });
-
-        /* to get firebase username
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        database.collection("users").doc(user.email).get().then((doc) =>{
-          var username = doc.data().username
-        }) 
-      }
-    })
-*/
-      }
+      //reset all fields
+      //route back to mkt-categories
     },
   },
 };
