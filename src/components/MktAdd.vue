@@ -177,6 +177,11 @@ export default {
         this.item.img = preview.src
         this.item.username = this.userInfo.username
 
+        let currentUser = firebase.auth().currentUser;
+
+        //add to user's "My Listings" on profile page
+        database.collection("users").doc(currentUser.email).collection("my-mkt-list").add(this.item);
+
         database
           .collection("mkt-categories")
           .doc(this.category.toLowerCase())
