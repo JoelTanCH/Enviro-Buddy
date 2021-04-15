@@ -94,6 +94,7 @@ export default {
   data() {
     return {
       email: "",
+      updateQuantitySoldList: [],
       itemList: [],
       subtotal: 0,
       shipping: 0,
@@ -113,9 +114,13 @@ export default {
               let item = {};
               querySnapshot.forEach((doc) => {
                 item = doc.data();
+                //       console.log(item); //delete
                 item.id = doc.id;
                 this.itemList.push(item);
               });
+              this.updateQuantitySold();
+              console.log(this.itemList);
+              console.log("quantity sold list: "+ this.updateQuantitySoldList);
             });
         } else {
           console.log("Error");
@@ -123,7 +128,24 @@ export default {
       });
     },
 
+    updateQuantitySold: function () {
+      for (var i = 0; i < this.itemList.length; i++) {
+        this.updateQuantitySoldList.push([
+          this.itemList[i].category,
+          this.itemList[i].quantity,
+          this.itemList[i].id, //use as identifier
+          this.itemList[i].itemid
+        ]);
+      }
+    },
+
     updateQuantity: function (itemID, newQuantity) {
+      //itemID = M89322ni2ue98h2
+      for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
+        if (itemID == this.updateQuantitySoldList[i][2]) {
+          this.updateQuantitySoldList[i][1] = newQuantity;
+        }
+      }
       let currentUser = firebase.auth().currentUser;
       database
         .collection("users")
@@ -165,6 +187,21 @@ export default {
       }
     },
     addtoPurchaseHistory: function () {
+
+      for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
+        var category = this.updateQuantitySoldList[i][0];
+        var newQuantity = this.updateQuantitySoldList[i][1];
+        var docId = this.updateQuantitySoldList[i][3];
+
+        database
+          .collection("mkt-categories")
+          .doc(category)
+          .collection("items")
+          .doc(docId)
+          .update({
+            quantitySold: newQuantity,
+          });
+      }
       let currentUser = firebase.auth().currentUser;
 
       const ordersRef = database
@@ -172,10 +209,12 @@ export default {
         .doc(currentUser.email)
         .collection("orders");
 
-    const histRef = database
+      const histRef = database
         .collection("users")
         .doc(currentUser.email)
         .collection("mkt-history");
+
+      //update quantity of that item sold
 
       //add to purchase history for profile page
       ordersRef.onSnapshot((snapshot) => {
@@ -187,7 +226,7 @@ export default {
       //clear current user's orders
       ordersRef.onSnapshot((snapshot) => {
         snapshot.docs.forEach((doc) => {
-        ordersRef.doc(doc.id).delete();
+          ordersRef.doc(doc.id).delete();
         });
       });
 

@@ -99,7 +99,9 @@ export default {
         name: "",
         price: 0,
         description: "",
-        img: null,
+        img: "", //images url
+        quantitySold: 0,
+        category: "",
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
@@ -174,7 +176,6 @@ export default {
 
       //reset all fields
       //route back to mkt-categories
-      // }
     },
   },
 };
