@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       email: "",
-      updateQuantitySoldList: [],
+      updateQuantitySoldList: [], //[0] = category, [1] = quantity, [2] = id in mkt-categories, [3] = itemid, [4] = email]
       itemList: [],
       subtotal: 0,
       shipping: 0,
@@ -114,13 +114,16 @@ export default {
               let item = {};
               querySnapshot.forEach((doc) => {
                 item = doc.data();
-                //       console.log(item); //delete
                 item.id = doc.id;
                 this.itemList.push(item);
+                // console.log('item id: ' + item.id);
+                // console.log('item item id: ' + item.itemid);
+                // console.log('quantity: ' + item.quantity);
+                // console.log('item category: ' + item.category);
+                console.log("doc ref: " + item.userdocRef);
               });
               this.updateQuantitySold();
-              console.log(this.itemList);
-              console.log("quantity sold list: "+ this.updateQuantitySoldList);
+              //  console.log("quantity sold list: "+ this.updateQuantitySoldList);
             });
         } else {
           console.log("Error");
@@ -131,19 +134,21 @@ export default {
     updateQuantitySold: function () {
       for (var i = 0; i < this.itemList.length; i++) {
         this.updateQuantitySoldList.push([
-          this.itemList[i].category,
+          this.itemList[i].category, //currently empty
           this.itemList[i].quantity,
           this.itemList[i].id, //use as identifier
-          this.itemList[i].itemid
+          this.itemList[i].itemid,
+          this.itemList[i].email,
+          this.itemList[i].userdocRef,
         ]);
       }
+      console.log("sold list: " + this.updateQuantitySoldList);
     },
 
     updateQuantity: function (itemID, newQuantity) {
-      //itemID = M89322ni2ue98h2
       for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
         if (itemID == this.updateQuantitySoldList[i][2]) {
-          this.updateQuantitySoldList[i][1] = newQuantity;
+          this.updateQuantitySoldList[i][1] = newQuantity; //updateQuantitySoldList most updated qty sold
         }
       }
       let currentUser = firebase.auth().currentUser;
@@ -187,21 +192,36 @@ export default {
       }
     },
     addtoPurchaseHistory: function () {
-
       for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
         var category = this.updateQuantitySoldList[i][0];
         var newQuantity = this.updateQuantitySoldList[i][1];
-        var docId = this.updateQuantitySoldList[i][3];
+        var mktdocId = this.updateQuantitySoldList[i][3];
+        var email = this.updateQuantitySoldList[i][4];
+        var userdocRef = this.updateQuantitySoldList[i][5]; //change
+        console.log("category: " + category);
+        console.log("newQuantity: " + newQuantity);
+        console.log("docId: " + userdocRef);
+        console.log("email: " + email);
 
         database
           .collection("mkt-categories")
           .doc(category)
           .collection("items")
-          .doc(docId)
+          .doc(mktdocId)
+          .update({
+            quantitySold: newQuantity,
+          });
+
+        database
+          .collection("users")
+          .doc(email)
+          .collection("my-mkt-list")
+          .doc(userdocRef)
           .update({
             quantitySold: newQuantity,
           });
       }
+
       let currentUser = firebase.auth().currentUser;
 
       const ordersRef = database
@@ -214,7 +234,11 @@ export default {
         .doc(currentUser.email)
         .collection("mkt-history");
 
-      //update quantity of that item sold
+      //find the new quantity
+
+      //find item's email
+
+      //access the collection("users").doc("email").collection("my-mkt-list").doc(doc id).update
 
       //add to purchase history for profile page
       ordersRef.onSnapshot((snapshot) => {

@@ -1,43 +1,62 @@
 <template>
   <body>
     <template v-if="show">
-      <b-form v-on:submit="submit" id="form">
-        
-        <b-form-group
-          id="item-name"
-          label="Item Name"
-          label-for="item-name-input"
-        >
-          <b-form-input
-            id="item-name"
-            v-model="item.name"
-            type="text"
-            placeholder="Enter item name"
-          ></b-form-input>
-        </b-form-group>
+      <b-container>
+        <b-row>
+          <b-col>
+            <img v-bind:src="placeholderURL" id="previewImage" />
+          </b-col>
+          <b-col>
+            <b-form v-on:submit="submit" id="form">
+              <b-form-group
+                id="item-name"
+                label="Item Name"
+                label-for="item-name-input"
+              >
+                <b-form-input
+                  id="item-name"
+                  v-model="item.name"
+                  type="text"
+                  placeholder="Enter item name"
+                ></b-form-input>
+              </b-form-group>
 
-        <b-form-group
-          id="item-description"
-          label="Item Description"
-          label-for="item-description-input"
-        >
-          <b-form-textarea
-            id="item-description"
-            v-model="item.description"
-            placeholder="Enter item description"
-            rows="3"
-            max-rows="8"
-          ></b-form-textarea>
-        </b-form-group>
+              <b-form-group
+                id="item-description"
+                label="Item Description"
+                label-for="item-description-input"
+              >
+                <b-form-textarea
+                  id="item-description"
+                  v-model="item.description"
+                  placeholder="Enter item description"
+                  rows="3"
+                  max-rows="8"
+                ></b-form-textarea>
+              </b-form-group>
 
-        <!-- ask users to upload image here -->
+              <!-- ask users to upload image here -->
+              <b-form-group>
+                <b-button v-on:click="onPickFile">Upload Image</b-button>
+                <input
+                  id="fileButton"
+                  type="file"
+                  style="display: none"
+                  ref="fileInput"
+                  accept="image/*"
+                  v-on:change="onFilePicked"
+                />
+                <progress value="0" max="100" id="uploader"></progress>
+              </b-form-group>
 
-        <b-button type="submit" variant="secondary" on-click="submit"
-          >Submit</b-button
-        >
-      </b-form>
-      <br />
-
+              <b-button type="submit" variant="secondary" on-click="submit"
+                >Submit</b-button
+              >
+            </b-form>
+          </b-col>
+          <br />
+        </b-row>
+      </b-container>
     </template>
     <div>
       <div>
@@ -121,6 +140,8 @@ import "firebase/auth";
 export default {
   data() {
     return {
+      placeholderURL:
+        "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       itemList: [],
       searchList: null,
       collectionName: "",
@@ -132,7 +153,7 @@ export default {
         username: null,
         name: "",
         description: "",
-        img: "",
+        img: "", //images url
       },
       search: {
         text: "",
@@ -140,25 +161,78 @@ export default {
     };
   },
   methods: {
-    submit: function () {
+    onPickFile() {
+      this.$refs.fileInput.click();
+    },
+    onFilePicked: function (event) {
+      const file = event.target.files[0];
+
+      var uploader = document.getElementById("uploader");
+      var preview = document.getElementById("previewImage");
+
+      //create storage ref
+      var storageRef = firebase
+        .storage()
+        .ref("infohub/" + new Date() + "-" + file.name); //can create a storage for infohub
+
+      //upload file
+      var task = storageRef.put(file);
+
+      //update progress bar
+      task.on(
+        "state_changed",
+
+        function (snapshot) {
+          var percentage =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          uploader.value = percentage;
+        },
+
+        //handle errors here
+        function (error) {
+          console.log(error.message);
+        },
+
+        //handle successful uploads on complete
+        function () {
+          task.snapshot.ref.getDownloadURL().then(function (storageURL) {
+            preview.src = storageURL;
+            console.log(preview.src);
+          });
+        }
+      );
+    },
+    submit: function (event) {
+      event.preventDefault();
+      var preview = document.getElementById("previewImage");
+      if (preview.src == this.placeholderURL) {
+        //not updated yet
+        alert(
+          "Submission failed. Please wait for your image upload to complete."
+        );
+        return;
+      }
+      this.item.img = preview.src;
       this.item.username = this.userInfo.username;
+
+      console.log("this.item: " + this.item);
 
       database
         .collection(this.collectionName)
         .doc(this.subCollectionName)
         .collection("items")
-        .add(this.item);
-      alert("Post has been submitted");
-
-      database.collection("users").doc(this.item.email).collection("info").add(this.item);
-      alert("post saved to firebase");
-
-      //reset item
-      this.item.email = null;
-      this.item.username = null;
-      this.item.name = null;
-      this.item.description = null;
-      this.item.img = null;
+        .add(this.item)
+        .then(() => {
+          database
+            .collection("users")
+            .doc(this.item.email)
+            .collection("info")
+            .add(this.item)
+            .then(() => {
+              location.reload();
+            });
+        });
+      alert("Post is saved!");
     },
     fetchItems: function () {
       this.collectionName = "info-categories";
@@ -171,8 +245,8 @@ export default {
         .collection("users")
         .doc(currentUser.email)
         .get()
-        .then(snapshot => {
-          this.userInfo = snapshot.data()
+        .then((snapshot) => {
+          this.userInfo = snapshot.data();
         });
 
       //for retrieving infohub listings
