@@ -3,7 +3,7 @@
     <b-container>
       <b-row>
         <b-col>
-          <img v-bind:src="placeholderURL" id="previewImage"/>
+          <img v-bind:src="placeholderURL" id="previewImage" />
         </b-col>
 
         <b-col>
@@ -104,6 +104,8 @@ export default {
         img: "", //images url
         quantitySold: 0,
         category: "",
+        userdocRef: null,
+        email:""
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
@@ -112,14 +114,14 @@ export default {
     };
   },
   methods: {
-    fetchUserInfo: function() {
+    fetchUserInfo: function () {
       let currentUser = firebase.auth().currentUser;
 
       database
         .collection("users")
         .doc(currentUser.email)
         .get()
-        .then((snapshot) => (this.userInfo = snapshot.data()))
+        .then((snapshot) => (this.userInfo = snapshot.data()));
     },
 
     onPickFile() {
@@ -150,55 +152,67 @@ export default {
         },
 
         //handle errors here
-        function(error) {
+        function (error) {
           console.log(error.message);
         },
 
         //handle successful uploads on complete
-        function() {
-          task.snapshot.ref.getDownloadURL().then(function(storageURL) {
-            preview.src = storageURL
-            console.log(preview.src)
-          })
+        function () {
+          task.snapshot.ref.getDownloadURL().then(function (storageURL) {
+            preview.src = storageURL;
+            console.log(preview.src);
+          });
         }
       );
     },
 
     submitForm: function (event) {
-        event.preventDefault()
+      event.preventDefault();
 
-        var preview = document.getElementById("previewImage")
+      var preview = document.getElementById("previewImage");
 
-        if (preview.src == this.placeholderURL) { //not updated yet
-          alert("Submission failed. Please wait for your image upload to complete.")
-          return
-        }
-        
-        this.item.img = preview.src
-        this.item.username = this.userInfo.username
+      if (preview.src == this.placeholderURL) {
+        //not updated yet
+        alert(
+          "Submission failed. Please wait for your image upload to complete."
+        );
+        return;
+      }
 
-        let currentUser = firebase.auth().currentUser;
+      this.item.img = preview.src;
+      this.item.username = this.userInfo.username;
+      this.item.category = this.category.toLowerCase();
+      let currentUser = firebase.auth().currentUser;
+      this.item.email = currentUser.email;
 
-        //add to user's "My Listings" on profile page
-        database.collection("users").doc(currentUser.email).collection("my-mkt-list").add(this.item);
-
-        database
-          .collection("mkt-categories")
-          .doc(this.category.toLowerCase())
-          .collection("items")
-          .add(this.item)
-          .then(() => {
-              alert("Your item has been uploaded!")
-              window.location.href = "/mkt-listing/" + this.category.toLowerCase();
-            })
+      //add to user's "My Listings" on profile page
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .collection("my-mkt-list")
+        .add(this.item)
+        .then((docRef) => {
+          this.item.userdocRef = docRef.id;
+        })
+        .then(() => {
+          database
+            .collection("mkt-categories")
+            .doc(this.category.toLowerCase())
+            .collection("items")
+            .add(this.item);
+        })
+        .then(() => {
+          alert("Your item has been uploaded!");
+          window.location.href = "/mkt-listing/" + this.category.toLowerCase();
+        });
 
       //reset all fields
       //route back to mkt-categories
     },
   },
-  created: function() {
+  created: function () {
     this.fetchUserInfo();
-  }
+  },
 };
 </script>
 

@@ -6,6 +6,7 @@
           id="profile-pic"
           src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
         />
+
       </div>
 
       <h1>{{ this.user.username }}</h1>
@@ -77,6 +78,7 @@ import "firebase/auth";
 export default {
   data() {
     return {
+      quantitySold:[],
       user: {},
       email: null,
       mymktlist: [],
@@ -89,6 +91,7 @@ export default {
   },
   methods: {
     fetchItems: function () {
+
       let currentUser = firebase.auth().currentUser;
       this.collectionName = this.$route.params.collectionName;
       this.subCollectionName = this.$route.params.subCollectionName;
@@ -128,6 +131,8 @@ export default {
             item = doc.data();
             item.id = doc.id;
             this.purchasedlist.push(item);
+            this.quantitySold.push(item.quantity)
+            console.log("quantity: " + item.quantity)
           });
         });
 

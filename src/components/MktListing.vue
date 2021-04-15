@@ -111,6 +111,7 @@ export default {
             }
             item.id = doc.id;
             this.itemList.push(item);
+            console.log(item)
           });
         });
     },
