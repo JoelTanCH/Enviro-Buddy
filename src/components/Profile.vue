@@ -19,7 +19,9 @@
                 <div>
                   <h2>{{ item.name }}</h2>
                   <div>$ {{ item.price }} / item</div>
+
                   <div>Quantity Sold: {{ item.quantitySold }}</div>
+
                   <img v-bind:src="item.img" />
                 </div>
               </li>
@@ -45,7 +47,7 @@
                 <div>
                   <h2>{{ item.name }}</h2>
                   <div>$ {{ item.price }} / item</div>
-                  <div>Quantity: {{ item.quantity }}</div>
+                  <div>Quantity Sold: {{ item.quantity }}</div>
                   <img v-bind:src="item.img" />
                 </div>
               </li>
@@ -77,6 +79,7 @@ import "firebase/auth";
 export default {
   data() {
     return {
+      quantitySold:[],
       user: {},
       email: null,
       mymktlist: [],
@@ -89,6 +92,7 @@ export default {
   },
   methods: {
     fetchItems: function () {
+
       let currentUser = firebase.auth().currentUser;
       this.collectionName = this.$route.params.collectionName;
       this.subCollectionName = this.$route.params.subCollectionName;
@@ -128,6 +132,8 @@ export default {
             item = doc.data();
             item.id = doc.id;
             this.purchasedlist.push(item);
+            this.quantitySold.push(item.quantity)
+            console.log("quantity: " + item.quantity)
           });
         });
 

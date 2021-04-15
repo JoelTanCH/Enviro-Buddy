@@ -10,7 +10,7 @@
             <h2>{{ item.name }}</h2>
             <h3>$ {{ item.price }}</h3>
             <p>{{ item.description }}</p>
-            <h3>Quantity Sold: {{item.quantitySold}}</h3>
+            <h3>Quantity Sold: {{ item.quantitySold }}</h3>
             <br /><br />
             <qty-counter v-on:counter="updateCounter"></qty-counter>
 
@@ -81,7 +81,10 @@ export default {
         .collection("items")
         .doc(this.itemid)
         .get()
-        .then((snapshot) => (this.item = snapshot.data()));
+        .then((snapshot) => {
+          this.item = snapshot.data();
+          console.log(this.item);
+        });
 
       //get existing orders belonging to user
       database
@@ -127,23 +130,35 @@ export default {
         }
 
         if (this.exist == false) {
-          //item does not exist in orders, add item
-          var orderItem = {};
-          orderItem["name"] = this.item.name;
-          orderItem["price"] = this.item.price;
-          orderItem["quantity"] = this.counter;
-          orderItem["img"] = this.item.img;
-          orderItem["itemid"] = this.itemid; //mkt-details id
-          orderItem["category"] = this.item.category;
+          // //item does not exist in orders, add item
+          // var orderItem = {};
+          // orderItem["name"] = this.item.name;
+          // orderItem["price"] = this.item.price;
+          // orderItem["quantity"] = this.counter;
+          // orderItem["img"] = this.item.img;
+          // orderItem["itemid"] = this.itemid; //mkt-details id
+          // orderItem["category"] = this.item.category;
+          // orderItem["email"] = this.item.email; //error cos undefined
+          // console.log("email: " + this.item.email)
+          // orderItem["userdocRef"] = this.item.userdocRef; // error
 
           //need to change code below to match user's id
           database
             .collection("users")
             .doc(currentUser.email)
             .collection("orders")
-            .add(orderItem);
+            .add({
+              name: this.item.name,
+              price: this.item.price,
+              quantity: this.counter,
+              img: this.item.img,
+              itemid: this.itemid, //mkt-details id
+              category: this.item.category,
+              email: this.item.email, //error
+              userdocRef: this.item.userdocRef, // error
+            });
         }
-
+        console.log("error ends here");
         this.success = true;
         //reset counter
         this.counter = 0;
