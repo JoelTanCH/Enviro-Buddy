@@ -19,7 +19,7 @@
             <img v-bind:src="this.user.profilePic" id="previewImage" />
           </b-col>
           <b-form-group>
-            <b-button v-on:click="onPickFile">Preview Image</b-button>
+            <b-button v-on:click="onPickFile">Upload Image</b-button><br>
             <input
               id="fileButton"
               type="file"
@@ -28,7 +28,15 @@
               accept="image/*"
               v-on:change="onFilePicked"
             />
-            <progress value="0" max="100" id="uploader"></progress>
+            <div id="progress-container">
+              <div>Upload status:</div>
+                <progress
+                  id="uploader"
+                  class="right-input"
+                  value="0"
+                  max="100"
+                ></progress>
+              </div>
             <b-button v-on:click="submitPic">Submit</b-button>
           </b-form-group>
         </b-row>
@@ -357,8 +365,8 @@ export default {
 
 <style scoped>
 #profile-pic-container {
-  width: 100px;
-  height: 100px;
+  width: 250px;
+  height: 250px;
   overflow: hidden;
   border-radius: 50%;
 }
@@ -367,6 +375,17 @@ export default {
   margin: 0 auto;
   height: 100%;
   width: auto;
+}
+#previewImage {
+  width: 30vw;
+  height: 30vh;
+  object-fit: contain;
+}
+#progress-container {
+  margin-top: 10px;
+}
+#uploader {
+  background-color: green;
 }
 ul {
   display: flex;
