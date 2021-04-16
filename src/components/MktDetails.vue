@@ -13,18 +13,23 @@
             <h4 class = 'description'>Description</h4>
             <p>{{ item.description }}</p>
             
-            <div class='counter'>
+            <div class='quantity'>
               Quantity:
+            </div>
+            <div class='counter'>
               <qty-counter v-on:counter="updateCounter"></qty-counter>
             </div>
 
-            <b-button
-              class="button"
-              v-b-modal.modalItem
-              v-on:click="sendOrder(item)"
-              variant="outline-success"
-              >Add to Cart</b-button
-            >
+            <div class = 'buttons'>
+              <b-button
+                class="button"
+                v-b-modal.modalItem
+                v-on:click="sendOrder(item)"
+                variant="outline-success"
+                >Add to Cart</b-button
+              >
+              <b-button class="button" href="/mkt-cart" variant="outline-success">View Cart</b-button>
+            </div>
             <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
               <p>Your order has been placed!</p>
 
@@ -41,7 +46,6 @@
                 >View Cart</b-button
               >
             </b-modal>
-            <b-button class="button" href="/mkt-cart" variant="outline-success">View Cart</b-button>
           </b-col>
         </b-row>
       </b-container>
@@ -206,6 +210,19 @@ img {
 }
 .button {
   margin: 10px;
+}
+.buttons {
+  display:flex;
+  justify-content: center;
+}
+.counter {
+  display:flex;
+  justify-content: center;
+}
+.quantity {
+  display:flex;
+  justify-content: center;
+
 }
 
 </style>
