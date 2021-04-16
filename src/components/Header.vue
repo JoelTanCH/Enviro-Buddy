@@ -20,7 +20,12 @@
           </b-nav-item-dropdown>
 
           <b-nav-item href="/event-category">Events</b-nav-item>
-          <b-nav-item href="/info-category">Information Hub</b-nav-item>
+
+          <b-nav-item-dropdown text="Information Hub">
+          <b-dropdown-item href="/info-category">Categories</b-dropdown-item>
+          <b-dropdown-item href="/info-add">Add Post</b-dropdown-item>
+          </b-nav-item-dropdown>
+
           <b-nav-item href="/" v-show="loggedIn == false">
             Sign Up / Login
           </b-nav-item>
