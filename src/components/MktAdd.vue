@@ -179,6 +179,11 @@ export default {
         return;
       }
 
+      if(this.item.price < 0){
+        alert("Price cannot be negative")
+      }
+      else{
+
       this.item.img = preview.src;
       this.item.username = this.userInfo.username;
       this.item.category = this.category.toLowerCase();
@@ -207,7 +212,8 @@ export default {
         });
 
       //reset all fields
-      //route back to mkt-categories
+      //route back to mkt-categoriesF
+      }
     },
   },
   created: function () {
