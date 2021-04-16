@@ -58,9 +58,6 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background-color: #ffe8e8;
-}
 #categoryList {
   width: 100%;
   margin: 30px auto;

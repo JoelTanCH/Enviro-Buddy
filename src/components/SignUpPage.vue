@@ -110,6 +110,7 @@ export default {
                 .then(() =>
                   database.collection("users").doc(this.email).set({
                     username: this.username,
+                    profilePic: "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png"
                   })
                 )
                 .then(() => {
