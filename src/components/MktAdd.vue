@@ -74,7 +74,7 @@
                 ref="fileInput"
                 accept="image/*"
                 v-on:change="onFilePicked"
-              />
+              /><br>
               <progress value="0" max="100" id="uploader"></progress>
             </b-form-group>
 
