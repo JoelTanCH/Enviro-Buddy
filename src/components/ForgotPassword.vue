@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div class="main">
     <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Reset Password</h1>
@@ -61,6 +61,9 @@ export default {
 };
 </script>
 <style scoped>
+.main {
+  height:100vh;
+}
 #logo {
   width: 25%;
   align-items: center;

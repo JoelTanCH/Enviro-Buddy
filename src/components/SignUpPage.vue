@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div class="main">
     <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Sign Up</h1>
@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-#main {
+.main {
   height:100vh;
 }
 #logo {
