@@ -1,8 +1,8 @@
 <template>
     <div>
-        <b-button class="button" v-on:click=decrement()>-</b-button>
+        <b-button class="button" v-on:click=decrement() variant="outline-success">-</b-button>
         <span>{{ counter }}</span>
-        <b-button class="button" v-on:click=increment()>+</b-button>        
+        <b-button class="button" v-on:click=increment() variant="outline-success">+</b-button>        
     </div>
 </template>
 
@@ -32,6 +32,6 @@ export default {
 <style scoped>
 .button {
     display: inline-block;
-    width: 5%;
+    width: 40px;
 }
 </style>

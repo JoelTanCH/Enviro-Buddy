@@ -1,33 +1,34 @@
 <template>
 <body>
   <div>
-    <div id="searchbar-container">
-      <b-form-input
-        v-on:keyup.enter="search_text()"
-        v-model="search.text"
-        type="text"
-        placeholder="Looking for something?"
-      ></b-form-input>
+    <div class = "topContainer">
+      <h2 class = 'subcollection'> {{this.subCollectionName}} </h2>
+      <div id="searchbar-container">
+        <b-form-input
+          v-on:keyup.enter="search_text()"
+          v-model="search.text"
+          type="text"
+          placeholder="Looking for something?"
+        ></b-form-input>
+      </div>
     </div>
 
     <div v-if="searchList == null">
       <div v-if="search.text == ''">
         <ul>
           <li v-for="item in itemList" v-bind:key="item.name">
-            <div class="top-box">
-              <div class="username">{{ item.username }}</div>
-              <h2 class="itemName">{{ item.name }}</h2>
-            </div>
             <img v-bind:src="item.img" />
-            <div class="price">$ {{ item.price }}</div>
-            <div class="description">{{ item.description }}</div>
+            <h4 class="itemName">{{ item.name }}</h4>
+            <div class="price">${{ item.price }}</div>
+            <div class="username">By {{ item.username }}</div> <br>
+            
             <div>
               <b-button
                 v-bind:itemid="item.id"
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
-                variant="outline-danger"
+                variant="outline-success"
               >
                 Details
               </b-button>
@@ -46,20 +47,17 @@
         <div>{{ this.searchList.length }} item(s) found</div>
         <ul>
           <li v-for="item in searchList" v-bind:key="item.name">
-            <div class="top-box">
-              <div class="username">{{ item.username }}</div>
-              <h2 class="itemName">{{ item.name }}</h2>
-            </div>
             <img v-bind:src="item.img" />
-            <div class="price">$ {{ item.price }}</div>
-            <div class="description">{{ item.description }}</div>
+            <h4 class="itemName">{{ item.name }}</h4>
+            <div class="price">${{ item.price }}</div>
+            <div class="username">By {{ item.username }}</div> <br>
             <div>
               <b-button
                 v-bind:itemid="item.id"
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
-                variant="outline-danger"
+                variant="outline-success"
               >
                 Details
               </b-button>
@@ -144,8 +142,17 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background-color: #f2edd7;
+.topContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+.subcollection {
+  text-align: left;
+  margin-left:1%;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-family: "Lucida Sans", sans-serif;
+  font-weight:lighter;
 }
 ul {
   display: flex;
@@ -155,14 +162,14 @@ ul {
 }
 li {
   text-align: center;
-  padding: 1%;
-  border: 1px solid #e48257;
+  /*padding: 1%;
+  border: 1px solid #e48257;*/
   margin: 1%;
   width: 31.3%;
 }
 img {
-  height: 300px;
-  width: 90%;
+  height: 400px;
+  width: 100%;
   object-fit: cover;
 }
 #searchbar-container {
@@ -171,26 +178,39 @@ img {
   margin-left: auto;
 }
 .price {
-  color: #3a6351;
-  font-weight: bold;
+  color:#57585a;
+  font-family: "FKGrotesk",Helvetica,Arial,sans-serif;
   font-size: 20px;
+  width: 100%;
+  text-align: left;
+  margin-left: 5px;
 }
 .itemName {
   overflow: hidden;
-  display: flex;
+  /*display: flex;*/
   line-height: 1.5em;
-  height: 3em;
-  width: 90%;
-  text-align: center;
+  height: 1.5em;
+  width: 100%;
+  text-align: left;
+  font-family: "FKGrotesk",Helvetica,Arial,sans-serif;
+  font-weight:600;
+  margin-top: 5px;
+  margin-left: 5px;
 }
 .username {
-  color: #e48257;
+  color:#57585a;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk",Helvetica,Arial,sans-serif;
 }
-.description {
+/*.description {
   overflow: hidden;
   display: flex;
   line-height: 1.5em;
   height: 4.5em;
   width: 90%;
-}
+} */
 </style>
