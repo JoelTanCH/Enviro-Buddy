@@ -1,65 +1,10 @@
 <template>
   <body>
-    <template v-if="show">
-      <b-container>
-        <b-row>
-          <b-col>
-            <img v-bind:src="placeholderURL" id="previewImage" />
-          </b-col>
-          <b-col>
-            <b-form v-on:submit="submit" id="form">
-              <b-form-group
-                id="item-name"
-                label="Item Name"
-                label-for="item-name-input"
-              >
-                <b-form-input
-                  id="item-name"
-                  v-model="item.name"
-                  type="text"
-                  placeholder="Enter item name"
-                ></b-form-input>
-              </b-form-group>
-
-              <b-form-group
-                id="item-description"
-                label="Item Description"
-                label-for="item-description-input"
-              >
-                <b-form-textarea
-                  id="item-description"
-                  v-model="item.description"
-                  placeholder="Enter item description"
-                  rows="3"
-                  max-rows="8"
-                ></b-form-textarea>
-              </b-form-group>
-
-              <!-- ask users to upload image here -->
-              <b-form-group>
-                <b-button v-on:click="onPickFile">Upload Image</b-button>
-                <input
-                  id="fileButton"
-                  type="file"
-                  style="display: none"
-                  ref="fileInput"
-                  accept="image/*"
-                  v-on:change="onFilePicked"
-                />
-                <progress value="0" max="100" id="uploader"></progress>
-              </b-form-group>
-
-              <b-button type="submit" variant="secondary" on-click="submit"
-                >Submit</b-button
-              >
-            </b-form>
-          </b-col>
-          <br />
-        </b-row>
-      </b-container>
-    </template>
+    
     <div>
       <div>
+        <div class = "topContainer">
+        <h2 class = 'subcollection'> {{this.subCollectionName}} </h2>
         <div id="searchbar-container">
           <b-form-input
             v-on:keyup.enter="search_text()"
@@ -68,9 +13,8 @@
             placeholder="Looking for something?"
           ></b-form-input>
         </div>
-        <b-button type="submit" variant="secondary" v-on:click="show = !show"
-          >Add your ideas</b-button
-        >
+        </div>
+
       </div>
 
       <div v-if="searchList == null">
@@ -300,6 +244,18 @@ export default {
 </script>
 
 <style scoped>
+.topContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+.subcollection {
+  text-align: left;
+  margin-left:1%;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-family: "Lucida Sans", sans-serif;
+  font-weight:lighter;
+}
 ul {
   display: flex;
   flex-wrap: wrap;
