@@ -5,9 +5,7 @@
       <h1>Reset Password</h1>
       <br />
 
-      <div>
-        Please enter the email address of your account:
-      </div>
+      <div>Please enter the email address of your account:</div>
 
       <b-form>
         <b-form-input
@@ -56,8 +54,8 @@ export default {
         .sendPasswordResetEmail(this.email)
         .then(() => (this.email = ""))
         .then(() => alert("Please check your email"))
-        .catch(() => alert("Invalid email"))
-        .then(() => this.$router.push("/login"));
+        .then(() => this.$router.push("/login"))
+        .catch(() => alert("Invalid email"));
     },
   },
 };
