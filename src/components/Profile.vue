@@ -6,7 +6,6 @@
           id="profile-pic"
           src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
         />
-
       </div>
 
       <h1>{{ this.user.username }}</h1>
@@ -28,14 +27,27 @@
           </ul>
         </b-tab>
 
-        <b-tab title="My Events" active>
+        <b-tab title="Events you have signed up for" active>
           <ul>
             <li v-for="event in eventlist" v-bind:key="event.name">
               <div>
                 <h2>{{ event.name }}</h2>
-                <div>{{ event.date.toDate() }}</div>
+                <div>{{ event.date.toDate() }}</div> 
                 <div>Location: {{ event.location }}</div>
                 <img v-bind:src="event.img" />
+              </div>
+            </li>
+          </ul>
+        </b-tab>
+
+        <b-tab title="Events you have requested to host" active> 
+          <ul>
+            <li v-for="event in eventRequestList" v-bind:key="event.name">
+              <div>
+                <h2>{{ event.name }}</h2>
+                <div>Location: {{ event.location }}</div>
+                <img v-bind:src="event.img" />
+                <div>Status: {{event.status}}</div> 
               </div>
             </li>
           </ul>
@@ -78,20 +90,20 @@ import "firebase/auth";
 export default {
   data() {
     return {
-      quantitySold:[],
+      quantitySold: [],
       user: {},
       email: null,
       mymktlist: [],
       purchasedlist: [],
       infolist: [],
       eventlist: [],
+      eventRequestList: [],
       collectionName: "",
       subCollectionName: "",
     };
   },
   methods: {
     fetchItems: function () {
-
       let currentUser = firebase.auth().currentUser;
       this.collectionName = this.$route.params.collectionName;
       this.subCollectionName = this.$route.params.subCollectionName;
@@ -119,6 +131,22 @@ export default {
           });
         });
 
+      //for eventRequestedList
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .collection("requested-events")
+        .get()
+        .then((snapshot) => {
+          let event = {};
+          snapshot.forEach((doc) => {
+            event = doc.data();
+            event.id = doc.id;
+            this.eventRequestList.push(event);
+          });
+          console.log(this.eventRequestList)
+        });
+
       //for purchaselist
       database
         .collection("users")
@@ -131,8 +159,8 @@ export default {
             item = doc.data();
             item.id = doc.id;
             this.purchasedlist.push(item);
-            this.quantitySold.push(item.quantity)
-            console.log("quantity: " + item.quantity)
+            this.quantitySold.push(item.quantity);
+            console.log("quantity: " + item.quantity);
           });
         });
 
