@@ -21,7 +21,7 @@ export default {
   methods: {},
   created: function () {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
+      if (user.emailVerified) {
         this.loggedIn = true;
       } else {
         // No user is signed in.
