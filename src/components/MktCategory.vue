@@ -1,7 +1,7 @@
 <template>
   <body>
     <div>
-      <h1>Category</h1>
+      <h1>Marketplace</h1>
     </div>
     <div id="categoryList">
       <ul>
@@ -60,6 +60,7 @@ h1 {
   color:black;
   font-family:Georgia, Verdana, sans-serif;
   font-weight:500;
+  text-align: center;
 }
 #categoryList {
   width: 100%;
