@@ -199,6 +199,11 @@ export default {
         return;
       }
 
+      if(this.item.price < 0){
+        alert("Price cannot be negative")
+      }
+      else{
+
       this.item.img = preview.src;
       this.item.username = this.userInfo.username;
       this.item.category = this.category.toLowerCase();
@@ -225,6 +230,7 @@ export default {
           alert("Your item has been uploaded!");
           window.location.href = "/mkt-listing/" + this.category.toLowerCase();
         });
+
     },
   },
   created: function () {
