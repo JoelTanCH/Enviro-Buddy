@@ -1,5 +1,6 @@
 <template>
   <body>
+    <h1 class = 'title'> Shopping Cart </h1>
     <div id="mainContainer">
       <b-row>
         <b-col>
@@ -71,13 +72,15 @@
               </tbody>
             </table>
 
-            <b-button
-              class="checkOut"
-              variant="success"
-              v-on:click="addtoPurchaseHistory"
-            >
-              Check Out
-            </b-button>
+            <div class = "buttonContainer">
+              <b-button
+                class="checkOut"
+                variant="success"
+                v-on:click="addtoPurchaseHistory"
+              >
+                Check Out
+              </b-button>
+            </div>
           </b-container>
         </b-col>
       </b-row>
@@ -273,9 +276,14 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background-color: #f2edd7;
+.title {
+  margin-bottom: 20px;
+  text-align: center;
+  color:black;
+  font-family:Georgia, Verdana, sans-serif;
+  font-weight:500;
 }
+
 #leftContainer {
   display: flex;
   align-items: top;
@@ -306,5 +314,9 @@ img {
 .input {
   width: 70px;
   height: 30px;
+}
+.buttonContainer {
+  display:flex;
+  justify-content: center;
 }
 </style>

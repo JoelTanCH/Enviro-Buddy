@@ -1,13 +1,16 @@
 <template>
   <body>
     <div>
-      <div id="searchbar-container">
-        <b-form-input
-          v-on:keyup.enter="search_text()"
-          v-model="search.text"
-          type="text"
-          placeholder="Looking for something?"
-        ></b-form-input>
+      <div class = "topContainer">
+        <h2 class = 'subcollection'> {{this.subCollectionName}} </h2>
+        <div id="searchbar-container">
+          <b-form-input
+            v-on:keyup.enter="search_text()"
+            v-model="search.text"
+            type="text"
+            placeholder="Looking for something?"
+          ></b-form-input>
+        </div>
       </div>
       <div v-if="searchList == null">
         <div v-if="search.text == ''">
@@ -132,6 +135,18 @@ export default {
 </script>
 
 <style scoped>
+.topContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+.subcollection {
+  text-align: left;
+  margin-left:1%;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-family: "Lucida Sans", sans-serif;
+  font-weight:lighter;
+}
 body {
   background-color: #ffe8e8;
 }
