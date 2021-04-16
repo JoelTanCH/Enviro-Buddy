@@ -19,7 +19,10 @@
             <b-dropdown-item href="/mkt-add">Add Listing</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item href="/event-category">Events</b-nav-item>
+          <b-nav-item-dropdown text="Events">
+          <b-dropdown-item href="/event-category">Categories</b-dropdown-item>
+          <b-dropdown-item href="/event-add">Submit Event Request</b-dropdown-item>
+          </b-nav-item-dropdown>
 
           <b-nav-item-dropdown text="Information Hub">
           <b-dropdown-item href="/info-category">Categories</b-dropdown-item>
