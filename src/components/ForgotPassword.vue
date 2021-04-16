@@ -82,7 +82,7 @@ h1 {
 }
 #content {
   float: left;
-  padding-bottom: 5%;
+  margin-left:-50px;
 }
 #bg-img {
   opacity: 0.5;
