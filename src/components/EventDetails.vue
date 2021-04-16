@@ -10,8 +10,8 @@
             <b-row>
               <h2>{{ event.name }}</h2>
               <p v-if="event.location">Location: {{ event.location }}</p>
-              <p v-if="event.organizer">Organizer: {{ event.organizer }}</p>
               <p v-if="event.date">{{ event.date.toDate() }}</p>
+              <p v-if="event.organizer">Organizer: {{ event.organizer }}</p>
               <p v-if="event.description">
                 {{ event.description }}
               </p>
