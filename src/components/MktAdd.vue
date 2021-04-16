@@ -230,7 +230,7 @@ export default {
           alert("Your item has been uploaded!");
           window.location.href = "/mkt-listing/" + this.category.toLowerCase();
         });
-
+      }
     },
   },
   created: function () {
