@@ -76,16 +76,43 @@
               ></b-form-input>
             </b-form-group>
 
+             <b-form-group
+              id="event-date"
+              label="Date"
+              label-for="event-date-input"
+            >
+              <b-form-input
+                id="event-date"
+                v-model="item.date"
+                placeholder="Enter the date of the event"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+             <b-form-group
+              id="event-time"
+              label="Time"
+              label-for="event-time-input"
+            >
+              <b-form-input
+                id="event-time"
+                v-model="item.time"
+                placeholder="Enter the time of the event"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+
 
             <b-form-group
               id="item-description"
-              label="Idea Description"
+              label="Event Description"
               label-for="item-description-input"
             >
               <b-form-textarea
                 id="item-description"
                 v-model="item.description"
-                placeholder="Enter item description"
+                placeholder="Enter event description"
                 rows="3"
                 max-rows="8"
               ></b-form-textarea>
@@ -123,6 +150,8 @@ export default {
     return {
       userInfo: {},
       item: {
+        date:null,
+        time:null,
         username: "",
         name: "",
         description: "",
@@ -216,7 +245,7 @@ export default {
       database
         .collection("users")
         .doc(currentUser.email)
-        .collection("events")
+        .collection("requested-events")
         .add(this.item)
         // .then((docRef) => {
         //   this.item.userdocRef = docRef.id;
