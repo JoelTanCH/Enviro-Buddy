@@ -9,15 +9,14 @@
           <b-col>
             <b-row>
               <h2>{{ event.name }}</h2>
-              <p v-if="event.location">
-                Location: {{ event.location }}
-              </p>
+              <p v-if="event.location">Location: {{ event.location }}</p>
+              <p v-if="event.organizer">Organizer: {{ event.organizer }}</p>
               <p v-if="event.date">{{ event.date.toDate() }}</p>
               <p v-if="event.description">
                 {{ event.description }}
               </p>
             </b-row>
-            <hr>
+            <hr />
 
             <b-row id="signup">
               <h3>Interested? Sign up below!</h3>
@@ -55,7 +54,6 @@
                   type="submit"
                   variant="outline-success"
                   v-on:click="signUp(), $router.push('event-category')"
-                  
                   >Sign Me Up!</b-button
                 >
               </b-form>
@@ -82,7 +80,7 @@ export default {
       signupInfo: {
         name: "",
         contact: "",
-        email: ""
+        email: "",
       },
     };
   },
@@ -109,7 +107,7 @@ export default {
         .collection("events")
         .get()
         .then((querySnapShot) => {
-          if (querySnapShot.docs.length>0) {
+          if (querySnapShot.docs.length > 0) {
             let item = {};
             querySnapShot.forEach((doc) => {
               item = doc.data();
@@ -120,25 +118,25 @@ export default {
             });
             if (!this.repeated) {
               database
-              .collection("users")
-              .doc(firebase.auth().currentUser.email)
-              .collection("events")
-              .add(this.event)
-            //add user sign up info to indiv events
-            database
-              .collection(this.collectionName)
-              .doc(this.subCollectionName)
-              .collection("events")
-              .doc(this.eventid)
-              .collection("signups")
-              .add(this.signupInfo)
+                .collection("users")
+                .doc(firebase.auth().currentUser.email)
+                .collection("events")
+                .add(this.event);
+              //add user sign up info to indiv events
+              database
+                .collection(this.collectionName)
+                .doc(this.subCollectionName)
+                .collection("events")
+                .doc(this.eventid)
+                .collection("signups")
+                .add(this.signupInfo);
             }
           } else {
             database
               .collection("users")
               .doc(firebase.auth().currentUser.email)
               .collection("events")
-              .add(this.event)
+              .add(this.event);
             //add user sign up info to indiv events
             database
               .collection(this.collectionName)
@@ -146,7 +144,7 @@ export default {
               .collection("events")
               .doc(this.eventid)
               .collection("signups")
-              .add(this.signupInfo)
+              .add(this.signupInfo);
           }
         });
 

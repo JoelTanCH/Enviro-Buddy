@@ -7,78 +7,100 @@
         </b-col>
 
         <b-col>
-          <h1>Add Listing</h1>
+          <h1>Add Marketplace Listing</h1>
 
           <b-form id="form" v-on:submit="submitForm">
-            <b-form-group
-              id="item-name"
-              label="Item Name"
-              label-for="item-name-input"
-            >
-              <b-form-input
-                id="item-name"
-                v-model="item.name"
-                type="text"
-                placeholder="Enter item name"
-                required
-              ></b-form-input>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="item-name">Item Name</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.name"
+                  type="text"
+                  placeholder="Enter item name"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
 
-            <b-form-group
-              id="item-category"
-              label="Category"
-              label-for="item-category-input"
-            >
-              <b-form-select
-                id="item-category"
-                v-model="category"
-                v-bind:options="marketplaceCategories"
-                required
-              ></b-form-select>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="item-category">Item Category</label>
+              </b-col>
+              <b-col>
+                <b-form-select
+                  class="right-input"
+                  v-model="category"
+                  v-bind:options="marketplaceCategories"
+                  required
+                ></b-form-select>
+              </b-col>
+            </b-row>
 
-            <b-form-group
-              id="item-price"
-              label="Item Price"
-              label-for="item-price-input"
-            >
-              <b-form-input
-                id="item-price"
-                v-model="item.price"
-                placeholder="0"
-                type="number"
-                required
-              ></b-form-input>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="item-price">Item Price</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.price"
+                  placeholder="0"
+                  type="number"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
 
-            <b-form-group
-              id="item-description"
-              label="Item Description"
-              label-for="item-description-input"
-            >
-              <b-form-input
-                id="item-description"
-                v-model="item.description"
-                placeholder="Enter item description"
-                type="text"
-                required
-              ></b-form-input>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="item-description">Item Description</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.description"
+                  placeholder="Enter item description"
+                  type="text"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
 
-            <b-form-group>
-              <b-button v-on:click="onPickFile">Upload Image</b-button>
-              <input
-                id="fileButton"
-                type="file"
-                style="display: none"
-                ref="fileInput"
-                accept="image/*"
-                v-on:change="onFilePicked"
-              />
-              <progress value="0" max="100" id="uploader"></progress>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="item-image">Item Image</label>
+              </b-col>
+              <b-col>
+                <input
+                  id="fileButton"
+                  type="file"
+                  ref="fileInput"
+                  accept="image/*"
+                  v-on:change="onFilePicked"
+                />
+                <div id="progress-container">
+                  <div>Upload status:</div>
+                  <progress
+                    id="uploader"
+                    class="right-input"
+                    value="0"
+                    max="100"
+                  ></progress>
+                </div>
+              </b-col>
+            </b-row>
 
-            <b-button type="submit" variant="outline-success">Submit</b-button>
+            <b-row class="input-group">
+              <b-button
+                id="submit-button"
+                type="submit"
+                variant="outline-success"
+                >Add Listing</b-button
+              >
+            </b-row>
           </b-form>
         </b-col>
       </b-row>
@@ -105,7 +127,7 @@ export default {
         quantitySold: 0,
         category: "",
         userdocRef: null,
-        email:""
+        email: "",
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
@@ -124,10 +146,8 @@ export default {
         .then((snapshot) => (this.userInfo = snapshot.data()));
     },
 
-    onPickFile() {
-      this.$refs.fileInput.click();
-    },
     onFilePicked: function (event) {
+      this.$refs.fileInput.click();
       const file = event.target.files[0];
 
       var uploader = document.getElementById("uploader");
@@ -179,6 +199,11 @@ export default {
         return;
       }
 
+      if(this.item.price < 0){
+        alert("Price cannot be negative")
+      }
+      else{
+
       this.item.img = preview.src;
       this.item.username = this.userInfo.username;
       this.item.category = this.category.toLowerCase();
@@ -205,9 +230,7 @@ export default {
           alert("Your item has been uploaded!");
           window.location.href = "/mkt-listing/" + this.category.toLowerCase();
         });
-
-      //reset all fields
-      //route back to mkt-categories
+      }
     },
   },
   created: function () {
@@ -217,9 +240,22 @@ export default {
 </script>
 
 <style scoped>
-img {
-  width: 100%;
-  height: 80%;
+#previewImage {
+  width: 40vw;
+  height: 70vh;
   object-fit: cover;
+}
+.input-group {
+  margin-top: 20px;
+  width: 100%;
+}
+.right-input {
+  width: 100%;
+}
+#progress-container {
+  margin-top: 10px;
+}
+#uploader {
+  background-color: green;
 }
 </style>
