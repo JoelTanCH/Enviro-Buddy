@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div class="main">
     <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Sign Up</h1>
@@ -54,6 +54,7 @@
         <a href="/login">Log In</a>
       </div>
     </div>
+    
     <img id="bg-img" v-bind:src="backgroundURL" />
   </div>
 </template>
@@ -136,9 +137,13 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  height:100vh;
+}
 #logo {
   width: 25%;
   align-items: center;
+  margin-top: -60px;
 }
 h1 {
   margin-top: 25px;
@@ -169,7 +174,7 @@ a:hover {
 }
 #content {
   float: left;
-  padding-bottom: 5%;
+  margin-left:-50px;
 }
 #bg-img {
   opacity: 0.5;
