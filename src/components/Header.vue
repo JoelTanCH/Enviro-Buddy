@@ -74,7 +74,7 @@ export default {
   methods: {
     fetchUserInfo: function () {
       firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
+        if (user.emailVerified) {
           database
             .collection("users")
             .doc(user.email)

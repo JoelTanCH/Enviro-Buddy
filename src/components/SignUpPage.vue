@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div class="main">
     <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Sign Up</h1>
@@ -54,6 +54,7 @@
         <a href="/login">Log In</a>
       </div>
     </div>
+    
     <img id="bg-img" v-bind:src="backgroundURL" />
   </div>
 </template>
@@ -77,10 +78,6 @@ export default {
     };
   },
   methods: {
-    routeRegister: function () {
-      this.$router.push({ path: "/confirm-signup" });
-    },
-
     createUser: function () {
       if (this.password != this.confirmPassword) {
         alert("Passwords do not match");
@@ -110,7 +107,8 @@ export default {
                 .then(() =>
                   database.collection("users").doc(this.email).set({
                     username: this.username,
-                    profilePic: "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png"
+                    profilePic:
+                      "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
                   })
                 )
                 .then(() => {
@@ -119,7 +117,15 @@ export default {
                   this.password = "";
                   this.confirmPassword = "";
                   this.usernameTaken = false;
-                  this.routeRegister();
+
+                  alert("A verification link has been sent to your email");
+
+                  firebase
+                    .auth()
+                    .signOut()
+                    .then(() => {
+                      this.$router.push("/login");
+                    });
                 })
                 .catch((err) => alert(err.message));
             }
@@ -131,9 +137,13 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  height:100vh;
+}
 #logo {
   width: 25%;
   align-items: center;
+  margin-top: -60px;
 }
 h1 {
   margin-top: 25px;
@@ -164,7 +174,7 @@ a:hover {
 }
 #content {
   float: left;
-  padding-bottom: 5%;
+  margin-left:-50px;
 }
 #bg-img {
   opacity: 0.5;
