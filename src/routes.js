@@ -71,7 +71,7 @@ export default [
     { path: '/sign-up', component: SignUpPage, name: 'sign-up', meta: { noAuth: true } },
     { path: '/login', component: LoginPage, name: 'login', meta: { noAuth: true } },
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw', meta: { noAuth: true } },
-    { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup', meta: { noAuth: true } },
+    { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'},
 
     { path: '/profile', component: Profile, name: 'profile' },
 ]
