@@ -74,6 +74,7 @@ export default {
       if (this.likedBefore.includes(currentUser)) {
         alert("You have liked this already");
       } else {
+        this.likedBefore.push(currentUser)
         this.likes = this.likes + 1;
         const increment = firebase.firestore.FieldValue.increment(1);
         this.show = !this.show;

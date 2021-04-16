@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class = "container">
     <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Enviro Buddy</h1>
@@ -52,6 +52,9 @@ export default {
 </script>
 
 <style>
+.container {
+  height:100vh;
+}
 #logo {
   width: 22%;
   align-items: center;

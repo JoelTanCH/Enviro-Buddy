@@ -35,16 +35,29 @@ firebase.getCurrentUser = () => {
 
 myRouter.beforeEach(async(to, from, next) => {
     const noAuth = to.matched.some(record => record.meta.noAuth);
-    if (!noAuth && !await firebase.getCurrentUser()) {
-        alert("Please Signup or Login First")
-        next({ path: '/' });
-    } else if (noAuth && await firebase.getCurrentUser()) {
-        alert("Please Logout First")
-        next({ path: '/mkt-category' });
-    } else {
-        next();
-    }
 
+    let currUser = await firebase.getCurrentUser()
+
+    if (!noAuth && currUser) {
+        if (!currUser.emailVerified) {
+            alert("Please verify your email")
+            next({ path: "/login" })
+        } else {
+            next()
+        }
+    } else if (!noAuth && !currUser) {
+        alert("Please signup or Login first")
+        next({ path: "/" })
+    } else if (noAuth && currUser) {
+        if (currUser.emailVerified) {
+            alert("Please logout first")
+            next({ path: '/mkt-category' })
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
 })
 
 
