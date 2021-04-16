@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div class="main">
     <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Log In</h1>
@@ -77,6 +77,9 @@ export default {
 </script>
 
 <style scoped>
+.main {
+  height: 100vh;
+}
 #logo {
   width: 25%;
   align-items: center;
@@ -102,7 +105,7 @@ span {
 }
 #content {
   float: left;
-  padding-bottom: 5%;
+  margin-left:-50px;
 }
 #bg-img {
   opacity: 0.5;
