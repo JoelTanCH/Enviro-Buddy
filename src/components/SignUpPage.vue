@@ -77,10 +77,6 @@ export default {
     };
   },
   methods: {
-    routeRegister: function () {
-      this.$router.push({ path: "/confirm-signup" });
-    },
-
     createUser: function () {
       if (this.password != this.confirmPassword) {
         alert("Passwords do not match");
@@ -110,7 +106,8 @@ export default {
                 .then(() =>
                   database.collection("users").doc(this.email).set({
                     username: this.username,
-                    profilePic: "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png"
+                    profilePic:
+                      "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
                   })
                 )
                 .then(() => {
@@ -119,7 +116,15 @@ export default {
                   this.password = "";
                   this.confirmPassword = "";
                   this.usernameTaken = false;
-                  this.routeRegister();
+
+                  alert("A verification link has been sent to your email");
+
+                  firebase
+                    .auth()
+                    .signOut()
+                    .then(() => {
+                      this.$router.push("/login");
+                    });
                 })
                 .catch((err) => alert(err.message));
             }
