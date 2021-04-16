@@ -15,7 +15,6 @@
           <!-- dropdown for marketplace -->
           <b-nav-item-dropdown text="Marketplace">
             <b-dropdown-item href="/mkt-category">Categories</b-dropdown-item>
-            <b-dropdown-item href="/mkt-cart">View Cart</b-dropdown-item>
             <b-dropdown-item href="/mkt-add">Add Listing</b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -32,24 +31,26 @@
           <b-nav-item href="/" v-show="loggedIn == false">
             Login
           </b-nav-item>
-          <b-nav-item href="/" @click="signOut" v-show="loggedIn">
-            Logout
-          </b-nav-item>
+          
 
           <span v-on:click="$router.push('/profile')" class="icon">
-            <span v-show="loggedIn">Hello {{ this.userInfo.username }}!</span>
             <b-icon-person-fill
               class="icon"
               font-scale="1.5"
               v-show="loggedIn"
             ></b-icon-person-fill>
+            <span v-show="loggedIn">Hello {{ this.userInfo.username }}!</span>
+          </span>
+          <span v-on:click="$router.push('/mkt-cart')" class="icon">
+            <b-icon-cart4
+              font-scale="1.5" 
+            ></b-icon-cart4>
+            <span v-show="loggedIn">Cart</span>
           </span>
 
-          <b-icon-cart4
-            class="icon"
-            font-scale="1.5"
-            v-on:click="$router.push('/mkt-cart')"
-          ></b-icon-cart4>
+          <b-nav-item class="logout" href="/" @click="signOut" v-show="loggedIn">
+            Logout
+          </b-nav-item>
 
         </b-navbar-nav>
       </b-collapse>
@@ -127,5 +128,9 @@ export default {
 }
 #nav-items {
   margin-right: 10px;
+  color: #A3A3A3
+}
+.logout{
+  color: #2B2B2B
 }
 </style>
