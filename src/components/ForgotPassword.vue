@@ -56,7 +56,8 @@ export default {
         .sendPasswordResetEmail(this.email)
         .then(() => (this.email = ""))
         .then(() => alert("Please check your email"))
-        .catch(() => alert("Invalid email"));
+        .catch(() => alert("Invalid email"))
+        .then(() => this.$router.push("/login"));
     },
   },
 };
