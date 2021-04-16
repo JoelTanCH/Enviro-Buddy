@@ -48,6 +48,28 @@
                 <div>$ {{ item.price }} / item</div>
                 <div>Quantity Sold: {{ item.quantitySold }}</div>
                 <img v-bind:src="item.img" />
+                <div>
+                  <b-button
+                    variant="danger"
+                    v-on:click="
+                      removeListing(item.category, item.mktdocRef, item.id)
+                    "
+                    >Remove Listing</b-button
+                  >
+                </div>
+              </div>
+            </li>
+          </ul>
+        </b-tab>
+
+        <b-tab title="My Purchase History" active>
+          <ul>
+            <li v-for="item in purchasedlist" v-bind:key="item.name">
+              <div>
+                <h2>{{ item.name }}</h2>
+                <div>$ {{ item.price }} / item</div>
+                <div>Quantity: {{ item.quantity }}</div>
+                <img v-bind:src="item.img" />
               </div>
             </li>
           </ul>
@@ -74,19 +96,6 @@
                 <div>Location: {{ event.location }}</div>
                 <img v-bind:src="event.img" />
                 <div>Status: {{ event.status }}</div>
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="My Purchase History" active>
-          <ul>
-            <li v-for="item in purchasedlist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div>$ {{ item.price }} / item</div>
-                <div>Quantity: {{ item.quantity }}</div>
-                <img v-bind:src="item.img" />
               </div>
             </li>
           </ul>
@@ -127,6 +136,7 @@ export default {
       eventRequestList: [],
       collectionName: "",
       subCollectionName: "",
+      currUserEmail: null,
     };
   },
   methods: {
@@ -194,8 +204,29 @@ export default {
         });
     },
 
+    removeListing: function (category, mktdocRef, userdocRef) {
+      //remove from marketplace
+      database
+        .collection("mkt-categories")
+        .doc(category)
+        .collection("items")
+        .doc(mktdocRef)
+        .delete()
+        //remove from user's my-mkt-list (profile page display)
+        .then(() => {
+          database
+            .collection("users")
+            .doc(this.currUserEmail)
+            .collection("my-mkt-list")
+            .doc(userdocRef)
+            .delete();
+        })
+        .then(() => location.reload());
+    },
+
     fetchItems: function () {
       let currentUser = firebase.auth().currentUser;
+      this.currUserEmail = currentUser.email;
       this.collectionName = this.$route.params.collectionName;
       this.subCollectionName = this.$route.params.subCollectionName;
 
@@ -203,7 +234,7 @@ export default {
 
       database
         .collection("users")
-        .doc(currentUser.email)
+        .doc(this.currUserEmail)
         .get()
         .then((snapshot) => (this.user = snapshot.data()));
 
@@ -212,7 +243,7 @@ export default {
       //for eventlist
       database
         .collection("users")
-        .doc(currentUser.email)
+        .doc(this.currUserEmail)
         .collection("events")
         .get()
         .then((snapshot) => {
@@ -227,7 +258,7 @@ export default {
       //for eventRequestedList
       database
         .collection("users")
-        .doc(currentUser.email)
+        .doc(this.currUserEmail)
         .collection("requested-events")
         .get()
         .then((snapshot) => {
@@ -243,7 +274,7 @@ export default {
       //for purchaselist
       database
         .collection("users")
-        .doc(currentUser.email)
+        .doc(this.currUserEmail)
         .collection("mkt-history")
         .get()
         .then((snapshot) => {
@@ -260,7 +291,7 @@ export default {
       //for mymktlist
       database
         .collection("users")
-        .doc(currentUser.email)
+        .doc(this.currUserEmail)
         .collection("my-mkt-list")
         .get()
         .then((snapshot) => {
@@ -275,7 +306,7 @@ export default {
       //for infolist
       database
         .collection("users")
-        .doc(currentUser.email)
+        .doc(this.currUserEmail)
         .collection("info")
         .get()
         .then((snapshot) => {
