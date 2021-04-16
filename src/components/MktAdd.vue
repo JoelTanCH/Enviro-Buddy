@@ -243,7 +243,7 @@ export default {
 #previewImage {
   width: 40vw;
   height: 70vh;
-  object-fit: cover;
+  object-fit: contain;
 }
 .input-group {
   margin-top: 20px;
