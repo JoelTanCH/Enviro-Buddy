@@ -30,9 +30,9 @@
           </b-nav-item-dropdown>
 
           <b-nav-item href="/" v-show="loggedIn == false">
-            Sign Up / Login
+            Login
           </b-nav-item>
-          <b-nav-item href="/login" @click="signOut" v-show="loggedIn">
+          <b-nav-item href="/" @click="signOut" v-show="loggedIn">
             Logout
           </b-nav-item>
 
