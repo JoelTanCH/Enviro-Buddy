@@ -97,8 +97,9 @@ export default {
         img: "", //images url
         likes: 0,
         category: "",
-        userdocRef:"placeholder",
+        userdocRef: "placeholder",
         email: "",
+        infoHubDocRef: "",
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
@@ -192,7 +193,18 @@ export default {
             .collection("info-categories")
             .doc(this.category.toLowerCase())
             .collection("items")
-            .add(this.item);
+            .add(this.item)
+            .then((docRef) => {
+              console.log("info hub doc id: "+ docRef.id);
+              database
+                .collection("users")
+                .doc(currentUser.email)
+                .collection("info")
+                .doc(this.item.userdocRef)
+                .update({
+                  infoHubDocRef: docRef.id,
+                });
+            });
         })
         .then(() => {
           alert("Your item has been uploaded!");
