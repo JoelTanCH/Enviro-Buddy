@@ -2,11 +2,37 @@
   <div>
     <section id="user-info">
       <div id="profile-pic-container">
-        <img
-          id="profile-pic"
-          src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
-        />
+        <img id="profile-pic" v-bind:src="this.user.profilePic" />
       </div>
+      <b-button
+        id="updateProfilePic"
+        type="submit"
+        variant="secondary"
+        v-on:click="update = !update"
+        >Update your profile pic</b-button
+      >
+      <br />
+      <br />
+      <template v-if="update">
+        <b-row>
+          <b-col>
+            <img v-bind:src="this.user.profilePic" id="previewImage" />
+          </b-col>
+          <b-form-group>
+            <b-button v-on:click="onPickFile">Preview Image</b-button>
+            <input
+              id="fileButton"
+              type="file"
+              style="display: none"
+              ref="fileInput"
+              accept="image/*"
+              v-on:change="onFilePicked"
+            />
+            <progress value="0" max="100" id="uploader"></progress>
+            <b-button v-on:click="submitPic">Submit</b-button>
+          </b-form-group>
+        </b-row>
+      </template>
 
       <h1>{{ this.user.username }}</h1>
       <h5>{{ this.email }}</h5>
@@ -32,7 +58,7 @@
             <li v-for="event in eventlist" v-bind:key="event.name">
               <div>
                 <h2>{{ event.name }}</h2>
-                <div>{{ event.date.toDate() }}</div> 
+                <div>{{ event.date.toDate() }}</div>
                 <div>Location: {{ event.location }}</div>
                 <img v-bind:src="event.img" />
               </div>
@@ -40,14 +66,14 @@
           </ul>
         </b-tab>
 
-        <b-tab title="Events you have requested to host" active> 
+        <b-tab title="Events you have requested to host" active>
           <ul>
             <li v-for="event in eventRequestList" v-bind:key="event.name">
               <div>
                 <h2>{{ event.name }}</h2>
                 <div>Location: {{ event.location }}</div>
                 <img v-bind:src="event.img" />
-                <div>Status: {{event.status}}</div> 
+                <div>Status: {{ event.status }}</div>
               </div>
             </li>
           </ul>
@@ -90,6 +116,7 @@ import "firebase/auth";
 export default {
   data() {
     return {
+      update: false,
       quantitySold: [],
       user: {},
       email: null,
@@ -103,10 +130,76 @@ export default {
     };
   },
   methods: {
+    onPickFile() {
+      this.$refs.fileInput.click();
+    },
+    onFilePicked: function (event) {
+      const file = event.target.files[0];
+
+      var uploader = document.getElementById("uploader");
+      var preview = document.getElementById("previewImage");
+
+      //create storage ref
+      var storageRef = firebase
+        .storage()
+        .ref("events/" + new Date() + "-" + file.name);
+
+      //upload file
+      var task = storageRef.put(file);
+
+      //update progress bar
+      task.on(
+        "state_changed",
+
+        function (snapshot) {
+          var percentage =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          uploader.value = percentage;
+        },
+
+        //handle errors here
+        function (error) {
+          console.log(error.message);
+        },
+
+        //handle successful uploads on complete
+        function () {
+          task.snapshot.ref.getDownloadURL().then(function (storageURL) {
+            preview.src = storageURL;
+            console.log(preview.src);
+          });
+        }
+      );
+    },
+    submitPic: function () {
+      var currentUser = firebase.auth().currentUser;
+      var preview = document.getElementById("previewImage");
+
+      if (preview.src == this.placeholderURL) {
+        //not updated yet
+        alert(
+          "Submission failed. Please wait for your image upload to complete."
+        );
+        return;
+      }
+      database
+        .collection("users")
+        .doc(currentUser.email)
+        .update({
+          profilePic: preview.src,
+        })
+        .then(() => {
+          alert("your profile pic has been updated!");
+          location.reload();
+        });
+    },
+
     fetchItems: function () {
       let currentUser = firebase.auth().currentUser;
       this.collectionName = this.$route.params.collectionName;
       this.subCollectionName = this.$route.params.subCollectionName;
+
+      //fetch profile pic in firestore -> use it as src for preview and main profile pic instead of hardcoding urlhere
 
       database
         .collection("users")
@@ -144,7 +237,7 @@ export default {
             event.id = doc.id;
             this.eventRequestList.push(event);
           });
-          console.log(this.eventRequestList)
+          console.log(this.eventRequestList);
         });
 
       //for purchaselist
