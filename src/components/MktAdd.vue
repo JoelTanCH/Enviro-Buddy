@@ -127,6 +127,7 @@ export default {
         quantitySold: 0,
         category: "",
         userdocRef: null,
+        mktdocRef: null,
         email: "",
       },
       placeholderURL:
@@ -216,19 +217,33 @@ export default {
         .doc(currentUser.email)
         .collection("my-mkt-list")
         .add(this.item)
-        .then((docRef) => {
-          this.item.userdocRef = docRef.id;
+        .then((userdocRef) => {
+          this.item.userdocRef = userdocRef.id;
         })
+        //add new listing to marketplace
         .then(() => {
           database
             .collection("mkt-categories")
             .doc(this.category.toLowerCase())
             .collection("items")
-            .add(this.item);
-        })
-        .then(() => {
-          alert("Your item has been uploaded!");
-          window.location.href = "/mkt-listing/" + this.category.toLowerCase();
+            .add(this.item)
+            .then((mktdocRef) => {
+              //update mktdocRef in users my-mkt-list for remove function
+              database
+                .collection("users")
+                .doc(currentUser.email)
+                .collection("my-mkt-list")
+                .doc(this.item.userdocRef)
+                .update({
+                  mktdocRef: mktdocRef.id,
+                })
+                .then(() => {
+                  // alert(this.item.mktdocRef)
+                  alert("Your item has been uploaded!");
+                  window.location.href =
+                    "/mkt-listing/" + this.category.toLowerCase();
+                });
+            });
         });
       }
     },
