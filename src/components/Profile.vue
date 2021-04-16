@@ -117,6 +117,15 @@
                 <div class="description">{{ item.description }}</div>
               </div>
               <img v-bind:src="item.img" />
+              <div>
+                <b-button
+                  variant="danger"
+                  v-on:click="
+                    removeInfoListing(item.category, item.infoHubDocRef, item.id)
+                  "
+                  >Remove Infohub Post</b-button
+                >
+              </div>
             </li>
           </ul>
         </b-tab>
@@ -210,6 +219,25 @@ export default {
           alert("your profile pic has been updated!");
           location.reload();
         });
+    },
+     removeInfoListing: function (category, infoHubDocRef, userdocRef) {
+      //remove from marketplace
+      database
+        .collection("info-categories")
+        .doc(category)
+        .collection("items")
+        .doc(infoHubDocRef)
+        .delete()
+        //remove from user's my-mkt-list (profile page display)
+        .then(() => {
+          database
+            .collection("users")
+            .doc(this.currUserEmail)
+            .collection("info")
+            .doc(userdocRef)
+            .delete();
+        })
+        .then(() => location.reload());
     },
 
     removeListing: function (category, mktdocRef, userdocRef) {
