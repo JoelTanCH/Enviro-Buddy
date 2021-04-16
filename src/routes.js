@@ -7,10 +7,12 @@ import MktCart from './components/MktCart.vue'
 import EventCategory from './components/EventCategory.vue'
 import EventListing from './components/EventListing.vue'
 import EventDetails from './components/EventDetails.vue'
+import EventAdd from './components/EventAdd.vue'
 
 import InfoCategory from './components/InfoCategory.vue'
 import InfoDetails from './components/InfoDetails.vue'
 import InfoListing from './components/InfoListing.vue'
+import InfoAdd from './components/InfoAdd.vue'
 
 import RootPage from './components/RootPage.vue'
 import SignUpPage from './components/SignUpPage.vue'
@@ -39,7 +41,8 @@ export default [
     },
 
     { path: '/event-category', component: EventCategory },
-    { path: '/event-details', component: EventDetails, name: 'eve-details', props: true },
+    { path: '/event-add', component: EventAdd },
+    { path: '/event-details', component: EventDetails, name: 'event-details', props: true },
     {
         path: '/event-listing',
         component: EventListing,
@@ -52,6 +55,7 @@ export default [
 
     { path: '/info-category', component: InfoCategory },
     { path: '/info-details', component: InfoDetails, name: 'info-details', props: true },
+    { path: '/info-add', component: InfoAdd },
     {
         path: '/info-listing',
         component: InfoListing,
