@@ -15,7 +15,6 @@
           <!-- dropdown for marketplace -->
           <b-nav-item-dropdown text="Marketplace">
             <b-dropdown-item href="/mkt-category">Categories</b-dropdown-item>
-            <b-dropdown-item href="/mkt-cart">View Cart</b-dropdown-item>
             <b-dropdown-item href="/mkt-add">Add Listing</b-dropdown-item>
           </b-nav-item-dropdown>
 
