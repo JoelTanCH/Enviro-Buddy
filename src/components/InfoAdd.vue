@@ -7,19 +7,19 @@
         </b-col>
 
         <b-col>
-          <h1>Add Listing</h1>
+          <h1>Add Your Ideas!</h1>
 
           <b-form id="form" v-on:submit="submitForm">
             <b-form-group
               id="item-name"
-              label="Item Name"
+              label="Idea Name"
               label-for="item-name-input"
             >
               <b-form-input
                 id="item-name"
                 v-model="item.name"
                 type="text"
-                placeholder="Enter item name"
+                placeholder="Enter your idea"
                 required
               ></b-form-input>
             </b-form-group>
@@ -38,31 +38,17 @@
             </b-form-group>
 
             <b-form-group
-              id="item-price"
-              label="Item Price"
-              label-for="item-price-input"
-            >
-              <b-form-input
-                id="item-price"
-                v-model="item.price"
-                placeholder="0"
-                type="number"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
               id="item-description"
-              label="Item Description"
+              label="Idea Description"
               label-for="item-description-input"
             >
-              <b-form-input
+              <b-form-textarea
                 id="item-description"
                 v-model="item.description"
                 placeholder="Enter item description"
-                type="text"
-                required
-              ></b-form-input>
+                rows="3"
+                max-rows="8"
+              ></b-form-textarea>
             </b-form-group>
 
             <b-form-group>
@@ -99,18 +85,17 @@ export default {
       item: {
         username: "",
         name: "",
-        price: 0,
         description: "",
         img: "", //images url
-        quantitySold: 0,
+        likes: 0,
         category: "",
-        userdocRef: null,
-        email:""
+        userdocRef:"placeholder",
+        email: "",
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       category: null,
-      marketplaceCategories: ["Fashion", "Decor", "Furniture", "Jewellery"],
+      marketplaceCategories: ["Outside", "Crafts", "Workshop"],
     };
   },
   methods: {
@@ -136,7 +121,7 @@ export default {
       //create storage ref
       var storageRef = firebase
         .storage()
-        .ref("marketplace/" + new Date() + "-" + file.name);
+        .ref("infohub/" + new Date() + "-" + file.name);
 
       //upload file
       var task = storageRef.put(file);
@@ -189,21 +174,21 @@ export default {
       database
         .collection("users")
         .doc(currentUser.email)
-        .collection("my-mkt-list")
+        .collection("info")
         .add(this.item)
         .then((docRef) => {
           this.item.userdocRef = docRef.id;
         })
         .then(() => {
           database
-            .collection("mkt-categories")
+            .collection("info-categories")
             .doc(this.category.toLowerCase())
             .collection("items")
             .add(this.item);
         })
         .then(() => {
           alert("Your item has been uploaded!");
-          window.location.href = "/mkt-listing/" + this.category.toLowerCase();
+          window.location.href = "/info-listing/" + this.category.toLowerCase();
         });
 
       //reset all fields
