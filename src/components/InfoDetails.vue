@@ -26,7 +26,7 @@
             </b-button>
           </div>
           <div v-else>
-            <b-button v-on:click='like'>
+            <b-button v-on:click="like">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -43,7 +43,7 @@
             </b-button>
           </div>
 
-          <h5>{{ item.likes }} person/people liked this!</h5>
+          <h5>{{ this.likes }} person/people liked this!</h5>
         </b-col>
       </b-row>
     </b-container>
@@ -57,7 +57,8 @@ import firebase from "firebase/app";
 export default {
   data() {
     return {
-      show:null,
+      show: null,
+      likes: 0,
       likedBefore: [],
       item: {},
       itemid: "",
@@ -73,6 +74,7 @@ export default {
       if (this.likedBefore.includes(currentUser)) {
         alert("You have liked this already");
       } else {
+        this.likes = this.likes + 1;
         const increment = firebase.firestore.FieldValue.increment(1);
         this.show = !this.show;
 
@@ -117,7 +119,19 @@ export default {
     },
   },
   created: function () {
+    console.log("sub collection name: " + this.subCollectionName);
     this.fetchItems();
+    database
+      .collection("info-categories")
+      .doc(this.subCollectionName)
+      .collection("items")
+      .doc(this.itemid)
+      .get()
+      .then((doc) => {
+        console.log("look here: " + doc.data());
+        this.likes = doc.data().likes;
+      });
+
     database
       .collection("info-categories")
       .doc(this.subCollectionName)
@@ -127,22 +141,22 @@ export default {
       .get()
       .then((querySnapShot) => {
         querySnapShot.forEach((doc) => {
+          console.log("doc data:" + doc.data().likes);
           console.log("doc email data: " + doc.data().email);
           this.likedBefore.push(doc.data().email);
           console.log("likedBefore : " + this.likedBefore);
         });
       })
-      .then(()=> {
-        var currentUser = firebase.auth().currentUser.email
-        console.log("liked Before next: "+ this.likedBefore)
-        console.log(currentUser)
-        if(this.likedBefore.includes(currentUser)){
-          this.show = false //alr liked before
-        }else{
-          this.show = true //have not liked before
+      .then(() => {
+        var currentUser = firebase.auth().currentUser.email;
+        console.log("liked Before next: " + this.likedBefore);
+        console.log(currentUser);
+        if (this.likedBefore.includes(currentUser)) {
+          this.show = false; //alr liked before
+        } else {
+          this.show = true; //have not liked before
         }
-      })
-      ;
+      });
   },
 };
 </script>
