@@ -284,7 +284,7 @@ export default {
 img {
   width: 100%;
   height: 80%;
-  object-fit: cover;
+  object-fit: contain;
 }
 #progress-container {
   margin-top: 10px;
