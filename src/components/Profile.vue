@@ -123,7 +123,7 @@
                   v-on:click="
                     removeInfoListing(item.category, item.infoHubDocRef, item.id)
                   "
-                  >Remove Listing</b-button
+                  >Remove Infohub Post</b-button
                 >
               </div>
             </li>
