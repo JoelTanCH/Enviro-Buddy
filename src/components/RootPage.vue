@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class = "container">
+    <div id="content">
       <img id="logo" v-bind:src="logoURL" />
       <h1>Enviro Buddy</h1>
       <h6>{{ description }}</h6>
@@ -83,5 +83,8 @@ h6 {
   right:0;
   position: absolute;
   z-index: -1;
+}
+#content {
+  text-align: center;
 }
 </style>

@@ -8,16 +8,21 @@
           </b-col>
           <b-col>
             <h2>{{ item.name }}</h2>
-            <h3>$ {{ item.price }}</h3>
+            <h4>Quantity Sold: {{ item.quantitySold }}</h4>
+            <h4>${{ item.price }}</h4> <br>
+            <h4 class = 'description'>Description</h4>
             <p>{{ item.description }}</p>
-            <h3>Quantity Sold: {{ item.quantitySold }}</h3>
-            <br /><br />
-            <qty-counter v-on:counter="updateCounter"></qty-counter>
+            
+            <div class='counter'>
+              Quantity:
+              <qty-counter v-on:counter="updateCounter"></qty-counter>
+            </div>
 
             <b-button
               class="button"
               v-b-modal.modalItem
               v-on:click="sendOrder(item)"
+              variant="outline-success"
               >Add to Cart</b-button
             >
             <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
@@ -36,7 +41,7 @@
                 >View Cart</b-button
               >
             </b-modal>
-            <b-button class="button" href="/mkt-cart">View Cart</b-button>
+            <b-button class="button" href="/mkt-cart" variant="outline-success">View Cart</b-button>
           </b-col>
         </b-row>
       </b-container>
@@ -179,15 +184,28 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background-color: #f2edd7;
+h2 {
+  text-align: left;
+}
+h4 {
+  text-align: left;
+  color:#57585a;
+}
+.description {
+  text-align: left;
+  color:black;
+}
+p {
+  text-align: left;
+  height: 45vh;
 }
 img {
   width: 100%;
-  height: 70vh;
+  height: 100vh;
   object-fit: cover;
 }
 .button {
   margin: 10px;
 }
+
 </style>
