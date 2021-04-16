@@ -128,7 +128,15 @@
                 accept="image/*"
                 v-on:change="onFilePicked"
               />
-              <progress value="0" max="100" id="uploader"></progress>
+              <div id="progress-container">
+                  <div>Upload status:</div>
+                  <progress
+                    id="uploader"
+                    class="right-input"
+                    value="0"
+                    max="100"
+                  ></progress>
+                </div>
             </b-form-group>
 
             <b-button type="submit" variant="outline-success">Submit</b-button>
@@ -277,5 +285,11 @@ img {
   width: 100%;
   height: 80%;
   object-fit: cover;
+}
+#progress-container {
+  margin-top: 10px;
+}
+#uploader {
+  background-color: green;
 }
 </style>
