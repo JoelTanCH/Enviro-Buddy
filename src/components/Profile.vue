@@ -40,6 +40,7 @@
                   <img v-bind:src="item.img" />
                   <div>
                     <b-button
+                    class="remove-button"
                       variant="danger"
                       v-on:click="
                         removeListing(item.category, item.mktdocRef, item.id)
@@ -141,6 +142,7 @@
                 <img v-bind:src="item.img" />
                 <div>
                   <b-button
+                  class="remove-button"
                     variant="danger"
                     v-on:click="
                       removeInfoListing(
@@ -368,6 +370,7 @@ export default {
 
 
 <style scoped>
+/* for user info styling (top section above b-tabs) */
 .profile-pic-container {
   position: relative;
   width: 250px;
@@ -375,14 +378,12 @@ export default {
   overflow: hidden;
   border-radius: 50%;
 }
-
 #profile-pic {
   display: block;
   width: 250px;
   height: 250px;
   object-fit: cover;
 }
-
 .overlay {
   position: absolute;
   top: 0;
@@ -395,11 +396,9 @@ export default {
   transition: 0.3s ease;
   background-color: #3a6351;
 }
-
 .profile-pic-container:hover .overlay {
   opacity: 0.8;
 }
-
 #overlay-text {
   color: white;
   font-size: 20px;
@@ -411,47 +410,6 @@ export default {
   transform: translate(-50%, -50%);
   text-align: center;
 }
-
-ul {
-  display: flex;
-  flex-wrap: wrap;
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  text-align: center;
-  padding: 1%;
-  border: 1px solid #e48257;
-  margin: 1%;
-  width: 31.3%;
-}
-img {
-  height: 300px;
-  width: 90%;
-  object-fit: cover;
-}
-.price {
-  color: #3a6351;
-  font-weight: bold;
-  font-size: 20px;
-}
-.itemName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
-  overflow: hidden;
-}
-.username {
-  font-size: 30px;
-  color: #e48257;
-}
-.description {
-  overflow: hidden;
-  display: flex;
-  line-height: 1.5em;
-  height: 4.5em;
-  width: 90%;
-}
 #user-info {
   margin-bottom: 20px;
 }
@@ -461,5 +419,29 @@ img {
 .emptyTab {
   text-align: center;
   margin-top: 50px;
+}
+
+
+/* for b-tabs styling */
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  text-align: center;
+  /*padding: 1%;
+  border: 1px solid #e48257;*/
+  margin: 1%;
+  width: 31.3%;
+}
+img {
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+.remove-button {
+  margin-top: 10px;
 }
 </style>
