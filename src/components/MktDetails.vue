@@ -28,8 +28,8 @@
                 variant="outline-success"
                 >Add to Cart</b-button
               >
-              <b-button class="button" href="/mkt-cart" variant="outline-success">View Cart</b-button>
             </div>
+            
             <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
               <p>Your order has been placed!</p>
 
@@ -201,11 +201,11 @@ h4 {
 }
 p {
   text-align: left;
-  height: 45vh;
+  height: 260px;
 }
 img {
   width: 100%;
-  height: 100vh;
+  height: 580px;
   object-fit: cover;
 }
 .button {
