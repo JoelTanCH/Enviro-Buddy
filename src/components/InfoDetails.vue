@@ -3,9 +3,6 @@
     <b-container>
       <b-row>
         <b-col>
-          <img v-bind:src="item.img" />
-        </b-col>
-        <b-col>
           <h2>{{ item.name }}</h2>
           <h4>By {{ item.username }}</h4>
           
@@ -43,10 +40,13 @@
                 </svg>
               </b-button>
             </div>
-            <h5>{{ this.likes }} likes</h5>
+            <h5>{{ this.likes }} liked</h5>
           </div> <br>
 
-          <h4 class = 'description'>Description</h4>
+          <div>
+            <img v-bind:src="item.img" /> 
+          </div> <br>
+
           <p id="desc">{{ item.description }}</p>
         </b-col>
       </b-row>
@@ -183,12 +183,13 @@ h5 {
   color:black;
 }
 p {
+  font-size: 0.875rem;
   text-align: left;
   height: 400px;
 }
 img {
-  width: 550px;
-  height: 580px;
+  width: 100%;
+  height: 550px;
   object-fit: cover;
 }
 #desc {
