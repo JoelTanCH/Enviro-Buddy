@@ -20,6 +20,7 @@
             <li v-for="event in eventList" v-bind:key="event.name">
               <img v-bind:src="event.img" />
               <h4 class="eventName">{{ event.name }}</h4>
+              <div class="organizer">By {{ event.organizer }} </div>
               
               <b-button
                 v-bind:eventid="event.id"
@@ -45,6 +46,7 @@
             <li v-for="event in searchList" v-bind:key="event.name">
               <img v-bind:src="event.img" />              
               <h4 class="eventName">{{ event.name }}</h4>
+              <div class="organizer">By {{ event.organizer }} </div>
               
               <div>
                 <b-button
@@ -189,10 +191,19 @@ img {
   font-weight:600;
   margin-top: 5px;
   margin-left: 5px;
-  margin-bottom:15px; /**/ 
+  margin-bottom:15px; 
 }
 .searchOutput {
   display:flex;
   justify-content: center;
+}
+.organizer {
+  color:#57585a;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk",Helvetica,Arial,sans-serif;
 }
 </style>
