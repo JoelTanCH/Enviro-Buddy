@@ -41,15 +41,16 @@
                 </b-form-group>
 
                 <b-form-group
-                  id="Phonenumber-Details"
-                  label="Phone Number "
-                  label-for="Phonenumber-input"
+                  id="contact-number"
+                  label="Mobile Number "
+                  label-for="contact-number-input"
                 >
                   <b-form-input
-                    id="Phonenumber-Details"
-                    type="number"
-                    v-model.lazy="signupInfo.contact"
-                    placeholder="Enter Phone Number without country code"
+                    id="mobile"
+                    type="tel"
+                    pattern="[0-9]{8}"
+                    v-model="signupInfo.contact"
+                    placeholder="Enter your 8-digit number without country code"
                     required
                   ></b-form-input>
                 </b-form-group>
@@ -108,10 +109,6 @@ export default {
     signUp: function (event) {
       event.preventDefault();
 
-      if (this.signupInfo.contact.length != 8) {
-        alert("Please input a valid phone number");
-        return;
-      }
       this.signupInfo.email = firebase.auth().currentUser.email;
 
       database
