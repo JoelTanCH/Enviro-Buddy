@@ -7,19 +7,19 @@
         </b-col>
 
         <b-col>
-          <h1>Add Your Ideas!</h1>
+          <h1>Add Information Hub Article</h1>
 
           <b-form id="form" v-on:submit="submitForm">
             <b-form-group
               id="item-name"
-              label="Idea Name"
+              label="Title"
               label-for="item-name-input"
             >
               <b-form-input
                 id="item-name"
                 v-model="item.name"
                 type="text"
-                placeholder="Enter your idea"
+                placeholder="Enter your title"
                 required
               ></b-form-input>
             </b-form-group>
@@ -39,13 +39,13 @@
 
             <b-form-group
               id="item-description"
-              label="Idea Description"
+              label="What do you want to share?"
               label-for="item-description-input"
             >
               <b-form-textarea
                 id="item-description"
                 v-model="item.description"
-                placeholder="Enter item description"
+                placeholder="Enter your content"
                 rows="3"
                 max-rows="8"
               ></b-form-textarea>
@@ -104,7 +104,7 @@ export default {
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       category: null,
-      marketplaceCategories: ["Outside", "Crafts", "Workshop"],
+      marketplaceCategories: ["News", "Crafts", "Lifestyle"],
     };
   },
   methods: {
@@ -207,7 +207,7 @@ export default {
             });
         })
         .then(() => {
-          alert("Your item has been uploaded!");
+          alert("Your article has been uploaded!");
           window.location.href = "/info-listing/" + this.category.toLowerCase();
         });
 
