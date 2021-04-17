@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid">
     <b-row id="user-info">
       <b-col class="col-3 d-flex justify-content-center">
         <div class="profile-pic-container" v-on:click="onPickFile">
@@ -28,7 +28,7 @@
     </b-row>
 
     <b-row id="user-acivities">
-      <b-tabs id="tabs">
+      <b-tabs id="tabs" justified>
         <b-tab title="My Marketplace Listings" active>
           <ul>
             <li v-for="item in mymktlist" v-bind:key="item.name">
@@ -51,7 +51,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="My Purchase History" active>
+        <b-tab title="My Purchase History">
           <ul>
             <li v-for="item in purchasedlist" v-bind:key="item.name">
               <div>
@@ -64,7 +64,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="Events you have signed up for" active>
+        <b-tab title="My Registered Events">
           <ul>
             <li v-for="event in eventlist" v-bind:key="event.name">
               <div>
@@ -77,7 +77,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="Events you have requested to host" active>
+        <b-tab title="My Event Requests">
           <ul>
             <li v-for="event in eventRequestList" v-bind:key="event.name">
               <div>
@@ -90,7 +90,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="My Infohub Posts" active>
+        <b-tab title="My Infohub Articles">
           <ul>
             <li v-for="item in infolist" v-bind:key="item.name">
               <div>
