@@ -34,14 +34,16 @@
             <ul>
               <li v-for="item in mymktlist" v-bind:key="item.name">
                 <div>
-                  <h2>{{ item.name }}</h2>
-                  <div>$ {{ item.price }} / item</div>
-                  <div>Quantity Sold: {{ item.quantitySold }}</div>
                   <img v-bind:src="item.img" />
+                  <h4 class="itemName">{{ item.name }}</h4>
+                  <div class="price">${{ item.price }}</div>
+                  <div class="qtySold">
+                    Quantity Sold: {{ item.quantitySold }}
+                  </div>
                   <div>
                     <b-button
-                    class="remove-button"
-                      variant="danger"
+                      class="remove-button"
+                      variant="outline-danger"
                       v-on:click="
                         removeListing(item.category, item.mktdocRef, item.id)
                       "
@@ -67,10 +69,9 @@
             <ul>
               <li v-for="item in purchasedlist" v-bind:key="item.name">
                 <div>
-                  <h2>{{ item.name }}</h2>
-                  <div>$ {{ item.price }} / item</div>
-                  <div>Quantity: {{ item.quantity }}</div>
                   <img v-bind:src="item.img" />
+                  <h4 class="itemName">{{ item.name }}</h4>
+                  <div class="price">${{ item.price }}</div>
                 </div>
               </li>
             </ul>
@@ -90,10 +91,9 @@
             <ul>
               <li v-for="event in eventlist" v-bind:key="event.name">
                 <div>
-                  <h2>{{ event.name }}</h2>
-                  <div>{{ event.date.toDate() }}</div>
-                  <div>Location: {{ event.location }}</div>
                   <img v-bind:src="event.img" />
+                  <h4 class="itemName">{{ event.name }}</h4>
+                  <div class="price">{{ event.location }}</div>
                 </div>
               </li>
             </ul>
@@ -113,10 +113,10 @@
             <ul>
               <li v-for="event in eventRequestList" v-bind:key="event.name">
                 <div>
-                  <h2>{{ event.name }}</h2>
-                  <div>Location: {{ event.location }}</div>
                   <img v-bind:src="event.img" />
-                  <div>Status: {{ event.status }}</div>
+                  <h4 class="itemName">{{ event.name }}</h4>
+                  <div class="price">{{ event.location }}</div>
+                  <div class="price">Status: {{ event.status }}</div>
                 </div>
               </li>
             </ul>
@@ -135,15 +135,12 @@
           <div v-if="infolist.length > 0">
             <ul>
               <li v-for="item in infolist" v-bind:key="item.name">
-                <div>
-                  <h2>{{ item.name }}</h2>
-                  <div class="description">{{ item.description }}</div>
-                </div>
                 <img v-bind:src="item.img" />
+                <h4 class="itemName">{{ item.name }}</h4>
                 <div>
                   <b-button
-                  class="remove-button"
-                    variant="danger"
+                    class="remove-button"
+                    variant="outline-danger"
                     v-on:click="
                       removeInfoListing(
                         item.category,
@@ -421,7 +418,6 @@ export default {
   margin-top: 50px;
 }
 
-
 /* for b-tabs styling */
 ul {
   display: flex;
@@ -441,7 +437,37 @@ img {
   width: 100%;
   object-fit: cover;
 }
+
 .remove-button {
   margin-top: 10px;
+}
+.itemName {
+  overflow: hidden;
+  line-height: 1.5em;
+  height: 1.5em;
+  width: 100%;
+  text-align: left;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 15px;
+}
+.price {
+  color: #57585a;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  width: 100%;
+  text-align: left;
+  margin-left: 5px;
+}
+.qtySold {
+  color: #57585a;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
 }
 </style>
