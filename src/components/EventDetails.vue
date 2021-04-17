@@ -20,7 +20,7 @@
 
             <b-row id="signup">
               <h3>Interested? Sign up below!</h3>
-              <b-form>
+              <b-form v-on:submit="signUp">
                 <b-form-group
                   id="Full-name"
                   label="Full Name"
@@ -28,23 +28,23 @@
                 >
                   <b-form-input
                     id="Full-name"
-                    type="text"
+                    v-model="signupInfo.name"
                     placeholder="Enter Full Name"
-                    v-model.lazy="signupInfo.name"
+                    type="text"
                     required
                   ></b-form-input>
                 </b-form-group>
 
                 <b-form-group
-                  id="Contact-Details"
-                  label="Contact Details"
-                  label-for="Contact-Details-input"
+                  id="Phonenumber-Details"
+                  label="Phone Number "
+                  label-for="Phonenumber-input"
                 >
                   <b-form-input
-                    id="Contact-Details"
-                    type="text"
+                    id="Phonenumber-Details"
+                    type="number"
                     v-model.lazy="signupInfo.contact"
-                    placeholder="Enter Phone Number"
+                    placeholder="Enter Phone Number without country code"
                     required
                   ></b-form-input>
                 </b-form-group>
@@ -98,7 +98,13 @@ export default {
         .get()
         .then((snapshot) => (this.event = snapshot.data()));
     },
-    signUp: function () {
+    signUp: function (event) {
+      event.preventDefault();
+
+      if (this.signupInfo.contact.length != 8) {
+        alert("Please input a valid phone number");
+        return;
+      }
       this.signupInfo.email = firebase.auth().currentUser.email;
 
       database
@@ -129,7 +135,10 @@ export default {
                 .collection("events")
                 .doc(this.eventid)
                 .collection("signups")
-                .add(this.signupInfo);
+                .add(this.signupInfo)
+                .then(() => {
+                  alert("saved to database");
+                });
             }
           } else {
             database
@@ -144,11 +153,12 @@ export default {
               .collection("events")
               .doc(this.eventid)
               .collection("signups")
-              .add(this.signupInfo);
+              .add(this.signupInfo)
+              .then(() => {
+                alert("saved to database");
+              });
           }
         });
-
-      alert("saved to database");
     },
   },
   created: function () {
