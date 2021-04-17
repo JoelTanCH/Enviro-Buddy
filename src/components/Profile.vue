@@ -30,89 +30,139 @@
     <b-row id="user-acivities">
       <b-tabs id="tabs" justified>
         <b-tab title="My Marketplace Listings" active>
-          <ul>
-            <li v-for="item in mymktlist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div>$ {{ item.price }} / item</div>
-                <div>Quantity Sold: {{ item.quantitySold }}</div>
+          <div v-if="mymktlist.length > 0">
+            <ul>
+              <li v-for="item in mymktlist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div>$ {{ item.price }} / item</div>
+                  <div>Quantity Sold: {{ item.quantitySold }}</div>
+                  <img v-bind:src="item.img" />
+                  <div>
+                    <b-button
+                      variant="danger"
+                      v-on:click="
+                        removeListing(item.category, item.mktdocRef, item.id)
+                      "
+                      >Remove Listing</b-button
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not added any listings yet</div>
+            <br />
+            <b-button href="/mkt-add" variant="outline-success"
+              >Add Listing</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Purchase History">
+          <div v-if="purchasedlist.length > 0">
+            <ul>
+              <li v-for="item in purchasedlist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div>$ {{ item.price }} / item</div>
+                  <div>Quantity: {{ item.quantity }}</div>
+                  <img v-bind:src="item.img" />
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not purchased anything yet</div>
+            <br />
+            <b-button href="/mkt-category" variant="outline-success"
+              >Shop Now</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Registered Events">
+          <div v-if="eventlist.length > 0">
+            <ul>
+              <li v-for="event in eventlist" v-bind:key="event.name">
+                <div>
+                  <h2>{{ event.name }}</h2>
+                  <div>{{ event.date.toDate() }}</div>
+                  <div>Location: {{ event.location }}</div>
+                  <img v-bind:src="event.img" />
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not signed up for any events yet</div>
+            <br />
+            <b-button href="/event-category" variant="outline-success"
+              >Browse Events</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Event Requests">
+          <div v-if="eventRequestList.length > 0">
+            <ul>
+              <li v-for="event in eventRequestList" v-bind:key="event.name">
+                <div>
+                  <h2>{{ event.name }}</h2>
+                  <div>Location: {{ event.location }}</div>
+                  <img v-bind:src="event.img" />
+                  <div>Status: {{ event.status }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not requested to publish your events yet</div>
+            <br />
+            <b-button href="/event-add" variant="outline-success"
+              >Request Event</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Infohub Articles">
+          <div v-if="infolist.length > 0">
+            <ul>
+              <li v-for="item in infolist" v-bind:key="item.name">
+                <div>
+                  <h2>{{ item.name }}</h2>
+                  <div class="description">{{ item.description }}</div>
+                </div>
                 <img v-bind:src="item.img" />
                 <div>
                   <b-button
                     variant="danger"
                     v-on:click="
-                      removeListing(item.category, item.mktdocRef, item.id)
+                      removeInfoListing(
+                        item.category,
+                        item.infoHubDocRef,
+                        item.id
+                      )
                     "
-                    >Remove Listing</b-button
+                    >Remove Infohub Post</b-button
                   >
                 </div>
-              </div>
-            </li>
-          </ul>
-        </b-tab>
+              </li>
+            </ul>
+          </div>
 
-        <b-tab title="My Purchase History">
-          <ul>
-            <li v-for="item in purchasedlist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div>$ {{ item.price }} / item</div>
-                <div>Quantity: {{ item.quantity }}</div>
-                <img v-bind:src="item.img" />
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="My Registered Events">
-          <ul>
-            <li v-for="event in eventlist" v-bind:key="event.name">
-              <div>
-                <h2>{{ event.name }}</h2>
-                <div>{{ event.date.toDate() }}</div>
-                <div>Location: {{ event.location }}</div>
-                <img v-bind:src="event.img" />
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="My Event Requests">
-          <ul>
-            <li v-for="event in eventRequestList" v-bind:key="event.name">
-              <div>
-                <h2>{{ event.name }}</h2>
-                <div>Location: {{ event.location }}</div>
-                <img v-bind:src="event.img" />
-                <div>Status: {{ event.status }}</div>
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="My Infohub Articles">
-          <ul>
-            <li v-for="item in infolist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div class="description">{{ item.description }}</div>
-              </div>
-              <img v-bind:src="item.img" />
-              <div>
-                <b-button
-                  variant="danger"
-                  v-on:click="
-                    removeInfoListing(
-                      item.category,
-                      item.infoHubDocRef,
-                      item.id
-                    )
-                  "
-                  >Remove Infohub Post</b-button
-                >
-              </div>
-            </li>
-          </ul>
+          <div v-else class="emptyTab">
+            <div>You have not posted any articles yet</div>
+            <br />
+            <b-button href="/info-add" variant="outline-success"
+              >Post Now</b-button
+            >
+          </div>
         </b-tab>
       </b-tabs>
     </b-row>
@@ -168,7 +218,7 @@ export default {
               .doc(firebase.auth().currentUser.email)
               .update({
                 profilePic: preview.src,
-              })
+              });
           });
         }
       );
@@ -245,7 +295,7 @@ export default {
           });
         });
 
-      //for eventRequestedList
+      //for eventRequestList
       database
         .collection("users")
         .doc(this.currUserEmail)
@@ -407,5 +457,9 @@ img {
 }
 #right-user-info {
   margin: auto;
+}
+.emptyTab {
+  text-align: center;
+  margin-top: 50px;
 }
 </style>
