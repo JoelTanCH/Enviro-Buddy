@@ -58,7 +58,8 @@
               <b-form-input
                 id="contact"
                 v-model="item.contact"
-                placeholder="Enter your phone number"
+                placeholder="Enter your phone number without country code"
+                type = "number"
                 required
               ></b-form-input>
             </b-form-group>
@@ -115,6 +116,7 @@
                 placeholder="Enter event description"
                 rows="3"
                 max-rows="8"
+                required
               ></b-form-textarea>
             </b-form-group>
 
@@ -234,12 +236,18 @@ export default {
       event.preventDefault();
 
       var preview = document.getElementById("previewImage");
+      console.log("contact type"+ this.item.contact.length)
 
       if (preview.src == this.placeholderURL) {
         //not updated yet
         alert(
           "Submission failed. Please wait for your image upload to complete."
         );
+        return;
+      }
+
+      if(this.item.contact.length != 8 ){
+        alert("Please enter a valid number")
         return;
       }
 
