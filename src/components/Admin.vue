@@ -1,20 +1,20 @@
 <template>
   <div>
-    <div class="topContainer">
-      <h2 class="title">Review Event Requests</h2>
+    <div>
+      <h1 class="page-title">Review Event Requests</h1>
     </div>
 
-    <div>
+    <div v-if="reqList.length > 0">
       <ul>
         <li v-for="event in reqList" v-bind:key="event.name">
           <img v-bind:src="event.img" />
           <h4 class="eventName">{{ event.name }}</h4>
-          <div>Organizer: {{ event.organizer }}</div>
-          <div>Email: {{ event.email }}</div>
-          <div>Mobile: {{ event.mobile }}</div>
-          <div>Location: {{ event.location }}</div>
-          <div>Date: {{ event.date }}</div>
-          <div>Time: {{ event.time }}</div>
+          <div class="details">Organizer: {{ event.organizer }}</div>
+          <div class="details">Email: {{ event.email }}</div>
+          <div class="details">Mobile: {{ event.mobile }}</div>
+          <div class="details">Location: {{ event.location }}</div>
+          <div class="details">Date: {{ event.date }}</div>
+          <div class="details">Time: {{ event.time }}</div>
 
           <b-button
             v-on:click="approve(event, event.category)"
@@ -28,6 +28,14 @@
           </b-button>
         </li>
       </ul>
+    </div>
+
+    <div v-else class="emptyTab">
+      <div>You have not requested to publish your events yet</div>
+      <br />
+      <b-button href="/event-add" variant="outline-success"
+        >Request Event</b-button
+      >
     </div>
   </div>
 </template>
@@ -145,3 +153,57 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.page-title {
+  color: black;
+  font-family: Georgia, Verdana, sans-serif;
+  font-weight: 500;
+  text-align: center;
+}
+.emptyTab {
+  text-align: center;
+  margin-top: 50px;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  text-align: center;
+  /*padding: 1%;
+  border: 1px solid #e48257;*/
+  margin: 1%;
+  width: 31.3%;
+}
+img {
+  height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.eventName {
+  overflow: hidden;
+  line-height: 1.5em;
+  height: 1.5em;
+  width: 100%;
+  text-align: left;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 15px;
+}
+.details {
+  color: #57585a;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+}
+</style>
