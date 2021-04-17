@@ -9,9 +9,11 @@
           <b-col>
             <b-row>
               <h2>{{ event.name }}</h2>
-              <h4 v-if="event.location">Location: {{ event.location }}</h4>
-              <h4 v-if="event.date">{{ event.date.toDate() }}</h4>
-              <h4 v-if="event.organizer">Organizer: {{ event.organizer }}</h4>
+              <h4>Organizer: {{ event.organizer }}</h4>
+              <h4>Location: {{ event.location }}</h4>
+              <h4>Date: {{ event.date }}</h4>
+              <h4>Time: {{ event.time }}</h4>
+
               <br />
               <br /><br />
               <h4 class="description">Description</h4>
@@ -164,7 +166,7 @@ export default {
               });
           }
         })
-        .then(this.$router.push('/event-category'));
+        .then(this.$router.push("/event-category"));
     },
   },
   created: function () {
