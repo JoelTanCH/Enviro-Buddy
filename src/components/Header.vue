@@ -128,7 +128,7 @@ export default {
 }
 #nav-items {
   margin-right: 10px;
-  color: #A3A3A3
+  color: rgba(255, 255, 255, 0.55);
 }
 .logout{
   color: #2B2B2B
