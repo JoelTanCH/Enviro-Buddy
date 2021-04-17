@@ -108,7 +108,7 @@ export default {
                   database.collection("users").doc(this.email).set({
                     username: this.username,
                     profilePic:
-                      "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
+                      "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/profile%20placeholder.jpg?alt=media&token=af9e55fb-9ac9-4c5a-bef1-3c42fad460de", //default profile pic
                   })
                 )
                 .then(() => {

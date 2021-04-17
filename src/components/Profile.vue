@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div class="container-fluid">
+    <div>
+      <h1 class="page-title">Profile</h1>
+    </div>
     <b-row id="user-info">
       <b-col class="col-3 d-flex justify-content-center">
         <div class="profile-pic-container" v-on:click="onPickFile">
@@ -28,91 +31,140 @@
     </b-row>
 
     <b-row id="user-acivities">
-      <b-tabs id="tabs">
+      <b-tabs id="tabs" justified>
         <b-tab title="My Marketplace Listings" active>
-          <ul>
-            <li v-for="item in mymktlist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div>$ {{ item.price }} / item</div>
-                <div>Quantity Sold: {{ item.quantitySold }}</div>
+          <div v-if="mymktlist.length > 0">
+            <ul>
+              <li v-for="item in mymktlist" v-bind:key="item.name">
+                <div>
+                  <img v-bind:src="item.img" />
+                  <h4 class="itemName">{{ item.name }}</h4>
+                  <div class="price">${{ item.price }}</div>
+                  <div class="qtySold">
+                    Quantity Sold: {{ item.quantitySold }}
+                  </div>
+                  <div>
+                    <b-button
+                      class="remove-button"
+                      variant="outline-danger"
+                      v-on:click="
+                        removeListing(item.category, item.mktdocRef, item.id)
+                      "
+                      >Remove Listing</b-button
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not added any listings yet</div>
+            <br />
+            <b-button href="/mkt-add" variant="outline-success"
+              >Add Listing</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Purchase History">
+          <div v-if="purchasedlist.length > 0">
+            <ul>
+              <li v-for="item in purchasedlist" v-bind:key="item.name">
+                <div>
+                  <img v-bind:src="item.img" />
+                  <h4 class="itemName">{{ item.name }}</h4>
+                  <div class="price">${{ item.price }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not purchased anything yet</div>
+            <br />
+            <b-button href="/mkt-category" variant="outline-success"
+              >Shop Now</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Registered Events">
+          <div v-if="eventlist.length > 0">
+            <ul>
+              <li v-for="event in eventlist" v-bind:key="event.name">
+                <div>
+                  <img v-bind:src="event.img" />
+                  <h4 class="itemName">{{ event.name }}</h4>
+                  <div class="price">{{ event.location }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not signed up for any events yet</div>
+            <br />
+            <b-button href="/event-category" variant="outline-success"
+              >Browse Events</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Event Requests">
+          <div v-if="eventRequestList.length > 0">
+            <ul>
+              <li v-for="event in eventRequestList" v-bind:key="event.name">
+                <div>
+                  <img v-bind:src="event.img" />
+                  <h4 class="itemName">{{ event.name }}</h4>
+                  <div class="price">{{ event.location }}</div>
+                  <div class="price">Status: {{ event.status }}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-else class="emptyTab">
+            <div>You have not requested to publish your events yet</div>
+            <br />
+            <b-button href="/event-add" variant="outline-success"
+              >Request Event</b-button
+            >
+          </div>
+        </b-tab>
+
+        <b-tab title="My Infohub Articles">
+          <div v-if="infolist.length > 0">
+            <ul>
+              <li v-for="item in infolist" v-bind:key="item.name">
                 <img v-bind:src="item.img" />
+                <h4 class="itemName">{{ item.name }}</h4>
                 <div>
                   <b-button
-                    variant="danger"
+                    class="remove-button"
+                    variant="outline-danger"
                     v-on:click="
-                      removeListing(item.category, item.mktdocRef, item.id)
+                      removeInfoListing(
+                        item.category,
+                        item.infoHubDocRef,
+                        item.id
+                      )
                     "
-                    >Remove Listing</b-button
+                    >Remove Infohub Post</b-button
                   >
                 </div>
-              </div>
-            </li>
-          </ul>
-        </b-tab>
+              </li>
+            </ul>
+          </div>
 
-        <b-tab title="My Purchase History" active>
-          <ul>
-            <li v-for="item in purchasedlist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div>$ {{ item.price }} / item</div>
-                <div>Quantity: {{ item.quantity }}</div>
-                <img v-bind:src="item.img" />
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="Events you have signed up for" active>
-          <ul>
-            <li v-for="event in eventlist" v-bind:key="event.name">
-              <div>
-                <h2>{{ event.name }}</h2>
-                <div>{{ event.date.toDate() }}</div>
-                <div>Location: {{ event.location }}</div>
-                <img v-bind:src="event.img" />
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="Events you have requested to host" active>
-          <ul>
-            <li v-for="event in eventRequestList" v-bind:key="event.name">
-              <div>
-                <h2>{{ event.name }}</h2>
-                <div>Location: {{ event.location }}</div>
-                <img v-bind:src="event.img" />
-                <div>Status: {{ event.status }}</div>
-              </div>
-            </li>
-          </ul>
-        </b-tab>
-
-        <b-tab title="My Infohub Posts" active>
-          <ul>
-            <li v-for="item in infolist" v-bind:key="item.name">
-              <div>
-                <h2>{{ item.name }}</h2>
-                <div class="description">{{ item.description }}</div>
-              </div>
-              <img v-bind:src="item.img" />
-              <div>
-                <b-button
-                  variant="danger"
-                  v-on:click="
-                    removeInfoListing(
-                      item.category,
-                      item.infoHubDocRef,
-                      item.id
-                    )
-                  "
-                  >Remove Infohub Post</b-button
-                >
-              </div>
-            </li>
-          </ul>
+          <div v-else class="emptyTab">
+            <div>You have not posted any articles yet</div>
+            <br />
+            <b-button href="/info-add" variant="outline-success"
+              >Post Now</b-button
+            >
+          </div>
         </b-tab>
       </b-tabs>
     </b-row>
@@ -168,7 +220,7 @@ export default {
               .doc(firebase.auth().currentUser.email)
               .update({
                 profilePic: preview.src,
-              })
+              });
           });
         }
       );
@@ -245,7 +297,7 @@ export default {
           });
         });
 
-      //for eventRequestedList
+      //for eventRequestList
       database
         .collection("users")
         .doc(this.currUserEmail)
@@ -318,6 +370,13 @@ export default {
 
 
 <style scoped>
+.page-title {
+  color:black;
+  font-family:Georgia, Verdana, sans-serif;
+  font-weight:500;
+  text-align: center;
+}
+/* for user info styling (top section above b-tabs) */
 .profile-pic-container {
   position: relative;
   width: 250px;
@@ -325,14 +384,12 @@ export default {
   overflow: hidden;
   border-radius: 50%;
 }
-
 #profile-pic {
   display: block;
   width: 250px;
   height: 250px;
   object-fit: cover;
 }
-
 .overlay {
   position: absolute;
   top: 0;
@@ -345,11 +402,9 @@ export default {
   transition: 0.3s ease;
   background-color: #3a6351;
 }
-
 .profile-pic-container:hover .overlay {
   opacity: 0.8;
 }
-
 #overlay-text {
   color: white;
   font-size: 20px;
@@ -361,7 +416,18 @@ export default {
   transform: translate(-50%, -50%);
   text-align: center;
 }
+#user-info {
+  margin-bottom: 20px;
+}
+#right-user-info {
+  margin: auto;
+}
+.emptyTab {
+  text-align: center;
+  margin-top: 50px;
+}
 
+/* for b-tabs styling */
 ul {
   display: flex;
   flex-wrap: wrap;
@@ -370,42 +436,47 @@ ul {
 }
 li {
   text-align: center;
-  padding: 1%;
-  border: 1px solid #e48257;
+  /*padding: 1%;
+  border: 1px solid #e48257;*/
   margin: 1%;
   width: 31.3%;
 }
 img {
-  height: 300px;
-  width: 90%;
+  height: 400px;
+  width: 100%;
   object-fit: cover;
 }
-.price {
-  color: #3a6351;
-  font-weight: bold;
-  font-size: 20px;
+
+.remove-button {
+  margin-top: 10px;
 }
 .itemName {
-  color: #393232;
-  font-size: 24px;
-  max-height: 32px;
   overflow: hidden;
-}
-.username {
-  font-size: 30px;
-  color: #e48257;
-}
-.description {
-  overflow: hidden;
-  display: flex;
   line-height: 1.5em;
-  height: 4.5em;
-  width: 90%;
+  height: 1.5em;
+  width: 100%;
+  text-align: left;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 15px;
 }
-#user-info {
-  margin-bottom: 20px;
+.price {
+  color: #57585a;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  width: 100%;
+  text-align: left;
+  margin-left: 5px;
 }
-#right-user-info {
-  margin: auto;
+.qtySold {
+  color: #57585a;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
 }
 </style>

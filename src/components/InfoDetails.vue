@@ -3,47 +3,53 @@
     <b-container>
       <b-row>
         <b-col>
-          <img v-bind:src="item.img" />
-        </b-col>
-        <b-col>
           <h2>{{ item.name }}</h2>
-          <h5>Posted by: {{ item.username }}</h5>
-          <p id="desc">{{ item.description }}</p>
-          <div v-if="show">
-            <b-button v-on:click="like">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-heart"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
-                />
-              </svg>
-            </b-button>
-          </div>
-          <div v-else>
-            <b-button v-on:click="like">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-heart-fill"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                />
-              </svg>
-            </b-button>
-          </div>
+          <h4>By {{ item.username }}</h4>
 
-          <h5>{{ this.likes }} person/people liked this!</h5>
+          <div class="likes">
+            <div v-if="show">
+              <b-button v-on:click="like" variant="outline-danger">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="bi bi-heart"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                  />
+                </svg>
+              </b-button>
+            </div>
+            <div v-else>
+              <b-button v-on:click="like" variant="outline-danger">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="bi bi-heart-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                  />
+                </svg>
+              </b-button>
+            </div>
+            <h5>{{ this.likes }} liked</h5>
+          </div>
+          <br />
+
+          <div>
+            <img v-bind:src="item.img" />
+          </div>
+          <br />
+
+          <div id="desc">{{ item.description }}</div>
         </b-col>
       </b-row>
     </b-container>
@@ -74,7 +80,7 @@ export default {
       if (this.likedBefore.includes(currentUser)) {
         alert("You have liked this already");
       } else {
-        this.likedBefore.push(currentUser)
+        this.likedBefore.push(currentUser);
         this.likes = this.likes + 1;
         const increment = firebase.firestore.FieldValue.increment(1);
         this.show = !this.show;
@@ -163,25 +169,35 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  text-align: left;
+}
+h4 {
+  text-align: left;
+  color: #57585a;
+}
+h5 {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+.description {
+  text-align: left;
+  color: black;
+}
 img {
   width: 100%;
-  height: 70vh;
+  height: 550px;
   object-fit: cover;
-}
-.username {
-  color: #e48257;
 }
 #desc {
   white-space: pre-line;
-  text-align: left;
+  font-size: 0.875rem;
+  padding-bottom: 5vh;
+  text-justify: inter-word;
+  text-align: justify;
 }
-p {
-  text-align: center;
-  padding: 1%;
-  border: 1px solid #e48257;
-  margin: 1%;
-  width: 85%;
-  height: 85%;
-  background-color: #e48257;
+.likes {
+  display: flex;
+  justify-content: left;
 }
 </style>

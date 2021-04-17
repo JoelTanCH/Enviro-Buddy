@@ -18,8 +18,10 @@ import RootPage from './components/RootPage.vue'
 import SignUpPage from './components/SignUpPage.vue'
 import LoginPage from './components/LoginPage.vue'
 import ForgotPassword from './components/ForgotPassword.vue'
-import ConfirmSignUp from './components/ConfirmSignUp.vue'
+
 import Profile from './components/Profile.vue'
+
+import Admin from './components/Admin.vue'
 
 
 
@@ -61,8 +63,8 @@ export default [
         component: InfoListing,
         children: [
             { path: 'crafts', component: InfoListing, name: 'crafts', props: true },
-            { path: 'outside', component: InfoListing, name: 'outside', props: true },
-            { path: 'workshop', component: InfoListing, name: 'workshop', props: true },
+            { path: 'news', component: InfoListing, name: 'news', props: true },
+            { path: 'lifestyle', component: InfoListing, name: 'lifestyle', props: true },
         ]
     },
 
@@ -71,7 +73,8 @@ export default [
     { path: '/sign-up', component: SignUpPage, name: 'sign-up', meta: { noAuth: true } },
     { path: '/login', component: LoginPage, name: 'login', meta: { noAuth: true } },
     { path: '/forgot-password', component: ForgotPassword, name: 'forgot-pw', meta: { noAuth: true } },
-    { path: '/confirm-signup', component: ConfirmSignUp, name: 'confirm-signup'},
 
     { path: '/profile', component: Profile, name: 'profile' },
+
+    { path: '/admin', component: Admin, name: 'admin' },
 ]

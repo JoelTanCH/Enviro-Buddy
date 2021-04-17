@@ -9,9 +9,14 @@
           <b-col>
             <b-row>
               <h2>{{ event.name }}</h2>
-              <p v-if="event.location">Location: {{ event.location }}</p>
-              <p v-if="event.date">{{ event.date.toDate() }}</p>
-              <p v-if="event.organizer">Organizer: {{ event.organizer }}</p>
+              <h4>Organizer: {{ event.organizer }}</h4>
+              <h4>Location: {{ event.location }}</h4>
+              <h4>Date: {{ event.date }}</h4>
+              <h4>Time: {{ event.time }}</h4>
+
+              <br />
+              <br /><br />
+              <h4 class="description">Description</h4>
               <p v-if="event.description">
                 {{ event.description }}
               </p>
@@ -49,13 +54,15 @@
                   ></b-form-input>
                 </b-form-group>
 
-                <b-button
-                  id="button"
-                  type="submit"
-                  variant="outline-success"
-                  v-on:click="signUp(), $router.push('event-category')"
-                  >Sign Me Up!</b-button
-                >
+                <div class="buttonContainer">
+                  <b-button
+                    id="button"
+                    type="submit"
+                    variant="outline-success"
+                    v-on:click="signUp()"
+                    >Sign Me Up!</b-button
+                  >
+                </div>
               </b-form>
             </b-row>
           </b-col>
@@ -119,7 +126,7 @@ export default {
               item = doc.data();
               if (item.name == this.event.name) {
                 this.repeated = true;
-                alert("You have already registered for this event previously");
+                alert("You have already signed up for this event previously");
               }
             });
             if (!this.repeated) {
@@ -137,7 +144,7 @@ export default {
                 .collection("signups")
                 .add(this.signupInfo)
                 .then(() => {
-                  alert("saved to database");
+                  alert("You have successfully signed up for the event");
                 });
             }
           } else {
@@ -155,10 +162,11 @@ export default {
               .collection("signups")
               .add(this.signupInfo)
               .then(() => {
-                alert("saved to database");
+                alert("You have successfully signed up for the event");
               });
           }
-        });
+        })
+        .then(this.$router.push("/event-category"));
     },
   },
   created: function () {
@@ -168,20 +176,28 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  text-align: left;
+}
+h3 {
+  margin-top: 20px;
+}
+h4 {
+  text-align: left;
+  color: #57585a;
+}
 img {
-  width: 100%;
-  height: 70vh;
+  width: 550px;
+  height: 720px;
   object-fit: cover;
 }
-body {
-  background-color: #ffe8e8;
+.description {
+  text-align: left;
+  color: black;
 }
-#description {
-  overflow: hidden;
-  display: flex;
-  line-height: 1.5em;
-  height: 4.5em;
-  width: 90%;
+p {
+  text-align: left;
+  height: 95px;
 }
 #signup {
   width: 70%;
@@ -189,6 +205,10 @@ body {
   margin-right: auto;
 }
 #button {
-  margin-top: 3%;
+  margin-top: 20px;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -2,7 +2,7 @@
 <body>
   <div>
     <div class = "topContainer">
-      <h2 class = 'subcollection'> {{this.subCollectionName}} </h2>
+      <h2 class = 'title'> Markeplace </h2>
       <div id="searchbar-container">
         <b-form-input
           v-on:keyup.enter="search_text()"
@@ -12,6 +12,7 @@
         ></b-form-input>
       </div>
     </div>
+    <h2 class = 'subtitle'> {{this.subCollectionName}} </h2>
 
     <div v-if="searchList == null">
       <div v-if="search.text == ''">
@@ -36,15 +37,15 @@
           </li>
         </ul>
       </div>
-      <div v-else>Press Enter to search.</div>
+      <div v-else class = "searchOutput">Press Enter to search</div>
     </div>
 
     <div v-else>
-      <div v-if="this.searchList.length == 0">
-        No matching results.<br />Try another search?
+      <div v-if="this.searchList.length == 0" class = "searchOutput">
+        No matching results. Try another search?
       </div>
       <div v-else-if="this.searchList.length > 0">
-        <div>{{ this.searchList.length }} item(s) found</div>
+        <div class = 'searchOutput'>{{ this.searchList.length }} item(s) found</div>
         <ul>
           <li v-for="item in searchList" v-bind:key="item.name">
             <img v-bind:src="item.img" />
@@ -104,9 +105,7 @@ export default {
             if (item.img == "") {
               item.img =
                 "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5";
-            } else {
-              console.log("ok");
-            }
+            } 
             item.id = doc.id;
             this.itemList.push(item);
             console.log(item)
@@ -146,13 +145,24 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-.subcollection {
+.title {
   text-align: left;
   margin-left:1%;
   overflow: hidden;
   text-transform: uppercase;
   font-family: "Lucida Sans", sans-serif;
   font-weight:lighter;
+  margin-bottom:10px;
+}
+.subtitle {
+  text-align: left;
+  margin-left:1%;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-family: "Lucida Sans", sans-serif;
+  font-weight:lighter;
+  font-size:1.7rem;
+  color:#3a6351;
 }
 ul {
   display: flex;
@@ -206,11 +216,8 @@ img {
   font-size: 16px;
   font-family: "FKGrotesk",Helvetica,Arial,sans-serif;
 }
-/*.description {
-  overflow: hidden;
-  display: flex;
-  line-height: 1.5em;
-  height: 4.5em;
-  width: 90%;
-} */
+.searchOutput {
+  display:flex;
+  justify-content: center;
+}
 </style>
