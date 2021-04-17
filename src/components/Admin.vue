@@ -23,7 +23,7 @@
             Approve
           </b-button>
 
-          <b-button v-on:click="reject(eventid)" variant="outline-danger">
+          <b-button v-on:click="reject(event)" variant="outline-danger">
             Reject
           </b-button>
         </li>
@@ -120,15 +120,24 @@ export default {
             });
         });
     },
-    reject: function (eventid) {
+    reject: function (event) {
       //update status to reject
       database
         .collection("events-req")
-        .doc(eventid)
+        .doc(event.category)
+        .collection("events")
+        .doc(event.id)
         .update({ status: "Rejected" })
-        .then(() => location.reload());
-
-      //update status to rejected in users > requested-events
+        .then(() => {
+          //update status to rejected in users > requested-events
+          database
+            .collection("users")
+            .doc(event.email)
+            .collection("requested-events")
+            .doc(event.userdocRef)
+            .update({ status: "Rejected" })
+            .then(() => location.reload());
+        });
     },
   },
   created: function () {
