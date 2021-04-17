@@ -201,11 +201,11 @@ h4 {
 }
 p {
   text-align: left;
-  height: 45vh;
+  height: 260px;
 }
 img {
   width: 100%;
-  height: 100vh;
+  height: 580px;
   object-fit: cover;
 }
 .button {
