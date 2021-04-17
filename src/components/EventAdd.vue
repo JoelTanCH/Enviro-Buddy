@@ -7,7 +7,7 @@
         </b-col>
 
         <b-col>
-          <h1>Add Your Event!</h1>
+          <h1>Share Your Event</h1>
 
           <b-form id="form" v-on:submit="submitForm">
             <b-form-group
@@ -32,7 +32,7 @@
               <b-form-select
                 id="item-category"
                 v-model="category"
-                v-bind:options="marketplaceCategories"
+                v-bind:options="eventCategories"
                 required
               ></b-form-select>
             </b-form-group>
@@ -46,25 +46,27 @@
                 id="organizer"
                 v-model="item.organizer"
                 placeholder="Enter your organization's name"
+                type="text"
                 required
               ></b-form-input>
             </b-form-group>
 
-             <b-form-group
+            <b-form-group
               id="contact-number"
-              label="Contact Details"
+              label="Mobile Number"
               label-for="contact-number-input"
             >
               <b-form-input
-                id="contact"
-                v-model="item.contact"
-                placeholder="Enter your phone number without country code"
-                type = "number"
+                id="mobile"
+                v-model="item.mobile"
+                placeholder="Enter your 8-digit number without country code"
+                type="tel"
+                pattern="[0-9]{8}"
                 required
               ></b-form-input>
             </b-form-group>
 
-             <b-form-group
+            <b-form-group
               id="company-email"
               label="Email"
               label-for="company-email-input"
@@ -72,12 +74,13 @@
               <b-form-input
                 id="email"
                 v-model="item.companyEmail"
+                type="email"
                 placeholder="Enter the email you would like us to communicate with"
                 required
               ></b-form-input>
             </b-form-group>
 
-             <b-form-group
+            <b-form-group
               id="event-date"
               label="Date"
               label-for="event-date-input"
@@ -85,12 +88,13 @@
               <b-form-input
                 id="event-date"
                 v-model="item.date"
+                type="date"
                 placeholder="Enter the date of the event"
                 required
               ></b-form-input>
             </b-form-group>
 
-             <b-form-group
+            <b-form-group
               id="event-time"
               label="Time"
               label-for="event-time-input"
@@ -98,12 +102,11 @@
               <b-form-input
                 id="event-time"
                 v-model="item.time"
+                type="time"
                 placeholder="Enter the time of the event"
                 required
               ></b-form-input>
             </b-form-group>
-
-
 
             <b-form-group
               id="item-description"
@@ -113,6 +116,7 @@
               <b-form-textarea
                 id="item-description"
                 v-model="item.description"
+                type="text"
                 placeholder="Enter event description"
                 rows="3"
                 max-rows="8"
@@ -131,14 +135,14 @@
                 v-on:change="onFilePicked"
               />
               <div id="progress-container">
-                  <div>Upload status:</div>
-                  <progress
-                    id="uploader"
-                    class="right-input"
-                    value="0"
-                    max="100"
-                  ></progress>
-                </div>
+                <div>Upload status:</div>
+                <progress
+                  id="uploader"
+                  class="right-input"
+                  value="0"
+                  max="100"
+                ></progress>
+              </div>
             </b-form-group>
 
             <b-button type="submit" variant="outline-success">Submit</b-button>
@@ -160,23 +164,23 @@ export default {
     return {
       userInfo: {},
       item: {
-        date:null,
-        time:null,
+        date: null,
+        time: null,
         username: "",
         name: "",
         description: "",
-        organizer:"",
-        contact:"",
-        img: "", 
+        organizer: "",
+        mobile: "",
+        img: "",
         category: "",
-        status:"pending",
-        companyEmail:"", // use as contact information 
+        status: "Pending",
+        companyEmail: "", // use as contact information
         email: "", //use as storage not contact info
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       category: null,
-      marketplaceCategories: ["Cleanup", "Recycling", "Workshops"],
+      eventCategories: ["Cleanup", "Recycling", "Workshops"],
     };
   },
   methods: {
@@ -236,7 +240,6 @@ export default {
       event.preventDefault();
 
       var preview = document.getElementById("previewImage");
-      console.log("contact type"+ this.item.contact.length)
 
       if (preview.src == this.placeholderURL) {
         //not updated yet
@@ -246,14 +249,10 @@ export default {
         return;
       }
 
-      if(this.item.contact.length != 8 ){
-        alert("Please enter a valid number")
-        return;
-      }
-
       this.item.img = preview.src;
       this.item.username = this.userInfo.username;
       this.item.category = this.category.toLowerCase();
+
       let currentUser = firebase.auth().currentUser;
       this.item.email = currentUser.email;
 
@@ -274,7 +273,9 @@ export default {
         //     .add(this.item);
         // })
         .then(() => {
-          alert("Your response has been submitted and is currently pending approval.");
+          alert(
+            "Your response has been submitted and is currently pending approval."
+          );
           window.location.href = "/event-category";
         });
 
