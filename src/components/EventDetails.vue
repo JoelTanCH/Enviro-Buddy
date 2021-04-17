@@ -9,9 +9,10 @@
           <b-col>
             <b-row>
               <h2>{{ event.name }}</h2>
-              <p v-if="event.location">Location: {{ event.location }}</p>
-              <p v-if="event.date">{{ event.date.toDate() }}</p>
-              <p v-if="event.organizer">Organizer: {{ event.organizer }}</p>
+              <h4 v-if="event.location">Location: {{ event.location }}</h4>
+              <h4 v-if="event.date">{{ event.date.toDate() }}</h4>
+              <h4 v-if="event.organizer">Organizer: {{ event.organizer }}</h4> <br> <br><br>
+              <h4 class = 'description'>Description</h4>
               <p v-if="event.description">
                 {{ event.description }}
               </p>
@@ -19,20 +20,20 @@
             <hr />
 
             <b-row id="signup">
-              <h3>Interested? Sign up below!</h3>
+              <h3>Interested? Sign up below!</h3> 
               <b-form>
                 <b-form-group
                   id="Full-name"
                   label="Full Name"
                   label-for="full-name-input"
-                >
+                > 
                   <b-form-input
                     id="Full-name"
                     type="text"
                     placeholder="Enter Full Name"
                     v-model.lazy="signupInfo.name"
                     required
-                  ></b-form-input>
+                  ></b-form-input> 
                 </b-form-group>
 
                 <b-form-group
@@ -49,13 +50,15 @@
                   ></b-form-input>
                 </b-form-group>
 
-                <b-button
-                  id="button"
-                  type="submit"
-                  variant="outline-success"
-                  v-on:click="signUp(), $router.push('event-category')"
-                  >Sign Me Up!</b-button
-                >
+                <div class = "buttonContainer">
+                  <b-button
+                    id="button"
+                    type="submit"
+                    variant="outline-success"
+                    v-on:click="signUp(), $router.push('event-category')"
+                    >Sign Me Up!</b-button
+                  >
+                </div>
               </b-form>
             </b-row>
           </b-col>
@@ -158,20 +161,28 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  text-align: left;
+}
+h3 {
+  margin-top: 20px;
+}
+h4 {
+  text-align: left;
+  color:#57585a;
+}
 img {
-  width: 100%;
-  height: 70vh;
+  width: 550px;
+  height: 720px;
   object-fit: cover;
 }
-body {
-  background-color: #ffe8e8;
+.description {
+  text-align: left;
+  color:black;
 }
-#description {
-  overflow: hidden;
-  display: flex;
-  line-height: 1.5em;
-  height: 4.5em;
-  width: 90%;
+p {
+  text-align: left;
+  height: 95px;
 }
 #signup {
   width: 70%;
@@ -179,6 +190,10 @@ body {
   margin-right: auto;
 }
 #button {
-  margin-top: 3%;
+  margin-top: 20px;
+}
+.buttonContainer {
+  display:flex;
+  justify-content: center;
 }
 </style>

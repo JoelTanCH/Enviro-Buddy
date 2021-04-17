@@ -204,7 +204,7 @@ p {
   height: 260px;
 }
 img {
-  width: 100%;
+  width: 550px;
   height: 580px;
   object-fit: cover;
 }

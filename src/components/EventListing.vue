@@ -2,7 +2,7 @@
   <body>
     <div>
       <div class = "topContainer">
-        <h2 class = 'subcollection'> {{this.subCollectionName}} </h2>
+        <h2 class = 'title'> Events </h2>
         <div id="searchbar-container">
           <b-form-input
             v-on:keyup.enter="search_text()"
@@ -12,47 +12,47 @@
           ></b-form-input>
         </div>
       </div>
+      <h2 class = 'subtitle'> {{this.subCollectionName}} </h2>
+
       <div v-if="searchList == null">
         <div v-if="search.text == ''">
           <ul>
             <li v-for="event in eventList" v-bind:key="event.name">
-              <h2 class="eventName">{{ event.name }}</h2>
               <img v-bind:src="event.img" />
-              <p class="description">{{ event.description }}</p>
+              <h4 class="eventName">{{ event.name }}</h4>
+              
               <b-button
                 v-bind:eventid="event.id"
                 v-bind:collectionName="collectionName"
                 v-bind:subCollectionName="subCollectionName"
                 v-on:click="route($event)"
-                variant="outline-danger"
+                variant="outline-success"
               >
                 Sign Up
               </b-button>
             </li>
           </ul>
         </div>
-        <div v-else>Press Enter to search.</div>
+        <div v-else class = "searchOutput">Press Enter to search</div>
       </div>
       <div v-else>
-        <div v-if="this.searchList.length == 0">
-          No matching results.<br />Try another search?
+        <div v-if="this.searchList.length == 0" class = "searchOutput">
+          No matching results. Try another search?
         </div>
         <div v-else-if="this.searchList.length > 0">
-          <div>{{ this.searchList.length }} event(s) found</div>
+          <div class = "searchOutput">{{ this.searchList.length }} event(s) found</div>
           <ul>
             <li v-for="event in searchList" v-bind:key="event.name">
-              <div class="top-box">
-                <h2 class="eventName">{{ event.name }}</h2>
-              </div>
-              <img v-bind:src="event.img" />
-              <div class="description">{{ event.description }}</div>
+              <img v-bind:src="event.img" />              
+              <h4 class="eventName">{{ event.name }}</h4>
+              
               <div>
                 <b-button
                   v-bind:eventid="event.id"
                   v-bind:collectionName="collectionName"
                   v-bind:subCollectionName="subCollectionName"
                   v-on:click="route($event)"
-                  variant="outline-danger"
+                  variant="outline-success"
                 >
                   Sign Up
                 </b-button>
@@ -139,16 +139,24 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-.subcollection {
+.title {
   text-align: left;
   margin-left:1%;
   overflow: hidden;
   text-transform: uppercase;
   font-family: "Lucida Sans", sans-serif;
   font-weight:lighter;
+  margin-bottom:10px;
 }
-body {
-  background-color: #ffe8e8;
+.subtitle {
+  text-align: left;
+  margin-left:1%;
+  overflow: hidden;
+  text-transform: uppercase;
+  font-family: "Lucida Sans", sans-serif;
+  font-weight:lighter;
+  font-size:1.7rem;
+  color:#3a6351;
 }
 ul {
   display: flex;
@@ -158,14 +166,12 @@ ul {
 }
 li {
   text-align: center;
-  padding: 1%;
-  border: 1px solid #e48257;
   margin: 1%;
   width: 31.3%;
 }
 img {
-  height: 300px;
-  width: 90%;
+  height: 400px;
+  width: 100%;
   object-fit: cover;
 }
 #searchbar-container {
@@ -175,17 +181,18 @@ img {
 }
 .eventName {
   overflow: hidden;
-  display: flex;
   line-height: 1.5em;
-  height: 3em;
-  width: 90%;
-  text-align: center;
+  height: 1.5em;
+  width: 100%;
+  text-align: left;
+  font-family: "FKGrotesk",Helvetica,Arial,sans-serif;
+  font-weight:600;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom:15px; /**/ 
 }
-.description {
-  overflow: hidden;
-  display: flex;
-  line-height: 1.5em;
-  height: 4.5em;
-  width: 90%;
+.searchOutput {
+  display:flex;
+  justify-content: center;
 }
 </style>
