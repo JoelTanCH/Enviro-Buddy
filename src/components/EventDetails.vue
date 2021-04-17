@@ -11,8 +11,10 @@
               <h2>{{ event.name }}</h2>
               <h4 v-if="event.location">Location: {{ event.location }}</h4>
               <h4 v-if="event.date">{{ event.date.toDate() }}</h4>
-              <h4 v-if="event.organizer">Organizer: {{ event.organizer }}</h4> <br> <br><br>
-              <h4 class = 'description'>Description</h4>
+              <h4 v-if="event.organizer">Organizer: {{ event.organizer }}</h4>
+              <br />
+              <br /><br />
+              <h4 class="description">Description</h4>
               <p v-if="event.description">
                 {{ event.description }}
               </p>
@@ -26,14 +28,14 @@
                   id="Full-name"
                   label="Full Name"
                   label-for="full-name-input"
-                > 
+                >
                   <b-form-input
                     id="Full-name"
                     v-model="signupInfo.name"
                     placeholder="Enter Full Name"
                     type="text"
                     required
-                  ></b-form-input> 
+                  ></b-form-input>
                 </b-form-group>
 
                 <b-form-group
@@ -50,12 +52,12 @@
                   ></b-form-input>
                 </b-form-group>
 
-                <div class = "buttonContainer">
+                <div class="buttonContainer">
                   <b-button
                     id="button"
                     type="submit"
                     variant="outline-success"
-                    v-on:click="signUp(), $router.push('event-category')"
+                    v-on:click="signUp()"
                     >Sign Me Up!</b-button
                   >
                 </div>
@@ -122,7 +124,7 @@ export default {
               item = doc.data();
               if (item.name == this.event.name) {
                 this.repeated = true;
-                alert("You have already registered for this event previously");
+                alert("You have already signed up for this event previously");
               }
             });
             if (!this.repeated) {
@@ -140,7 +142,7 @@ export default {
                 .collection("signups")
                 .add(this.signupInfo)
                 .then(() => {
-                  alert("saved to database");
+                  alert("You have successfully signed up for the event");
                 });
             }
           } else {
@@ -158,10 +160,11 @@ export default {
               .collection("signups")
               .add(this.signupInfo)
               .then(() => {
-                alert("saved to database");
+                alert("You have successfully signed up for the event");
               });
           }
-        });
+        })
+        .then(this.$router.push('/event-category'));
     },
   },
   created: function () {
@@ -179,7 +182,7 @@ h3 {
 }
 h4 {
   text-align: left;
-  color:#57585a;
+  color: #57585a;
 }
 img {
   width: 550px;
@@ -188,7 +191,7 @@ img {
 }
 .description {
   text-align: left;
-  color:black;
+  color: black;
 }
 p {
   text-align: left;
@@ -203,7 +206,7 @@ p {
   margin-top: 20px;
 }
 .buttonContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
 }
 </style>
