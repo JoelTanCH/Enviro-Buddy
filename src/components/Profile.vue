@@ -1,53 +1,34 @@
 <template>
-  <div>
-    <section id="user-info">
-      <div id="profile-pic-container">
-        <img id="profile-pic" v-bind:src="this.user.profilePic" />
-      </div>
-      <b-button
-        id="updateProfilePic"
-        type="submit"
-        variant="secondary"
-        v-on:click="update = !update"
-        >Update your profile pic</b-button
-      >
-      <br />
-      <br />
-      <template v-if="update">
-        <b-row>
-          <b-col>
-            <img v-bind:src="this.user.profilePic" id="previewImage" />
-          </b-col>
-          <b-form-group>
-            <b-button v-on:click="onPickFile">Upload Image</b-button><br>
-            <input
-              id="fileButton"
-              type="file"
-              style="display: none"
-              ref="fileInput"
-              accept="image/*"
-              v-on:change="onFilePicked"
-            />
-            <div id="progress-container">
-              <div>Upload status:</div>
-                <progress
-                  id="uploader"
-                  class="right-input"
-                  value="0"
-                  max="100"
-                ></progress>
-              </div>
-            <b-button v-on:click="submitPic">Submit</b-button>
-          </b-form-group>
-        </b-row>
-      </template>
+  <div class="container-fluid">
+    <b-row id="user-info">
+      <b-col class="col-3 d-flex justify-content-center">
+        <div class="profile-pic-container" v-on:click="onPickFile">
+          <input
+            id="fileInput"
+            style="display: none"
+            type="file"
+            ref="fileInput"
+            accept="image/*"
+            v-on:change="onFilePicked"
+          />
+          <img id="profile-pic" v-bind:src="this.user.profilePic" />
+          <div class="overlay">
+            <div id="overlay-text">
+              <b-icon-pencil font-scale="1.5"></b-icon-pencil>
+              Update Profile Picture
+            </div>
+          </div>
+        </div>
+      </b-col>
 
-      <h1>{{ this.user.username }}</h1>
-      <h5>{{ this.email }}</h5>
-    </section>
+      <b-col id="right-user-info">
+        <h1>{{ this.user.username }}</h1>
+        <div>{{ this.email }}</div>
+      </b-col>
+    </b-row>
 
-    <section id="user-acivities">
-      <b-tabs id="tabs">
+    <b-row id="user-acivities">
+      <b-tabs id="tabs" justified>
         <b-tab title="My Marketplace Listings" active>
           <ul>
             <li v-for="item in mymktlist" v-bind:key="item.name">
@@ -70,7 +51,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="My Purchase History" active>
+        <b-tab title="My Purchase History">
           <ul>
             <li v-for="item in purchasedlist" v-bind:key="item.name">
               <div>
@@ -83,7 +64,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="Events you have signed up for" active>
+        <b-tab title="My Registered Events">
           <ul>
             <li v-for="event in eventlist" v-bind:key="event.name">
               <div>
@@ -96,7 +77,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="Events you have requested to host" active>
+        <b-tab title="My Event Requests">
           <ul>
             <li v-for="event in eventRequestList" v-bind:key="event.name">
               <div>
@@ -109,7 +90,7 @@
           </ul>
         </b-tab>
 
-        <b-tab title="My Infohub Posts" active>
+        <b-tab title="My Infohub Articles">
           <ul>
             <li v-for="item in infolist" v-bind:key="item.name">
               <div>
@@ -121,7 +102,11 @@
                 <b-button
                   variant="danger"
                   v-on:click="
-                    removeInfoListing(item.category, item.infoHubDocRef, item.id)
+                    removeInfoListing(
+                      item.category,
+                      item.infoHubDocRef,
+                      item.id
+                    )
                   "
                   >Remove Infohub Post</b-button
                 >
@@ -130,7 +115,7 @@
           </ul>
         </b-tab>
       </b-tabs>
-    </section>
+    </b-row>
   </div>
 </template>
 
@@ -163,64 +148,33 @@ export default {
     onFilePicked: function (event) {
       const file = event.target.files[0];
 
-      var uploader = document.getElementById("uploader");
-      var preview = document.getElementById("previewImage");
+      var preview = document.getElementById("profile-pic");
 
       //create storage ref
-      var storageRef = firebase
-        .storage()
-        .ref("events/" + new Date() + "-" + file.name);
+      var storageRef = firebase.storage().ref("profile/" + this.user.username);
 
       //upload file
       var task = storageRef.put(file);
 
-      //update progress bar
       task.on(
         "state_changed",
-
-        function (snapshot) {
-          var percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          uploader.value = percentage;
-        },
-
-        //handle errors here
-        function (error) {
-          console.log(error.message);
-        },
-
         //handle successful uploads on complete
         function () {
           task.snapshot.ref.getDownloadURL().then(function (storageURL) {
             preview.src = storageURL;
             console.log(preview.src);
+            database
+              .collection("users")
+              .doc(firebase.auth().currentUser.email)
+              .update({
+                profilePic: preview.src,
+              })
           });
         }
       );
     },
-    submitPic: function () {
-      var currentUser = firebase.auth().currentUser;
-      var preview = document.getElementById("previewImage");
 
-      if (preview.src == this.placeholderURL) {
-        //not updated yet
-        alert(
-          "Submission failed. Please wait for your image upload to complete."
-        );
-        return;
-      }
-      database
-        .collection("users")
-        .doc(currentUser.email)
-        .update({
-          profilePic: preview.src,
-        })
-        .then(() => {
-          alert("your profile pic has been updated!");
-          location.reload();
-        });
-    },
-     removeInfoListing: function (category, infoHubDocRef, userdocRef) {
+    removeInfoListing: function (category, infoHubDocRef, userdocRef) {
       //remove from marketplace
       database
         .collection("info-categories")
@@ -364,29 +318,50 @@ export default {
 
 
 <style scoped>
-#profile-pic-container {
+.profile-pic-container {
+  position: relative;
   width: 250px;
   height: 250px;
   overflow: hidden;
   border-radius: 50%;
 }
+
 #profile-pic {
-  display: inline;
-  margin: 0 auto;
-  height: 100%;
-  width: auto;
+  display: block;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
 }
-#previewImage {
-  width: 30vw;
-  height: 30vh;
-  object-fit: contain;
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 250px;
+  height: 250px;
+  opacity: 0;
+  transition: 0.3s ease;
+  background-color: #3a6351;
 }
-#progress-container {
-  margin-top: 10px;
+
+.profile-pic-container:hover .overlay {
+  opacity: 0.8;
 }
-#uploader {
-  background-color: green;
+
+#overlay-text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
+
 ul {
   display: flex;
   flex-wrap: wrap;
@@ -427,8 +402,10 @@ img {
   height: 4.5em;
   width: 90%;
 }
-#user-info * {
-  margin-left: auto;
-  margin-right: auto;
+#user-info {
+  margin-bottom: 20px;
+}
+#right-user-info {
+  margin: auto;
 }
 </style>
