@@ -148,7 +148,6 @@ export default {
     },
 
     onFilePicked: function (event) {
-      this.$refs.fileInput.click();
       const file = event.target.files[0];
 
       var uploader = document.getElementById("uploader");
