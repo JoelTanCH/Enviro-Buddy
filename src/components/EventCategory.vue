@@ -12,8 +12,6 @@
             <img v-bind:src="category.img" />
             <h2 id="categoryName">{{ category.name }}</h2>
 
-            <div id="description">{{ category.description }}</div>
-
             <b-button
               id="button"
               v-bind:categoryName="category.name"
