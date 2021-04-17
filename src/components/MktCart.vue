@@ -1,7 +1,7 @@
 <template>
   <body>
-    <h1 class = 'title'> Shopping Cart </h1>
-    <div id="mainContainer">
+    <h1 class="title">Shopping Cart</h1>
+    <div id="mainContainer" v-if="itemList.length > 0">
       <b-row>
         <b-col>
           <b-container id="leftContainer">
@@ -72,7 +72,7 @@
               </tbody>
             </table>
 
-            <div class = "buttonContainer">
+            <div class="buttonContainer">
               <b-button
                 class="checkOut"
                 variant="success"
@@ -84,6 +84,14 @@
           </b-container>
         </b-col>
       </b-row>
+    </div>
+
+    <div v-else id="emptyCart">
+      <div>Your cart is empty!</div>
+      <br>
+      <b-button href="/mkt-category" variant="outline-success"
+        >Shop Now</b-button
+      >
     </div>
   </body>
 </template>
@@ -279,9 +287,9 @@ export default {
 .title {
   margin-bottom: 20px;
   text-align: center;
-  color:black;
-  font-family:Georgia, Verdana, sans-serif;
-  font-weight:500;
+  color: black;
+  font-family: Georgia, Verdana, sans-serif;
+  font-weight: 500;
 }
 
 #leftContainer {
@@ -316,7 +324,11 @@ img {
   height: 30px;
 }
 .buttonContainer {
-  display:flex;
+  display: flex;
   justify-content: center;
+}
+#emptyCart {
+  text-align: center;
+  margin-top: 50px;
 }
 </style>

@@ -28,8 +28,8 @@
                 variant="outline-success"
                 >Add to Cart</b-button
               >
-              <b-button class="button" href="/mkt-cart" variant="outline-success">View Cart</b-button>
             </div>
+            
             <b-modal id="modalItem" @show="onShow" hide-footer hide-header>
               <p>Your order has been placed!</p>
 
