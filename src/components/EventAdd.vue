@@ -81,6 +81,20 @@
             </b-form-group>
 
             <b-form-group
+              id="location"
+              label="Location"
+              label-for="location-input"
+            >
+              <b-form-input
+                id="location"
+                v-model="item.location"
+                placeholder="Enter event location"
+                type="text"
+                required
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
               id="event-date"
               label="Date"
               label-for="event-date-input"
@@ -117,9 +131,8 @@
                 id="item-description"
                 v-model="item.description"
                 type="text"
-                placeholder="Enter event description"
-                rows="3"
-                max-rows="8"
+                maxlength="100"
+                placeholder="Enter event description (max 100 characters)"
                 required
               ></b-form-textarea>
             </b-form-group>
@@ -174,6 +187,7 @@ export default {
         img: "",
         category: "",
         status: "Pending",
+        location: "",
         companyEmail: "", // use as contact information
         email: "", //use as storage not contact info
       },
@@ -262,16 +276,15 @@ export default {
         .doc(currentUser.email)
         .collection("requested-events")
         .add(this.item)
-        // .then((docRef) => {
-        //   this.item.userdocRef = docRef.id;
-        // })
-        // .then(() => {
-        //   database
-        //     .collection("info-categories")
-        //     .doc(this.category.toLowerCase())
-        //     .collection("items")
-        //     .add(this.item);
-        // })
+        .then((docRef) => {
+          this.item.userdocRef = docRef.id;
+
+          database
+            .collection("events-req")
+            .doc(this.item.category)
+            .collection("events")
+            .add(this.item);
+        })
         .then(() => {
           alert(
             "Your response has been submitted and is currently pending approval."
