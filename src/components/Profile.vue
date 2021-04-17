@@ -1,5 +1,8 @@
 <template>
   <div class="container-fluid">
+    <div>
+      <h1 class="page-title">Profile</h1>
+    </div>
     <b-row id="user-info">
       <b-col class="col-3 d-flex justify-content-center">
         <div class="profile-pic-container" v-on:click="onPickFile">
@@ -367,6 +370,12 @@ export default {
 
 
 <style scoped>
+.page-title {
+  color:black;
+  font-family:Georgia, Verdana, sans-serif;
+  font-weight:500;
+  text-align: center;
+}
 /* for user info styling (top section above b-tabs) */
 .profile-pic-container {
   position: relative;
