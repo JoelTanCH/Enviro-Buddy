@@ -5,8 +5,8 @@
         <b-col>
           <h2>{{ item.name }}</h2>
           <h4>By {{ item.username }}</h4>
-          
-          <div class = "likes">
+
+          <div class="likes">
             <div v-if="show">
               <b-button v-on:click="like" variant="outline-danger">
                 <svg
@@ -41,13 +41,15 @@
               </b-button>
             </div>
             <h5>{{ this.likes }} liked</h5>
-          </div> <br>
+          </div>
+          <br />
 
           <div>
-            <img v-bind:src="item.img" /> 
-          </div> <br>
+            <img v-bind:src="item.img" />
+          </div>
+          <br />
 
-          <p id="desc">{{ item.description }}</p>
+          <div id="desc">{{ item.description }}</div>
         </b-col>
       </b-row>
     </b-container>
@@ -78,7 +80,7 @@ export default {
       if (this.likedBefore.includes(currentUser)) {
         alert("You have liked this already");
       } else {
-        this.likedBefore.push(currentUser)
+        this.likedBefore.push(currentUser);
         this.likes = this.likes + 1;
         const increment = firebase.firestore.FieldValue.increment(1);
         this.show = !this.show;
@@ -172,7 +174,7 @@ h2 {
 }
 h4 {
   text-align: left;
-  color:#57585a;
+  color: #57585a;
 }
 h5 {
   margin-top: 5px;
@@ -180,12 +182,7 @@ h5 {
 }
 .description {
   text-align: left;
-  color:black;
-}
-p {
-  font-size: 0.875rem;
-  text-align: left;
-  height: 400px;
+  color: black;
 }
 img {
   width: 100%;
@@ -194,12 +191,13 @@ img {
 }
 #desc {
   white-space: pre-line;
-  text-align: left;
+  font-size: 0.875rem;
+  padding-bottom: 5vh;
+  text-justify: inter-word;
+  text-align: justify;
 }
 .likes {
   display: flex;
-  justify-content:left;
-
+  justify-content: left;
 }
-
 </style>
