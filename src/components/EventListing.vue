@@ -20,7 +20,7 @@
             <li v-for="event in eventList" v-bind:key="event.name">
               <img v-bind:src="event.img" />
               <h4 class="eventName">{{ event.name }}</h4>
-              <div class="organizer">By {{ event.organizer }} </div>
+              <div class="organizer">By {{ event.organizer }} </div> <br>
               
               <b-button
                 v-bind:eventid="event.id"
@@ -46,7 +46,7 @@
             <li v-for="event in searchList" v-bind:key="event.name">
               <img v-bind:src="event.img" />              
               <h4 class="eventName">{{ event.name }}</h4>
-              <div class="organizer">By {{ event.organizer }} </div>
+              <div class="organizer">By {{ event.organizer }} </div> <br>
               
               <div>
                 <b-button
