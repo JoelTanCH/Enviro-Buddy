@@ -75,7 +75,7 @@
                   <img v-bind:src="item.img" />
                   <h4 class="itemName">{{ item.name }}</h4>
                   <div class="price">${{ item.price }}</div>
-                  <div class="price">Quantity: {{ item.quantity }}</div>
+                  <div class="qtySold">Quantity: {{ item.quantity }}</div>
                 </div>
               </li>
             </ul>
