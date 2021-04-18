@@ -69,6 +69,8 @@ export default {
       item: {},
       itemid: "",
       subCollectionName: "",
+      creatorEmail:null,
+      userdocRef:null,
     };
   },
   components: {},
@@ -84,6 +86,7 @@ export default {
         this.likes = this.likes + 1;
         const increment = firebase.firestore.FieldValue.increment(1);
         this.show = !this.show;
+        var newLikes = this.likes
 
         database
           .collection("info-categories")
@@ -103,6 +106,15 @@ export default {
           .update({
             likes: increment,
           });
+
+        database
+          .collection("users")
+          .doc(this.creatorEmail)
+          .collection("info")
+          .doc(this.userdocRef)
+          .update({
+            likes:newLikes
+          })
       }
     },
     fetchItems: function () {
@@ -137,6 +149,8 @@ export default {
       .then((doc) => {
         console.log("look here: " + doc.data());
         this.likes = doc.data().likes;
+        this.creatorEmail = doc.data().email;
+        this.userdocRef = doc.data().userdocRef
       });
 
     database
