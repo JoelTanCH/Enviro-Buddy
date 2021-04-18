@@ -49,8 +49,8 @@ export default [
         path: '/event-listing',
         component: EventListing,
         children: [
-            { path: 'cleanup', component: EventListing, name: 'cleanup', props: true },
-            { path: 'recycling', component: EventListing, name: 'recycling', props: true },
+            { path: 'donation', component: EventListing, name: 'donation', props: true },
+            { path: 'volunteering', component: EventListing, name: 'volunteering', props: true },
             { path: 'workshops', component: EventListing, name: 'workshops', props: true },
         ]
     },

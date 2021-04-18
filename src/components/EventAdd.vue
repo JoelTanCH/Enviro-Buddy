@@ -210,7 +210,7 @@ export default {
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       category: null,
-      eventCategories: ["Cleanup", "Recycling", "Workshops"],
+      eventCategories: ["Donation", "Volunteering", "Workshops"],
     };
   },
   methods: {

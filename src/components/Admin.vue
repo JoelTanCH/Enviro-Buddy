@@ -120,7 +120,7 @@ export default {
     fetchItems: function () {
       database
         .collection("events-req")
-        .doc("cleanup")
+        .doc("workshops")
         .collection("events")
         .get()
         .then((req) => {
@@ -136,7 +136,7 @@ export default {
         .then(() => {
           database
             .collection("events-req")
-            .doc("recycling")
+            .doc("donation")
             .collection("events")
             .get()
             .then((req) => {
@@ -152,7 +152,7 @@ export default {
             .then(() => {
               database
                 .collection("events-req")
-                .doc("workshops")
+                .doc("volunteering")
                 .collection("events")
                 .get()
                 .then((req) => {

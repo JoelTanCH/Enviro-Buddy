@@ -158,6 +158,8 @@
               <li v-for="item in infolist" v-bind:key="item.name">
                 <img v-bind:src="item.img" />
                 <h4 class="itemName">{{ item.name }}</h4>
+                <div class="price">Number of Likes: {{ item.likes }}</div>
+
                 <div>
                   <b-button
                     class="remove-button"
@@ -201,11 +203,13 @@ export default {
       quantitySold: [],
       user: {},
       email: null,
+
       mymktlist: [],
       purchasedlist: [],
       infolist: [],
       eventlist: [],
       eventRequestList: [],
+      
       collectionName: "",
       subCollectionName: "",
       currUserEmail: null,
