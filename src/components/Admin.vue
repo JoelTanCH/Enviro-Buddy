@@ -31,11 +31,7 @@
     </div>
 
     <div v-else class="emptyTab">
-      <div>You have not requested to publish your events yet</div>
-      <br />
-      <b-button href="/event-add" variant="outline-success"
-        >Request Event</b-button
-      >
+      <div>No events requests to review at the moment</div>
     </div>
   </div>
 </template>
