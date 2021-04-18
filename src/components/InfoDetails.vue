@@ -49,7 +49,7 @@
           </div>
           <br />
 
-          <div id="desc">{{ item.description }}</div>
+          <div id="desc">{{ item.description }}</div> <br>
         </b-col>
       </b-row>
     </b-container>
