@@ -197,7 +197,7 @@ export default {
       if (preview.src == this.placeholderURL) {
         //not updated yet
         alert(
-          "Submission failed. Please wait for your image upload to complete."
+          "Submission failed. Please upload an image / wait for your image to finish uploading."
         );
         return;
       } else {
