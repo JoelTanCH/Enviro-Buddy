@@ -88,7 +88,7 @@
 
     <div v-else id="emptyCart">
       <div>Your cart is empty!</div>
-      <br>
+      <br />
       <b-button href="/mkt-category" variant="outline-success"
         >Shop Now</b-button
       >
@@ -209,28 +209,41 @@ export default {
         var mktdocId = this.updateQuantitySoldList[i][3];
         var email = this.updateQuantitySoldList[i][4];
         var userdocRef = this.updateQuantitySoldList[i][5]; //change
+        var oldQty = null;
         console.log("category: " + category);
         console.log("newQuantity: " + newQuantity);
         console.log("docId: " + userdocRef);
         console.log("email: " + email);
 
         database
-          .collection("mkt-categories")
-          .doc(category)
-          .collection("items")
-          .doc(mktdocId)
-          .update({
-            quantitySold: newQuantity,
-          });
-
-        database
           .collection("users")
           .doc(email)
           .collection("my-mkt-list")
           .doc(userdocRef)
-          .update({
-            quantitySold: newQuantity,
-          });
+          .get()
+          .then((doc) => {
+            console.log(doc.data());
+            oldQty = doc.data().quantitySold;
+            console.log("old qty: " + doc.data().quantitySold);
+          })
+          .then(() => {
+            database
+              .collection("mkt-categories")
+              .doc(category)
+              .collection("items")
+              .doc(mktdocId)
+              .update({
+                quantitySold: newQuantity + oldQty,
+              });
+            database
+              .collection("users")
+              .doc(email)
+              .collection("my-mkt-list")
+              .doc(userdocRef)
+              .update({
+                quantitySold: newQuantity + oldQty,
+              });
+          })
       }
 
       let currentUser = firebase.auth().currentUser;
@@ -254,7 +267,7 @@ export default {
       //add to purchase history for profile page
       ordersRef.onSnapshot((snapshot) => {
         snapshot.docs.forEach((doc) => {
-          histRef.add(doc.data());
+          histRef.add(doc.data()); //adds a doc instead of incrementing the number
         });
       });
 
