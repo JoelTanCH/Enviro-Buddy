@@ -2,7 +2,7 @@
 <body>
   <div>
     <div class = "topContainer">
-      <h2 class = 'title'> Markeplace </h2>
+      <h2 class = 'title'> Marketplace </h2>
       <div id="searchbar-container">
         <b-form-input
           v-on:keyup.enter="search_text()"
