@@ -295,6 +295,8 @@ img {
 }
 .itemName {
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   line-height: 1.5em;
   height: 1.5em;
   width: 100%;
