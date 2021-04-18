@@ -82,7 +82,7 @@
 
             <b-row class="input-group">
               <b-button type="submit" variant="outline-success"
-                >Submit</b-button
+                >Add Post</b-button
               >
             </b-row>
           </b-form>
@@ -106,12 +106,12 @@ export default {
         username: "",
         name: "",
         description: "",
-        img: "", //images url
+        img: "", 
         likes: 0,
         category: "",
-        userdocRef: "placeholder",
+        userdocRef: null,
         email: "",
-        infoHubDocRef: "",
+        infoHubDocRef: null,
       },
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",

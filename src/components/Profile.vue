@@ -73,8 +73,11 @@
               <li v-for="item in purchasedlist" v-bind:key="item.name">
                 <div>
                   <img v-bind:src="item.img" />
+                  <p> </p>
+                  <h4 class="price">Order ID: {{ item.id }}</h4>
                   <h4 class="itemName">{{ item.name }}</h4>
                   <div class="price">${{ item.price }}</div>
+                  <div class="qtySold">Quantity Bought: {{ item.quantity }}</div>
                 </div>
               </li>
             </ul>
@@ -158,6 +161,8 @@
               <li v-for="item in infolist" v-bind:key="item.name">
                 <img v-bind:src="item.img" />
                 <h4 class="itemName">{{ item.name }}</h4>
+                <div class="price">Number of Likes: {{ item.likes }}</div>
+
                 <div>
                   <b-button
                     class="remove-button"
@@ -201,11 +206,13 @@ export default {
       quantitySold: [],
       user: {},
       email: null,
+
       mymktlist: [],
       purchasedlist: [],
       infolist: [],
       eventlist: [],
       eventRequestList: [],
+      
       collectionName: "",
       subCollectionName: "",
       currUserEmail: null,

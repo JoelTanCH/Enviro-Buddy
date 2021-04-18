@@ -67,7 +67,10 @@ export default {
             this.password = "";
             this.$router.push({ path: "/mkt-category" });
           } else {
-            alert("Email is not verified");
+            firebase
+              .auth()
+              .signOut()
+              .then(() => alert("Email is not verified"));
           }
         })
         .catch(() => alert("Invalid email/password"));
@@ -105,7 +108,7 @@ span {
 }
 #content {
   float: left;
-  margin-left:-50px;
+  margin-left: -50px;
 }
 #bg-img {
   opacity: 0.5;
