@@ -9,23 +9,94 @@
         <li v-for="event in reqList" v-bind:key="event.name">
           <img v-bind:src="event.img" />
           <h4 class="eventName">{{ event.name }}</h4>
-          <div class="details">Organizer: {{ event.organizer }}</div>
-          <div class="details">Email: {{ event.email }}</div>
-          <div class="details">Mobile: {{ event.mobile }}</div>
-          <div class="details">Location: {{ event.location }}</div>
-          <div class="details">Date: {{ event.date }}</div>
-          <div class="details">Time: {{ event.time }}</div>
+          <div>
+            <b-row>
+              <b-col>
+                <div class="details-label">Organizer</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.organizer }}</div>
+              </b-col>
+            </b-row>
 
-          <b-button
-            v-on:click="approve(event, event.category)"
-            variant="outline-success"
-          >
-            Approve
-          </b-button>
+            <b-row>
+              <b-col>
+                <div class="details-label">Organizer's Email</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.companyEmail }}</div>
+              </b-col>
+            </b-row>
 
-          <b-button v-on:click="reject(event)" variant="outline-danger">
-            Reject
-          </b-button>
+            <b-row>
+              <b-col>
+                <div class="details-label">Mobile Number</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.mobile }}</div>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                <div class="details-label">Location</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.location }}</div>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                <div class="details-label">Date</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.date }}</div>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                <div class="details-label">Time</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.time }}</div>
+              </b-col>
+            </b-row>
+
+            <b-row>
+              <b-col>
+                <div class="details-label">Description</div>
+              </b-col>
+              <b-col>
+                <div class="details">{{ event.description }}</div>
+              </b-col>
+            </b-row>
+          </div>
+
+          <div id="buttons">
+            <b-row>
+              <b-col
+                ><b-button
+                  class="customButton"
+                  v-on:click="approve(event, event.category)"
+                  variant="outline-success"
+                >
+                  Approve
+                </b-button></b-col
+              >
+
+              <b-col>
+                <b-button
+                  class="customButton"
+                  v-on:click="reject(event)"
+                  variant="outline-danger"
+                >
+                  Reject
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
         </li>
       </ul>
     </div>
@@ -192,6 +263,17 @@ img {
   margin-top: 5px;
   margin-left: 5px;
   margin-bottom: 15px;
+  text-transform: uppercase;
+}
+.details-label {
+  color: #3a6351;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .details {
   color: #57585a;
@@ -201,5 +283,11 @@ img {
   width: 100%;
   font-size: 16px;
   font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+}
+#buttons {
+  margin-top: 20px;
+}
+.customButton {
+  width: 100%;
 }
 </style>
