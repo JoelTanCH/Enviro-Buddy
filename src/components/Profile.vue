@@ -73,6 +73,8 @@
               <li v-for="item in purchasedlist" v-bind:key="item.name">
                 <div>
                   <img v-bind:src="item.img" />
+                  <p> </p>
+                  <h4 class="price">Order ID: {{ item.id }}</h4>
                   <h4 class="itemName">{{ item.name }}</h4>
                   <div class="price">${{ item.price }}</div>
                   <div class="qtySold">Quantity: {{ item.quantity }}</div>
