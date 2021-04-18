@@ -7,61 +7,68 @@
         </b-col>
 
         <b-col>
-          <h1>Add Information Hub Article</h1>
+          <h1>Post InfoHub Article</h1>
 
           <b-form id="form" v-on:submit="submitForm">
-            <b-form-group
-              id="item-name"
-              label="Title"
-              label-for="item-name-input"
-            >
-              <b-form-input
-                id="item-name"
-                v-model="item.name"
-                type="text"
-                placeholder="Enter your title"
-                required
-              ></b-form-input>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="info-title">Title</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  type="text"
+                  v-model="item.name"
+                  placeholder="Enter your title"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
 
-            <b-form-group
-              id="item-category"
-              label="Category"
-              label-for="item-category-input"
-            >
-              <b-form-select
-                id="item-category"
-                v-model="category"
-                v-bind:options="marketplaceCategories"
-                required
-              ></b-form-select>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="info-category">Category</label>
+              </b-col>
+              <b-col>
+                <b-form-select
+                  class="right-input"
+                  v-model="category"
+                  v-bind:options="InfoCategories"
+                  required
+                ></b-form-select>
+              </b-col>
+            </b-row>
 
-            <b-form-group
-              id="item-description"
-              label="What do you want to share?"
-              label-for="item-description-input"
-            >
-              <b-form-textarea
-                id="item-description"
-                v-model="item.description"
-                placeholder="Enter your content"
-                rows="3"
-                max-rows="8"
-              ></b-form-textarea>
-            </b-form-group>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="info-content">Content</label>
+              </b-col>
+              <b-col>
+                <b-form-textarea
+                  class="right-input"
+                  v-model="item.description"
+                  type="text"
+                  rows="8"
+                  placeholder="What do you want to share? (min 100 characters)"
+                  minlength="100"
+                  required
+                ></b-form-textarea>
+              </b-col>
+            </b-row>
 
-            <b-form-group>
-              <b-button v-on:click="onPickFile">Upload Image</b-button>
-              <input
-                id="fileButton"
-                type="file"
-                style="display: none"
-                ref="fileInput"
-                accept="image/*"
-                v-on:change="onFilePicked"
-              />
-              <div id="progress-container">
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="info-image">Event Image</label>
+              </b-col>
+              <b-col>
+                <input
+                  id="fileButton"
+                  type="file"
+                  ref="fileInput"
+                  accept="image/*"
+                  v-on:change="onFilePicked"
+                />
+                <div id="progress-container">
                   <div>Upload status:</div>
                   <progress
                     id="uploader"
@@ -70,9 +77,14 @@
                     max="100"
                   ></progress>
                 </div>
-            </b-form-group>
+              </b-col>
+            </b-row>
 
-            <b-button type="submit" variant="outline-success">Submit</b-button>
+            <b-row class="input-group">
+              <b-button type="submit" variant="outline-success"
+                >Submit</b-button
+              >
+            </b-row>
           </b-form>
         </b-col>
       </b-row>
@@ -104,7 +116,7 @@ export default {
       placeholderURL:
         "https://www.bkgymswim.com.au/wp-content/uploads/2017/08/image_large.png",
       category: null,
-      marketplaceCategories: ["News", "Crafts", "Lifestyle"],
+      InfoCategories: ["News", "Crafts", "Lifestyle"],
     };
   },
   methods: {
@@ -118,9 +130,6 @@ export default {
         .then((snapshot) => (this.userInfo = snapshot.data()));
     },
 
-    onPickFile() {
-      this.$refs.fileInput.click();
-    },
     onFilePicked: function (event) {
       const file = event.target.files[0];
 
@@ -168,7 +177,7 @@ export default {
       if (preview.src == this.placeholderURL) {
         //not updated yet
         alert(
-          "Submission failed. Please wait for your image upload to complete."
+          "Submission failed. Please upload an image / wait for your image to finish uploading."
         );
         return;
       }
@@ -194,25 +203,22 @@ export default {
             .doc(this.category.toLowerCase())
             .collection("items")
             .add(this.item)
-            .then((docRef) => {
-              console.log("info hub doc id: "+ docRef.id);
+            .then((infoDocRef) => {
               database
                 .collection("users")
                 .doc(currentUser.email)
                 .collection("info")
                 .doc(this.item.userdocRef)
                 .update({
-                  infoHubDocRef: docRef.id,
+                  infoHubDocRef: infoDocRef.id,
+                })
+                .then(() => {
+                  alert("Your article has been uploaded!");
+                  window.location.href =
+                    "/info-listing/" + this.category.toLowerCase();
                 });
             });
-        })
-        .then(() => {
-          alert("Your article has been uploaded!");
-          window.location.href = "/info-listing/" + this.category.toLowerCase();
         });
-
-      //reset all fields
-      //route back to mkt-categories
     },
   },
   created: function () {
@@ -222,15 +228,22 @@ export default {
 </script>
 
 <style scoped>
+#previewImage {
+  width: 40vw;
+  height: 70vh;
+  object-fit: cover;
+}
+.input-group {
+  margin-top: 20px;
+  width: 100%;
+}
+.right-input {
+  width: 100%;
+}
 #progress-container {
   margin-top: 10px;
 }
 #uploader {
   background-color: green;
-}
-img {
-  width: 100%;
-  height: 80%;
-  object-fit: contain;
 }
 </style>
