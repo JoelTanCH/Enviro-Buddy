@@ -7,158 +7,174 @@
         </b-col>
 
         <b-col>
-          <h1>Share Your Event</h1>
+          <h1>Submit Event Request</h1>
 
           <b-form id="form" v-on:submit="submitForm">
-            <b-form-group
-              id="item-name"
-              label="Event Name"
-              label-for="item-name-input"
-            >
-              <b-form-input
-                id="item-name"
-                v-model="item.name"
-                type="text"
-                placeholder="Enter the name of your event"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="item-category"
-              label="Category"
-              label-for="item-category-input"
-            >
-              <b-form-select
-                id="item-category"
-                v-model="category"
-                v-bind:options="eventCategories"
-                required
-              ></b-form-select>
-            </b-form-group>
-
-            <b-form-group
-              id="organizer-name"
-              label="Organizer"
-              label-for="organizer-name-input"
-            >
-              <b-form-input
-                id="organizer"
-                v-model="item.organizer"
-                placeholder="Enter your organization's name"
-                type="text"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="contact-number"
-              label="Mobile Number"
-              label-for="contact-number-input"
-            >
-              <b-form-input
-                id="mobile"
-                v-model="item.mobile"
-                placeholder="Enter your 8-digit number without country code"
-                type="tel"
-                pattern="[0-9]{8}"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="company-email"
-              label="Email"
-              label-for="company-email-input"
-            >
-              <b-form-input
-                id="email"
-                v-model="item.companyEmail"
-                type="email"
-                placeholder="Enter the email you would like us to communicate with"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="location"
-              label="Location"
-              label-for="location-input"
-            >
-              <b-form-input
-                id="location"
-                v-model="item.location"
-                placeholder="Enter event location"
-                type="text"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="event-date"
-              label="Date"
-              label-for="event-date-input"
-            >
-              <b-form-input
-                id="event-date"
-                v-model="item.date"
-                type="date"
-                placeholder="Enter the date of the event"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="event-time"
-              label="Time"
-              label-for="event-time-input"
-            >
-              <b-form-input
-                id="event-time"
-                v-model="item.time"
-                type="time"
-                placeholder="Enter the time of the event"
-                required
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              id="item-description"
-              label="Event Description"
-              label-for="item-description-input"
-            >
-              <b-form-textarea
-                id="item-description"
-                v-model="item.description"
-                type="text"
-                maxlength="100"
-                placeholder="Enter event description (max 100 characters)"
-                required
-              ></b-form-textarea>
-            </b-form-group>
-
-            <b-form-group>
-              <b-button v-on:click="onPickFile">Upload Image</b-button>
-              <input
-                id="fileButton"
-                type="file"
-                style="display: none"
-                ref="fileInput"
-                accept="image/*"
-                v-on:change="onFilePicked"
-              />
-              <div id="progress-container">
-                <div>Upload status:</div>
-                <progress
-                  id="uploader"
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-name">Event Name</label>
+              </b-col>
+              <b-col>
+                <b-form-input
                   class="right-input"
-                  value="0"
-                  max="100"
-                ></progress>
-              </div>
-            </b-form-group>
+                  type="text"
+                  v-model="item.name"
+                  placeholder="Enter your event name"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
 
-            <b-button type="submit" variant="outline-success">Submit</b-button>
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-category">Category</label>
+              </b-col>
+              <b-col>
+                <b-form-select
+                  class="right-input"
+                  v-model="category"
+                  v-bind:options="eventCategories"
+                  required
+                ></b-form-select>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-organizer">Organizer</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  type="text"
+                  v-model="item.organizer"
+                  placeholder="Enter your organization's name"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-mobile">Mobile Number</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.mobile"
+                  placeholder="Enter your 8-digit number without country code"
+                  type="tel"
+                  pattern="[0-9]{8}"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-email">Organization's Email</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.companyEmail"
+                  placeholder="Enter your organization's email"
+                  type="email"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-location">Event Location</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.location"
+                  type="text"
+                  placeholder="Enter your event location"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-date">Event Date</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.date"
+                  type="date"
+                  placeholder="Enter the date of your event"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-time">Event Time</label>
+              </b-col>
+              <b-col>
+                <b-form-input
+                  class="right-input"
+                  v-model="item.time"
+                  type="time"
+                  placeholder="Enter the time of your event"
+                  required
+                ></b-form-input>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="event-description">Event Description</label>
+              </b-col>
+              <b-col>
+                <b-form-textarea
+                  class="right-input"
+                  v-model="item.description"
+                  type="text"
+                  maxlength="100"
+                  placeholder="What is your event about? (max 100 characters)"
+                  required
+                ></b-form-textarea>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-col cols="4">
+                <label for="item-image">Event Image</label>
+              </b-col>
+              <b-col>
+                <input
+                  id="fileButton"
+                  type="file"
+                  ref="fileInput"
+                  accept="image/*"
+                  v-on:change="onFilePicked"
+                />
+                <div id="progress-container">
+                  <div>Upload status:</div>
+                  <progress
+                    id="uploader"
+                    class="right-input"
+                    value="0"
+                    max="100"
+                  ></progress>
+                </div>
+              </b-col>
+            </b-row>
+
+            <b-row class="input-group">
+              <b-button type="submit" variant="outline-success"
+                >Submit</b-button
+              >
+            </b-row>
           </b-form>
         </b-col>
       </b-row>
@@ -208,9 +224,6 @@ export default {
         .then((snapshot) => (this.userInfo = snapshot.data()));
     },
 
-    onPickFile() {
-      this.$refs.fileInput.click();
-    },
     onFilePicked: function (event) {
       const file = event.target.files[0];
 
@@ -258,7 +271,7 @@ export default {
       if (preview.src == this.placeholderURL) {
         //not updated yet
         alert(
-          "Submission failed. Please wait for your image upload to complete."
+          "Submission failed. Please upload an image / wait for your image to finish uploading."
         );
         return;
       }
@@ -303,10 +316,17 @@ export default {
 </script>
 
 <style scoped>
-img {
+#previewImage {
+  width: 40vw;
+  height: 70vh;
+  object-fit: cover;
+}
+.input-group {
+  margin-top: 20px;
   width: 100%;
-  height: 80%;
-  object-fit: contain;
+}
+.right-input {
+  width: 100%;
 }
 #progress-container {
   margin-top: 10px;
