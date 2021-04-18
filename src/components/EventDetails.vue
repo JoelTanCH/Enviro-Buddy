@@ -8,54 +8,96 @@
           </b-col>
           <b-col>
             <b-row>
-              <h2>{{ event.name }}</h2>
-              <h4>Organizer: {{ event.organizer }}</h4>
-              <h4>Location: {{ event.location }}</h4>
-              <h4>Date: {{ event.date }}</h4>
-              <h4>Time: {{ event.time }}</h4>
-
-              <br />
-              <br /><br />
-              <h4 class="description">Description</h4>
-              <p v-if="event.description">
-                {{ event.description }}
-              </p>
+              <h2 class="headings">{{ event.name }}</h2>
             </b-row>
+            <b-row>
+              <div>
+                <br />
+                <b-row>
+                  <b-col cols="4">
+                    <div class="details-label">Organizer</div>
+                  </b-col>
+                  <b-col>
+                    <div class="details">{{ event.organizer }}</div>
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col cols="4">
+                    <div class="details-label">Location</div>
+                  </b-col>
+                  <b-col>
+                    <div class="details">{{ event.location }}</div>
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col cols="4">
+                    <div class="details-label">Date</div>
+                  </b-col>
+                  <b-col>
+                    <div class="details">{{ event.date }}</div>
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col cols="4">
+                    <div class="details-label">Time</div>
+                  </b-col>
+                  <b-col>
+                    <div class="details">{{ event.time }}</div>
+                  </b-col>
+                </b-row>
+
+                <b-row>
+                  <b-col cols="4">
+                    <div class="details-label">Description</div>
+                  </b-col>
+                  <b-col>
+                    <div class="details">{{ event.description }}</div>
+                  </b-col>
+                </b-row>
+              </div>
+            </b-row>
+            <br />
             <hr />
+            <br />
 
             <b-row id="signup">
-              <h3>Interested? Sign up below!</h3>
+              <h4 class="headings">Interested? Sign up below!</h4>
               <b-form v-on:submit="signUp">
-                <b-form-group
-                  id="Full-name"
-                  label="Full Name"
-                  label-for="full-name-input"
-                >
-                  <b-form-input
-                    id="Full-name"
-                    v-model="signupInfo.name"
-                    placeholder="Enter Full Name"
-                    type="text"
-                    required
-                  ></b-form-input>
-                </b-form-group>
+                <b-row class="input-group">
+                  <b-col cols="4">
+                    <label for="full-name">Full Name</label>
+                  </b-col>
+                  <b-col>
+                    <b-form-input
+                      class="right-input"
+                      v-model="signupInfo.name"
+                      type="text"
+                      placeholder="Enter your full name"
+                      required
+                    ></b-form-input>
+                  </b-col>
+                </b-row>
 
-                <b-form-group
-                  id="contact-number"
-                  label="Mobile Number "
-                  label-for="contact-number-input"
-                >
-                  <b-form-input
-                    id="mobile"
-                    type="tel"
-                    pattern="[0-9]{8}"
-                    v-model="signupInfo.contact"
-                    placeholder="Enter your 8-digit number without country code"
-                    required
-                  ></b-form-input>
-                </b-form-group>
+                <b-row class="input-group">
+                  <b-col cols="4">
+                    <label for="mobile-number">Mobile Number</label>
+                  </b-col>
+                  <b-col>
+                    <b-form-input
+                      class="right-input"
+                      v-model="signupInfo.contact"
+                      type="tel"
+                      pattern="[0-9]{8}"
+                      placeholder="Enter your 8-digit number without country code"
+                      required
+                    ></b-form-input>
+                  </b-col>
+                </b-row>
 
-                <div class="buttonContainer">
+                <b-row class="input-group">
                   <b-button
                     id="button"
                     type="submit"
@@ -63,7 +105,7 @@
                     v-on:click="signUp()"
                     >Sign Me Up!</b-button
                   >
-                </div>
+                </b-row>
               </b-form>
             </b-row>
           </b-col>
@@ -173,39 +215,39 @@ export default {
 </script>
 
 <style scoped>
-h2 {
+.headings {
   text-align: left;
-}
-h3 {
-  margin-top: 20px;
-}
-h4 {
-  text-align: left;
-  color: #57585a;
+  margin-bottom: 20px;
 }
 img {
-  width: 550px;
-  height: 720px;
+  width: 40vw;
+  height: 70vh;
   object-fit: cover;
 }
-.description {
-  text-align: left;
-  color: black;
-}
-p {
-  text-align: left;
-  height: 95px;
-}
-#signup {
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-}
-#button {
+.input-group {
   margin-top: 20px;
+  width: 100%;
 }
-.buttonContainer {
-  display: flex;
-  justify-content: center;
+.right-input {
+  width: 100%;
+}
+.details-label {
+  color: #3a6351;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+}
+.details {
+  color: #57585a;
+  text-align: left;
+  margin-left: 5px;
+  margin-top: 5px;
+  width: 100%;
+  font-size: 16px;
+  font-family: "FKGrotesk", Helvetica, Arial, sans-serif;
 }
 </style>

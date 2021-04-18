@@ -119,7 +119,25 @@
                   <img v-bind:src="event.img" />
                   <h4 class="itemName">{{ event.name }}</h4>
                   <div class="price">{{ event.location }}</div>
-                  <div class="price">Status: {{ event.status }}</div>
+
+                  <div
+                    class="price"
+                    v-if="event.status == 'Approved'"
+                    style="color: green"
+                  >
+                    Status: {{ event.status }}
+                  </div>
+                  <div
+                    class="price"
+                    v-else-if="event.status == 'Rejected'"
+                    style="color: red"
+                  >
+                    Status: {{ event.status }}
+                  </div>
+
+                  <div class="price" v-else style="color: grey">
+                    Status: {{ event.status }}
+                  </div>
                 </div>
               </li>
             </ul>
@@ -371,9 +389,9 @@ export default {
 
 <style scoped>
 .page-title {
-  color:black;
-  font-family:Georgia, Verdana, sans-serif;
-  font-weight:500;
+  color: black;
+  font-family: Georgia, Verdana, sans-serif;
+  font-weight: 500;
   text-align: center;
 }
 /* for user info styling (top section above b-tabs) */
