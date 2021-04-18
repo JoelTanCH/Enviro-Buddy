@@ -46,9 +46,11 @@
               <b-col>
                 <b-form-input
                   class="right-input"
-                  v-model="item.price"
+                  v-model.number="item.price"
                   placeholder="0"
+                  min="0"
                   type="number"
+                  step="0.01"
                   required
                 ></b-form-input>
               </b-col>
@@ -59,13 +61,13 @@
                 <label for="item-description">Item Description</label>
               </b-col>
               <b-col>
-                <b-form-input
+                <b-form-textarea
                   class="right-input"
                   v-model="item.description"
                   placeholder="Enter item description"
                   type="text"
                   required
-                ></b-form-input>
+                ></b-form-textarea>
               </b-col>
             </b-row>
 
@@ -190,6 +192,7 @@ export default {
       event.preventDefault();
 
       var preview = document.getElementById("previewImage");
+      var temp = this.item.price.toString();
 
       if (preview.src == this.placeholderURL) {
         //not updated yet
@@ -197,53 +200,53 @@ export default {
           "Submission failed. Please wait for your image upload to complete."
         );
         return;
-      }
+      } else {
 
-      if(this.item.price < 0){
-        alert("Price cannot be negative")
-      }
-      else{
+        if (temp.indexOf(".") != -1) {
+          //means there is a decimal point 
+          this.item.price = parseFloat(temp).toFixed(2);
+        }
+        console.log('now: ' + this.item.price)
+        this.item.img = preview.src;
+        this.item.username = this.userInfo.username;
+        this.item.category = this.category.toLowerCase();
+        let currentUser = firebase.auth().currentUser;
+        this.item.email = currentUser.email;
 
-      this.item.img = preview.src;
-      this.item.username = this.userInfo.username;
-      this.item.category = this.category.toLowerCase();
-      let currentUser = firebase.auth().currentUser;
-      this.item.email = currentUser.email;
-
-      //add to user's "My Listings" on profile page
-      database
-        .collection("users")
-        .doc(currentUser.email)
-        .collection("my-mkt-list")
-        .add(this.item)
-        .then((userdocRef) => {
-          this.item.userdocRef = userdocRef.id;
-        })
-        //add new listing to marketplace
-        .then(() => {
-          database
-            .collection("mkt-categories")
-            .doc(this.category.toLowerCase())
-            .collection("items")
-            .add(this.item)
-            .then((mktdocRef) => {
-              //update mktdocRef in users my-mkt-list for remove function
-              database
-                .collection("users")
-                .doc(currentUser.email)
-                .collection("my-mkt-list")
-                .doc(this.item.userdocRef)
-                .update({
-                  mktdocRef: mktdocRef.id,
-                })
-                .then(() => {
-                  // alert(this.item.mktdocRef)
-                  alert("Your item has been uploaded!");
-                  window.location.href =
-                    "/mkt-listing/" + this.category.toLowerCase();
-                });
-            });
-        });
+        //add to user's "My Listings" on profile page
+        database
+          .collection("users")
+          .doc(currentUser.email)
+          .collection("my-mkt-list")
+          .add(this.item)
+          .then((userdocRef) => {
+            this.item.userdocRef = userdocRef.id;
+          })
+          //add new listing to marketplace
+          .then(() => {
+            database
+              .collection("mkt-categories")
+              .doc(this.category.toLowerCase())
+              .collection("items")
+              .add(this.item)
+              .then((mktdocRef) => {
+                //update mktdocRef in users my-mkt-list for remove function
+                database
+                  .collection("users")
+                  .doc(currentUser.email)
+                  .collection("my-mkt-list")
+                  .doc(this.item.userdocRef)
+                  .update({
+                    mktdocRef: mktdocRef.id,
+                  })
+                  .then(() => {
+                    // alert(this.item.mktdocRef)
+                    alert("Your item has been uploaded!");
+                    window.location.href =
+                      "/mkt-listing/" + this.category.toLowerCase();
+                  });
+              });
+          });
       }
     },
   },
