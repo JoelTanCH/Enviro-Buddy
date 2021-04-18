@@ -19,39 +19,32 @@
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown text="Events">
-          <b-dropdown-item href="/event-category">Categories</b-dropdown-item>
-          <b-dropdown-item href="/event-add">Submit Event Request</b-dropdown-item>
+            <b-dropdown-item href="/event-category">Categories</b-dropdown-item>
+            <b-dropdown-item href="/event-add"
+              >Submit Event Request</b-dropdown-item
+            >
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown text="Information Hub">
-          <b-dropdown-item href="/info-category">Categories</b-dropdown-item>
-          <b-dropdown-item href="/info-add">Add Post</b-dropdown-item>
+            <b-dropdown-item href="/info-category">Categories</b-dropdown-item>
+            <b-dropdown-item href="/info-add">Add Post</b-dropdown-item>
           </b-nav-item-dropdown>
-
-          <b-nav-item href="/" v-show="loggedIn == false">
-            Login
-          </b-nav-item>
-          
 
           <span v-on:click="$router.push('/profile')" class="icon">
             <b-icon-person-fill
               class="icon"
               font-scale="1.5"
-              v-show="loggedIn"
             ></b-icon-person-fill>
-            <span v-show="loggedIn">Hello {{ this.userInfo.username }}!</span>
+            <span>Hello {{ this.userInfo.username }}!</span>
           </span>
           <span v-on:click="$router.push('/mkt-cart')" class="icon">
-            <b-icon-cart4
-              font-scale="1.5" 
-            ></b-icon-cart4>
-            <span v-show="loggedIn">Cart</span>
+            <b-icon-cart4 font-scale="1.5"></b-icon-cart4>
+            <span>Cart</span>
           </span>
 
-          <b-nav-item class="logout" href="/" @click="signOut" v-show="loggedIn">
+          <b-nav-item class="logout" href="/" @click="signOut">
             Logout
           </b-nav-item>
-
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -67,26 +60,19 @@ export default {
   data() {
     return {
       username: null,
-      loggedIn: false,
       userInfo: {},
     };
   },
   methods: {
     fetchUserInfo: function () {
       firebase.auth().onAuthStateChanged((user) => {
-        if (user.emailVerified) {
-          database
-            .collection("users")
-            .doc(user.email)
-            .get()
-            .then((querySnapshot) => {
-              this.userInfo = querySnapshot.data();
-            });
-          this.loggedIn = true;
-        } else {
-          // No user is signed in.
-          this.loggedIn = false;
-        }
+        database
+          .collection("users")
+          .doc(user.email)
+          .get()
+          .then((querySnapshot) => {
+            this.userInfo = querySnapshot.data();
+          });
       });
     },
     signOut() {
@@ -94,7 +80,7 @@ export default {
         .auth()
         .signOut()
         .then(() => {
-          this.$router.push("/")
+          this.$router.push("/");
         });
     },
   },
@@ -116,7 +102,7 @@ export default {
   width: 100%;
   display: flex;
   float: right;
-  z-index:100;
+  z-index: 100;
 }
 .icon:hover {
   color: white;
@@ -130,7 +116,7 @@ export default {
   margin-right: 10px;
   color: rgba(255, 255, 255, 0.55);
 }
-.logout{
-  color: #2B2B2B
+.logout {
+  color: #2b2b2b;
 }
 </style>

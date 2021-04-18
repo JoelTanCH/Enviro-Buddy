@@ -23,10 +23,7 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user.emailVerified) {
         this.loggedIn = true;
-      } else {
-        // No user is signed in.
-        this.loggedIn = false;
-      }
+      } 
     });
   },
   components: {
