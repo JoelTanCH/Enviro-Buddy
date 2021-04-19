@@ -4,6 +4,15 @@
       <h1 class="page-title">Review Event Requests</h1>
     </div>
 
+    <div id="chart">
+      <b-button v-on:click="toggleChart" variant="outline-success"
+        >Hide/Show Approved Events Breakdown</b-button
+      >
+      <div v-show="showchart">
+        <barchart></barchart>
+      </div>
+    </div>
+
     <div v-if="reqList.length > 0">
       <ul>
         <li v-for="event in reqList" v-bind:key="event.name">
@@ -112,13 +121,18 @@
 import database from "../firebase.js";
 import firebase from "firebase/app";
 import "firebase/auth";
+import BarChart from "./Barchart.vue";
 
 export default {
   data() {
     return {
       reqList: [],
       isAdmin: false,
+      showchart: true,
     };
+  },
+  components: {
+    barchart: BarChart,
   },
   methods: {
     fetchItems: function () {
@@ -195,7 +209,20 @@ export default {
                 .doc(event.category)
                 .collection("events")
                 .add(event)
-                .then(() => location.reload());
+                .then(() => {
+                  //update approved events count
+                  database
+                    .collection("eve-categories")
+                    .doc(event.category)
+                    .get()
+                    .then((doc) => {
+                      database
+                        .collection("eve-categories")
+                        .doc(event.category)
+                        .update({ count: doc.data().count + 1 })
+                        .then(() => location.reload());
+                    });
+                });
             });
         });
     },
@@ -217,6 +244,9 @@ export default {
             .update({ status: "Rejected" })
             .then(() => location.reload());
         });
+    },
+    toggleChart: function () {
+      this.showchart = !this.showchart;
     },
   },
   created: function () {
@@ -308,5 +338,10 @@ img {
 }
 .customButton {
   width: 100%;
+}
+#chart {
+  text-align: right;
+  margin-right: 1%;
+  margin-bottom: 20px;
 }
 </style>
