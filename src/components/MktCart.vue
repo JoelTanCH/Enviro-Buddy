@@ -243,7 +243,7 @@ export default {
               .update({
                 quantitySold: newQuantity + oldQty,
               });
-          })
+          });
       }
 
       let currentUser = firebase.auth().currentUser;
@@ -265,9 +265,9 @@ export default {
       //access the collection("users").doc("email").collection("my-mkt-list").doc(doc id).update
 
       //add to purchase history for profile page
-      ordersRef.onSnapshot((snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          histRef.add(doc.data()); //adds a doc instead of incrementing the number
+      ordersRef.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          histRef.add(doc.data());
         });
       });
 
@@ -321,6 +321,7 @@ img {
   display: flex;
   justify-content: left;
   float: left;
+  object-fit: cover;
 }
 .item {
   display: flex;
