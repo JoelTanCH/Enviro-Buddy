@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="isAdmin">
     <div>
       <h1 class="page-title">Review Event Requests</h1>
     </div>
@@ -109,11 +109,14 @@
 
 <script>
 import database from "../firebase.js";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   data() {
     return {
       reqList: [],
+      isAdmin: false,
     };
   },
   methods: {
@@ -216,7 +219,21 @@ export default {
     },
   },
   created: function () {
-    this.fetchItems();
+    let currentUser = firebase.auth().currentUser;
+
+    database
+      .collection("users")
+      .doc(currentUser.email)
+      .get()
+      .then((ref) => {
+        if (ref.data().isAdmin) {
+          this.isAdmin = true;
+          this.fetchItems();
+        } else {
+          alert("You do not have admin access to this page");
+          this.$router.push("/profile");
+        }
+      });
   },
 };
 </script>
