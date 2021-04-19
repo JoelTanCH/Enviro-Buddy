@@ -200,12 +200,6 @@ export default {
           querySnapShot.forEach((doc) => {
             console.log(doc.data());
             item = doc.data();
-            if (item.img == "") {
-              item.img =
-                "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5";
-            } else {
-              console.log("ok");
-            }
             item.id = doc.id;
             this.itemList.push(item);
           });
