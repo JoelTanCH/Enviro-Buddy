@@ -9,6 +9,31 @@
         <li v-for="event in reqList" v-bind:key="event.name">
           <img v-bind:src="event.img" />
           <h4 class="eventName">{{ event.name }}</h4>
+
+          <div id="buttons">
+            <b-row>
+              <b-col
+                ><b-button
+                  class="customButton"
+                  v-on:click="approve(event, event.category)"
+                  variant="outline-success"
+                >
+                  Approve
+                </b-button></b-col
+              >
+
+              <b-col>
+                <b-button
+                  class="customButton"
+                  v-on:click="reject(event)"
+                  variant="outline-danger"
+                >
+                  Reject
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
+
           <div>
             <b-row>
               <b-col>
@@ -70,30 +95,6 @@
               </b-col>
               <b-col>
                 <div class="details">{{ event.description }}</div>
-              </b-col>
-            </b-row>
-          </div>
-
-          <div id="buttons">
-            <b-row>
-              <b-col
-                ><b-button
-                  class="customButton"
-                  v-on:click="approve(event, event.category)"
-                  variant="outline-success"
-                >
-                  Approve
-                </b-button></b-col
-              >
-
-              <b-col>
-                <b-button
-                  class="customButton"
-                  v-on:click="reject(event)"
-                  variant="outline-danger"
-                >
-                  Reject
-                </b-button>
               </b-col>
             </b-row>
           </div>
@@ -303,6 +304,7 @@ img {
 }
 #buttons {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 .customButton {
   width: 100%;
