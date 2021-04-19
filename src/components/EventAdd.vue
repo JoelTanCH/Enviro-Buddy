@@ -171,7 +171,7 @@
               </b-col>
             </b-row>
 
-            <b-row class="input-group">
+            <b-row class="input-group" id="button">
               <b-button type="submit" variant="outline-success"
                 >Submit</b-button
               >
@@ -334,5 +334,8 @@ export default {
 }
 #uploader {
   background-color: green;
+}
+#button {
+  padding-bottom: 50px;
 }
 </style>
