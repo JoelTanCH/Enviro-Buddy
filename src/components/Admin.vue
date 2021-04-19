@@ -302,6 +302,8 @@ img {
 
 .eventName {
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 1.5em;
   height: 1.5em;
   width: 100%;
