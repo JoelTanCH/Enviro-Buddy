@@ -139,8 +139,9 @@
                   class="right-input"
                   v-model="item.description"
                   type="text"
-                  maxlength="100"
-                  placeholder="What is your event about? (max 100 characters)"
+                  maxlength="200"
+                  rows="4"
+                  placeholder="What is your event about? (max 200 characters)"
                   required
                 ></b-form-textarea>
               </b-col>
