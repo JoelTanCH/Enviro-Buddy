@@ -203,6 +203,13 @@ export default {
       }
     },
     addtoPurchaseHistory: function () {
+      for (let i = 0; i < this.itemList.length; i++) {
+        if (this.itemList[i].quantity <= 0) {
+          alert("Please enter a valid quantity for " + this.itemList[i].name + "!")
+          return;
+        }
+      }
+
       for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
         var category = this.updateQuantitySoldList[i][0];
         var newQuantity = this.updateQuantitySoldList[i][1];
@@ -272,8 +279,8 @@ export default {
       });
 
       //clear current user's orders
-      ordersRef.onSnapshot((snapshot) => {
-        snapshot.docs.forEach((doc) => {
+      ordersRef.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
           ordersRef.doc(doc.id).delete();
         });
       });
