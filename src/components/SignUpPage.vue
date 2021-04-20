@@ -54,7 +54,7 @@
         <a href="/login">Log In</a>
       </div>
     </div>
-    
+
     <img id="bg-img" v-bind:src="backgroundURL" />
   </div>
 </template>
@@ -108,7 +108,7 @@ export default {
                   database.collection("users").doc(this.email).set({
                     username: this.username,
                     profilePic:
-                      "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/profile%20placeholder.jpg?alt=media&token=af9e55fb-9ac9-4c5a-bef1-3c42fad460de", //default profile pic
+                      "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/profile%2Fplaceholder%2Fprofile%20placeholder.jpg?alt=media&token=191552f8-9496-4cae-aa53-bca2dbbb9659", //default profile pic
                   })
                 )
                 .then(() => {
@@ -138,7 +138,7 @@ export default {
 
 <style scoped>
 .main {
-  height:100vh;
+  height: 100vh;
 }
 #logo {
   width: 25%;
@@ -174,7 +174,7 @@ a:hover {
 }
 #content {
   float: left;
-  margin-left:-50px;
+  margin-left: -50px;
 }
 #bg-img {
   opacity: 0.5;

@@ -20,7 +20,7 @@
             <li v-for="event in eventList" v-bind:key="event.name">
               <img v-bind:src="event.img" />
               <h4 class="eventName">{{ event.name }}</h4>
-              <div class="organizer">By {{ event.organizer }} </div>
+              <div class="organizer">By {{ event.organizer }} </div> <br>
               
               <b-button
                 v-bind:eventid="event.id"
@@ -46,7 +46,7 @@
             <li v-for="event in searchList" v-bind:key="event.name">
               <img v-bind:src="event.img" />              
               <h4 class="eventName">{{ event.name }}</h4>
-              <div class="organizer">By {{ event.organizer }} </div>
+              <div class="organizer">By {{ event.organizer }} </div> <br>
               
               <div>
                 <b-button
@@ -108,12 +108,6 @@ export default {
           querySnapShot.forEach((doc) => {
             console.log(doc.data());
             event = doc.data();
-            if (event.img == "") {
-              event.img =
-                "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5";
-            } else {
-              console.log("ok");
-            }
             event.id = doc.id;
             this.eventList.push(event);
           });
@@ -183,6 +177,8 @@ img {
 }
 .eventName {
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   line-height: 1.5em;
   height: 1.5em;
   width: 100%;

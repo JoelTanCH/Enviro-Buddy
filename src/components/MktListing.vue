@@ -2,7 +2,7 @@
 <body>
   <div>
     <div class = "topContainer">
-      <h2 class = 'title'> Markeplace </h2>
+      <h2 class = 'title'> Marketplace </h2>
       <div id="searchbar-container">
         <b-form-input
           v-on:keyup.enter="search_text()"
@@ -102,10 +102,6 @@ export default {
           querySnapShot.forEach((doc) => {
             console.log(doc.data());
             item = doc.data();
-            if (item.img == "") {
-              item.img =
-                "https://firebasestorage.googleapis.com/v0/b/enviro-buddy.appspot.com/o/placeholder.png?alt=media&token=e630e1d2-cb1b-4a36-8d33-941b3adc71c5";
-            } 
             item.id = doc.id;
             this.itemList.push(item);
             console.log(item)
@@ -197,6 +193,8 @@ img {
 }
 .itemName {
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   /*display: flex;*/
   line-height: 1.5em;
   height: 1.5em;

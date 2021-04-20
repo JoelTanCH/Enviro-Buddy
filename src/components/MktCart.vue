@@ -203,84 +203,101 @@ export default {
       }
     },
     addtoPurchaseHistory: function () {
-      for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
-        var category = this.updateQuantitySoldList[i][0];
-        var newQuantity = this.updateQuantitySoldList[i][1];
-        var mktdocId = this.updateQuantitySoldList[i][3];
-        var email = this.updateQuantitySoldList[i][4];
-        var userdocRef = this.updateQuantitySoldList[i][5]; //change
-        var oldQty = null;
-        console.log("category: " + category);
-        console.log("newQuantity: " + newQuantity);
-        console.log("docId: " + userdocRef);
-        console.log("email: " + email);
+      let valid = true;
 
-        database
-          .collection("users")
-          .doc(email)
-          .collection("my-mkt-list")
-          .doc(userdocRef)
-          .get()
-          .then((doc) => {
-            console.log(doc.data());
-            oldQty = doc.data().quantitySold;
-            console.log("old qty: " + doc.data().quantitySold);
-          })
-          .then(() => {
-            database
-              .collection("mkt-categories")
-              .doc(category)
-              .collection("items")
-              .doc(mktdocId)
-              .update({
-                quantitySold: newQuantity + oldQty,
-              });
-            database
-              .collection("users")
-              .doc(email)
-              .collection("my-mkt-list")
-              .doc(userdocRef)
-              .update({
-                quantitySold: newQuantity + oldQty,
-              });
-          })
+      for (let i = 0; i < this.itemList.length; i++) {
+        console.log("quantity: " + this.itemList[i].quantity);
+        if (this.itemList[i].quantity <= 0) {
+          alert(
+            "Please enter a valid quantity for " + this.itemList[i].name + "!"
+          );
+          valid = false;
+          break;
+        }
       }
 
-      let currentUser = firebase.auth().currentUser;
+      if (valid) {
+        for (var i = 0; i < this.updateQuantitySoldList.length; i++) {
+          var category = this.updateQuantitySoldList[i][0];
+          var newQuantity = this.updateQuantitySoldList[i][1];
+          var mktdocId = this.updateQuantitySoldList[i][3];
+          var email = this.updateQuantitySoldList[i][4];
+          var userdocRef = this.updateQuantitySoldList[i][5]; //change
+          var oldQty = null;
+          console.log("category: " + category);
+          console.log("newQuantity: " + newQuantity);
+          console.log("docId: " + userdocRef);
+          console.log("email: " + email);
 
-      const ordersRef = database
-        .collection("users")
-        .doc(currentUser.email)
-        .collection("orders");
+          database
+            .collection("users")
+            .doc(email)
+            .collection("my-mkt-list")
+            .doc(userdocRef)
+            .get()
+            .then((doc) => {
+              console.log(doc.data());
+              oldQty = doc.data().quantitySold;
+              console.log("old qty: " + doc.data().quantitySold);
+            })
+            .then(() => {
+              database
+                .collection("mkt-categories")
+                .doc(category)
+                .collection("items")
+                .doc(mktdocId)
+                .update({
+                  quantitySold: newQuantity + oldQty,
+                });
+              database
+                .collection("users")
+                .doc(email)
+                .collection("my-mkt-list")
+                .doc(userdocRef)
+                .update({
+                  quantitySold: newQuantity + oldQty,
+                });
+            });
+        }
 
-      const histRef = database
-        .collection("users")
-        .doc(currentUser.email)
-        .collection("mkt-history");
+        let currentUser = firebase.auth().currentUser;
 
-      //find the new quantity
+        const ordersRef = database
+          .collection("users")
+          .doc(currentUser.email)
+          .collection("orders");
 
-      //find item's email
+        const histRef = database
+          .collection("users")
+          .doc(currentUser.email)
+          .collection("mkt-history");
 
-      //access the collection("users").doc("email").collection("my-mkt-list").doc(doc id).update
+        //find the new quantity
 
-      //add to purchase history for profile page
-      ordersRef.onSnapshot((snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          histRef.add(doc.data()); //adds a doc instead of incrementing the number
+        //find item's email
+
+        //access the collection("users").doc("email").collection("my-mkt-list").doc(doc id).update
+
+        //add to purchase history for profile page
+        ordersRef.get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            histRef.add(doc.data());
+          });
         });
-      });
 
-      //clear current user's orders
-      ordersRef.onSnapshot((snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          ordersRef.doc(doc.id).delete();
+        //clear current user's orders
+        ordersRef.get().then((snapshot) => {
+          snapshot.forEach((doc) => {
+            ordersRef.doc(doc.id).delete();
+          });
         });
-      });
 
-      //reset purchaseList and itemList
-      this.purchaseList = [];
-      this.itemList = [];
+        //reset purchaseList and itemList
+        this.purchaseList = [];
+        this.itemList = [];
+      } else {
+        return;
+      }
     },
   },
 
@@ -321,6 +338,7 @@ img {
   display: flex;
   justify-content: left;
   float: left;
+  object-fit: cover;
 }
 .item {
   display: flex;

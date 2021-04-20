@@ -139,8 +139,9 @@
                   class="right-input"
                   v-model="item.description"
                   type="text"
-                  maxlength="100"
-                  placeholder="What is your event about? (max 100 characters)"
+                  maxlength="200"
+                  rows="4"
+                  placeholder="What is your event about? (max 200 characters)"
                   required
                 ></b-form-textarea>
               </b-col>
@@ -170,7 +171,7 @@
               </b-col>
             </b-row>
 
-            <b-row class="input-group">
+            <b-row class="input-group" id="button">
               <b-button type="submit" variant="outline-success"
                 >Submit</b-button
               >
@@ -333,5 +334,8 @@ export default {
 }
 #uploader {
   background-color: green;
+}
+#button {
+  padding-bottom: 50px;
 }
 </style>

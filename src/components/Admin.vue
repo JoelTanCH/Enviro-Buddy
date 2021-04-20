@@ -1,7 +1,16 @@
 <template>
-  <div>
+  <div v-show="isAdmin">
     <div>
       <h1 class="page-title">Review Event Requests</h1>
+    </div>
+
+    <div id="chart">
+      <b-button v-on:click="toggleChart" variant="outline-success"
+        >Hide/Show Approved Events Breakdown</b-button
+      >
+      <div v-show="showchart">
+        <barchart></barchart>
+      </div>
     </div>
 
     <div v-if="reqList.length > 0">
@@ -9,6 +18,31 @@
         <li v-for="event in reqList" v-bind:key="event.name">
           <img v-bind:src="event.img" />
           <h4 class="eventName">{{ event.name }}</h4>
+
+          <div id="buttons">
+            <b-row>
+              <b-col
+                ><b-button
+                  class="customButton"
+                  v-on:click="approve(event, event.category)"
+                  variant="outline-success"
+                >
+                  Approve
+                </b-button></b-col
+              >
+
+              <b-col>
+                <b-button
+                  class="customButton"
+                  v-on:click="reject(event)"
+                  variant="outline-danger"
+                >
+                  Reject
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
+
           <div>
             <b-row>
               <b-col>
@@ -73,30 +107,6 @@
               </b-col>
             </b-row>
           </div>
-
-          <div id="buttons">
-            <b-row>
-              <b-col
-                ><b-button
-                  class="customButton"
-                  v-on:click="approve(event, event.category)"
-                  variant="outline-success"
-                >
-                  Approve
-                </b-button></b-col
-              >
-
-              <b-col>
-                <b-button
-                  class="customButton"
-                  v-on:click="reject(event)"
-                  variant="outline-danger"
-                >
-                  Reject
-                </b-button>
-              </b-col>
-            </b-row>
-          </div>
         </li>
       </ul>
     </div>
@@ -109,12 +119,20 @@
 
 <script>
 import database from "../firebase.js";
+import firebase from "firebase/app";
+import "firebase/auth";
+import BarChart from "./Barchart.vue";
 
 export default {
   data() {
     return {
       reqList: [],
+      isAdmin: false,
+      showchart: true,
     };
+  },
+  components: {
+    barchart: BarChart,
   },
   methods: {
     fetchItems: function () {
@@ -191,7 +209,20 @@ export default {
                 .doc(event.category)
                 .collection("events")
                 .add(event)
-                .then(() => location.reload());
+                .then(() => {
+                  //update approved events count
+                  database
+                    .collection("eve-categories")
+                    .doc(event.category)
+                    .get()
+                    .then((doc) => {
+                      database
+                        .collection("eve-categories")
+                        .doc(event.category)
+                        .update({ count: doc.data().count + 1 })
+                        .then(() => location.reload());
+                    });
+                });
             });
         });
     },
@@ -214,9 +245,26 @@ export default {
             .then(() => location.reload());
         });
     },
+    toggleChart: function () {
+      this.showchart = !this.showchart;
+    },
   },
   created: function () {
-    this.fetchItems();
+    let currentUser = firebase.auth().currentUser;
+
+    database
+      .collection("users")
+      .doc(currentUser.email)
+      .get()
+      .then((ref) => {
+        if (ref.data().isAdmin) {
+          this.isAdmin = true;
+          this.fetchItems();
+        } else {
+          alert("You do not have admin access to this page");
+          this.$router.push("/profile");
+        }
+      });
   },
 };
 </script>
@@ -254,6 +302,8 @@ img {
 
 .eventName {
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   line-height: 1.5em;
   height: 1.5em;
   width: 100%;
@@ -286,8 +336,14 @@ img {
 }
 #buttons {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 .customButton {
   width: 100%;
+}
+#chart {
+  text-align: right;
+  margin-right: 1%;
+  margin-bottom: 20px;
 }
 </style>
