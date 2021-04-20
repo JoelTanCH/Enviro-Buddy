@@ -100,6 +100,8 @@
                   <img v-bind:src="event.img" />
                   <h4 class="itemName">{{ event.name }}</h4>
                   <div class="price">{{ event.location }}</div>
+                  <div class="price">{{ event.date }}</div>
+                  <div class="price">{{ event.time }}</div>
                 </div>
               </li>
             </ul>
